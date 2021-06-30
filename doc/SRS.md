@@ -13,16 +13,20 @@ corewar
 ------ src
 ------ README
 ------ Makefile
----- corewar
+---- vm
 ------ inc
 ------ src
 ------ README
 ------ Makefile
----- graphics
+---- gui
 ------ inc
 ------ src
 ------ assets
 ------ README
+------ Makefile
+---- test
+------ inc
+------ src
 ------ Makefile
 -- doc
 -- pic
@@ -31,6 +35,16 @@ corewar
 -- author
 
 ```
+
+## Requirements
+
+What this program should be able to do.
+
+## Usage
+
+How this program is supposed to be used, including flags and examples about how
+to pipe or otherwise combine the programs to achieve desired output if
+applicable.
 
 ## Modules
 
@@ -54,12 +68,12 @@ asm
 
 Details: Link to SRS_MOD_ASM
 
-### Corewar Module
+### Virtual Machine Module
 
 Module for creating the virtual machine environment for the champion arena.
 
 Target: corewar
-namespace: war_
+namespace: vm_
 
 ```
 
@@ -71,8 +85,24 @@ corewar
 
 ```
 
-Details: Link to SRS_MOD_COREWAR
+Details: Link to SRS_MOD_VM
 
-### Graphics Module
+### Graphical Interface Module
 
-To be decided...
+Module for creating a graphcial user interface for the game.
+
+Target: gui.a
+namespace: gui
+
+```
+
+gui
+-- inc
+-- src
+-- README
+-- Makefile
+
+```
+
+Details: Link to SRS_MOD_GUI
+
