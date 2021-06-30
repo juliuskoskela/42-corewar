@@ -1,5 +1,9 @@
 # Contributing
 
+Clone:
+
+`git clone --recursive -b dev https://github.com/juliuskoskela/corewar.git`
+
 ## Contexts
 
 Contexts are reflected as github projects. The contexts are as follows:
@@ -41,7 +45,7 @@ documentation
 
 Commands:
 
-Detail command line commands required to work with issues.
+MISSING! Detail command line commands required to work with issues.
 
 ## Pull Request
 
@@ -61,7 +65,12 @@ A pull request should provide the following information when opened:
 - Possible benchmarks and test results.
 - Possible links to resources.
 
+MISSING! Detail command line commands required to work with pull requests.
+
 ## Commits
 
 Commit messages should be descriptive. Try to commit only files that share a
 context and don't mix multiple separate improvements in the same commit.
+
+
+MISSING! Detail command line commands required to work with commits.
