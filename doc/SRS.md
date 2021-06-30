@@ -53,9 +53,9 @@ applicable.
 Module for interpreting and processing the assembly instructions detailed in the
 subject.
 
-Target: asm
+Target: `asm`
 
-Namespace: asm_
+Namespace: `asm_`
 
 ```
 
@@ -67,15 +67,15 @@ asm
 
 ```
 
-Details: Link to SRS_MOD_ASM
+Details: `Link to SRS_MOD_ASM`
 
 ### Virtual Machine Module
 
 Module for creating the virtual machine environment for the champion arena.
 
-Target: corewar
+Target: `corewar`
 
-namespace: vm_
+namespace: `vm_`
 
 ```
 
@@ -87,15 +87,15 @@ corewar
 
 ```
 
-Details: Link to SRS_MOD_VM
+Details: `Link to SRS_MOD_VM`
 
 ### Graphical Interface Module
 
 Module for creating a graphcial user interface for the game.
 
-Target: gui.a
+Target: `gui.a`
 
-namespace: gui
+namespace: `gui_`
 
 ```
 
