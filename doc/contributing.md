@@ -4,11 +4,9 @@
 
 Contexts are reflected as github projects. The contexts are as follows:
 
-Corewar - Research
-
-Corewar - Implementation
-
-Corewar - Validation
+- Corewar - Research
+- Corewar - Implementation
+- Corewar - Validation
 
 
 ## Branches
