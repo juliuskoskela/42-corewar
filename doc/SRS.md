@@ -54,6 +54,7 @@ Module for interpreting and processing the assembly instructions detailed in the
 subject.
 
 Target: asm
+
 Namespace: asm_
 
 ```
@@ -73,6 +74,7 @@ Details: Link to SRS_MOD_ASM
 Module for creating the virtual machine environment for the champion arena.
 
 Target: corewar
+
 namespace: vm_
 
 ```
@@ -92,6 +94,7 @@ Details: Link to SRS_MOD_VM
 Module for creating a graphcial user interface for the game.
 
 Target: gui.a
+
 namespace: gui
 
 ```
