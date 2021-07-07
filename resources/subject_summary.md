@@ -1,0 +1,77 @@
+# Summary of the project subject
+
+> Corewar is a very peculiar game. It’s about bringing “players” together around a“virtual machine”, which will load some “champions” who will fight against one an-other with the support of “processes”, with the objective being for these championsto stay “alive”.
+> 
+> The processes are executed sequentially within the same virtual machine and mem-ory space. They can therefore, among other things, write and rewrite on top ofeach others so to corrupt one another, force the others to execute instructions thatcan damage them,</br> try to rewrite on the go the coding equivalent of aCôtes duRhône 1982(that is one delicious French wine!), etc...
+> 
+> The game ends when all the processes are dead.  The winner is the last player reported to be “alive”.
+
+The project consists of three parts: an assembler (a compiler), a virtual machine and a champion.
+
+## The assembler (``asm``): Compiles champion programs from assembly to bytecode
+
+```
+./asm mychampion.s
+```
+
+- reads the assembly code from the file with a suffix ``.s`` given as argument, parses it into a bytecode format that it then writes to a file with the same name as the argument but with the suffix ``.cor``
+- in case of error, writes an error message to stderr
+
+
+
+## The virtual machine (``corewar``): Interprets and executes the compiled champions sequentially
+
+```
+./corewar [-dump nbr_cycles] [[-n number] champion1.cor] ...
+```
+
+- in case of error, writes an error message to stderr
+- big endian
+- "for implementation purposes, we will suppose that each instruction willexecute itself (completely) at the end of its last cycle and wait for its entire duration.The instructions ending at the same cycle will execute themselves in in decreasingorder of the processes’ number. -- (youngest) champion plays first."
+
+
+## The champion
+
+- with ``.s`` suffix, written in assembly, has the objective of its process staying "alive" throughout the VM's execution
+- this is achieved by reporting as "alive" and eradicating its opponents
+
+
+## The assembly language
+
+- composed of one instruction per line, instructions take the format of ``[label] opcode parameters``, where
+  - optional label is composed of a string of characters from LABEL_CHARS followed by LABEL_CHAR
+    - can have no instruction following it or be placed on a line before the instruction
+  - opcode (valid opcodes listed below)
+  - parameters, separated by SEPARATOR_CHAR,</br> that have three types:
+    - registry T_REG: rx where x = REG_NUMBER
+    - direct T_DIR: DIRECT_CHAR followed by a numeric value or a label (preceded by LABEL_CHAR) that represents a direct value
+    - indirect T_IND: a value or a label (preceded by LABEL_CHAR) that represents a value located at the address of the parameter (relative to the PC of the current process)
+- comments start with COMMENT_CHAR
+- champion's name and description on lines following NAME_CMD_STRING and COMMENT_CMD_STRING, respectively
+
+- valid opcodes:
+
+opcode (hex) | opcode | name | no of params : { params } | no of cycles | description
+-- | -- | -- | -- | -- | --
+1 (0x01) | ``live`` | "alive" | 1 : { T_DIR } | 10
+2 (0x02) | ``ld`` | "load" | 2 : { T_DIR \| T_IND,</br> T_REG } | 5
+13 (0x0d) | ``lld`` | "long load" | 2 : { T_DIR \| T_IND,</br> T_REG } | 10
+10 (0x0a) | ``ldi`` | "load index" | 3 : { T_REG \| T_DIR \| T_IND,</br> T_DIR \| T_REG,</br> T_REG } | 25
+14 (0x0e) | ``lldi`` | "long load index" | 3 : { T_REG \| T_DIR \| T_IND,</br> T_DIR \| T_REG,</br> T_REG } | 50
+3 (0x03) | ``st`` | "store" | 2 : { T_REG,</br> T_IND \| T_REG } | 5
+11 (0x0b) | ``sti`` | "store index" | 3 : { T_REG,</br> T_REG \| T_DIR \| T_IND,</br> T_DIR \| T_REG } | 25
+4 (0x04) | ``add`` | "addition" | 3 : { T_REG,</br> T_REG,</br> T_REG } | 10
+5 (0x05) | ``sub`` | "subtraction" | 3 : { T_REG,</br> T_REG,</br> T_REG } | 10
+6 (0x06) | ``and`` | "and: r1 & r2 -> r3" | 3 : { T_REG \| T_DIR \| T_IND,</br> T_REG \| T_IND \| T_DIR,</br> T_REG } | 6
+7 (0x07) | ``or`` | "or: r1 \| r2 -> r3" | 3 : { T_REG \| T_DIR \| T_IND,</br> T_REG \| T_IND \| T_DIR,</br> T_REG } | 6
+8 (0x08) | ``xor`` | "xor: r1 ^ r2 -> r3" | 3 : { T_REG \| T_DIR \| T_IND,</br> T_REG \| T_IND \| T_DIR,</br> T_REG } | 6
+9 (0x09) | ``zjmp`` | "jump if zero" | 1 : { T_DIR } | 20
+12 (0x0c) | ``fork`` | "fork" | 1 : { T_DIR } | 800
+15 (0x0f) | ``lfork`` | "long fork" | 1 : { T_DIR } | 1000
+16 (0x10) | ``aff`` | "aff" | 1 : { T_REG } | 2 |
+
+- any other codes have the effect of passing to the next one and losing a cycle
+
+
+## The bytecode
+
