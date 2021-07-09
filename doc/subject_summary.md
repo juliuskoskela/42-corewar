@@ -1,9 +1,9 @@
 # Summary of the project subject
 
 > Corewar is a very peculiar game. It’s about bringing “players” together around a“virtual machine”, which will load some “champions” who will fight against one an-other with the support of “processes”, with the objective being for these championsto stay “alive”.
-> 
+>
 > The processes are executed sequentially within the same virtual machine and mem-ory space. They can therefore, among other things, write and rewrite on top ofeach others so to corrupt one another, force the others to execute instructions thatcan damage them,</br> try to rewrite on the go the coding equivalent of aCôtes duRhône 1982(that is one delicious French wine!), etc...
-> 
+>
 > The game ends when all the processes are dead.  The winner is the last player reported to be “alive”.
 
 The project consists of three parts: an assembler (a compiler), a virtual machine and a champion.
@@ -72,6 +72,33 @@ opcode (hex) | opcode | name | no of params : { params } | no of cycles | descri
 
 - any other codes have the effect of passing to the next one and losing a cycle
 
+## Instructions
 
+### Examples
+
+Executable (indexed):
+
+```
+
+.name "zork"
+.comment "just a basic living prog"
+
+l2:		sti r1, [1] %:live, [2] %1
+		and r1, [3] %0,r1
+
+live:	live [4] %1
+		zjmp [5] %:live
+
+```
+
+Executable compilation:
+
+```
+0x0b, 0x68, 0x01, 0x00, 0x0f, 0x00, 0x01
+0x06, 0x64, 0x01, 0x00, 0x00, 0x00, 0x00, 0x01
+0x01, 0x00, 0x00, 0x00, 0x01
+0x09, 0xff, 0xfb
+
+```
 ## The bytecode
 

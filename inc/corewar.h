@@ -4,10 +4,9 @@
 #define REG_SIZE				4
 #define DIR_SIZE				REG_SIZE
 
-
-# define REG_CODE				1
-# define DIR_CODE				2
-# define IND_CODE				3
+#define REG_CODE				1
+#define DIR_CODE				2
+#define IND_CODE				3
 
 
 #define MAX_ARGS_NUMBER			4
@@ -32,6 +31,7 @@
 #define CYCLE_DELTA				50
 #define NBR_LIVE				21
 #define MAX_CHECKS				10
+
 #define	EMPTY					0U
 #define T_REG					1U
 #define T_DIR					1U << 1U
