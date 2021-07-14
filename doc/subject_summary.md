@@ -74,6 +74,70 @@ opcode (hex) | opcode | name | no of params : { params } | no of cycles | descri
 
 ## Instructions
 
+live id | ⏱10
+
+Reports this process and the player #id as being alive.
+
+ld src, dst | ⏱5
+
+Loads src in the register dst. src's value affects zf.
+
+st src, dst | ⏱5
+
+Stores src's register value in dst (either a register or a memory location).
+
+add lhs, rhs, dst | ⏱10
+
+Computes lhs + rhs and stores the result in the register dst. The result affects zf.
+
+sub lhs, rhs, dst | ⏱10
+
+Computes lhs - rhs and stores the result in the register dst. The result affects zf.
+
+and lhs, rhs, dst | ⏱6
+
+Computes lhs & rhs and stores the result in the register dst. The result affects zf.
+
+or lhs, rhs, dst | ⏱6
+
+Computes lhs | rhs and stores the result in the register dst. The result affects zf.
+
+xor lhs, rhs, dst | ⏱6
+
+Computes lhs ^ rhs and stores the result in the register dst. The result affects zf.
+
+zjmp offset | ⏱20
+
+Moves the process' pc by offset only if the process' zf is set to 1.
+
+ldi lhs, rhs, dst | ⏱25
+
+Computes lhs + rhs and uses the result as an offset to address memory and load a 32bit value into the register dst.
+
+sti src, lhs, rhs | ⏱25
+
+Computes lhs + rhs and uses the result as an offset to address memory and store the value of the register src at that memory location.
+
+fork offset | ⏱800
+
+Forks this process. This effectively creates a new process that inherits the current process' registers and zf. The spawned process has its pc set to his parent's pc offseted by offset.
+
+lld src, dst | ⏱10
+
+The long version of ld.
+
+lldi lhs, rhs, dst | ⏱50
+
+The long version of ldi. Neither the parameter values nor the computed address will have their reach limited. Contrary to ldi, the value loaded from memory affects zf.
+
+lfork offset | ⏱1000
+
+The long version of fork
+
+aff chr | ⏱2 (not yet implemented, subject to change)
+
+Makes this process' champion talk by displaying chr's value. This instruction is useful if you want to ridicule your opponents.
+
 ### Examples
 
 Executable (indexed):
