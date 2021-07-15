@@ -33,22 +33,27 @@ Therefore, a grammar and some lexing rules for defining tokens are needed. An ex
 
 ```
 # Grammar
-program		= {[label] [instruction | directive] [comment] newline}
-label		= label_name LABEL_CHAR
-instruction = symbol [parameter {SEPARATOR_CHAR parameter}]
-directive	= '.' (NAME_CMD_STRING | COMMEND_CMD_STRING) string
-parameter	= register | direct | indirect
-register	= 'r' number
-direct		= DIRECT_CHAR (number | LABEL_CHAR label_name)
-indirect	= number | LABEL_CHAR label_name
+program			= { [ label ] [ directive | instruction ] [ comment ] newline }
+label			= label_name LABEL_CHAR
+directive		= '.' command_string string
+command_string	= NAME_CMD_STRING
+				| COMMENT_CMD_STRING
+instruction 	= symbol [ parameter { SEPARATOR_CHAR parameter } ]
+parameter		= register
+				| direct
+				| indirect
+register		= 'r' number
+direct			= DIRECT_CHAR ( number | LABEL_CHAR label_name )
+indirect		= number
+				| LABEL_CHAR label_name
 
 # Lexer rules (expressed with regular expressions for brevity)
-newline		= ([\n\r])+
-comment		= #([^\n\r])+
-label_name	= ([LABEL_CHARS])+
-string		= \"([^\n\r"])+\"
-symbol		= [a-zA-Z]([a-zA-Z0-9_])+
-number		= ['-']([0-9])+
+newline			= [\n\r]+
+comment			= #[^\n\r]+
+label_name		= [LABEL_CHARS]+
+string			= \"([^\n\r"])+\"
+symbol			= [a-zA-Z][a-zA-Z0-9_]*
+number			= -?[0-9]+
 
 # In addition, any whitespace is skipped and considered token delimiters
 ```
