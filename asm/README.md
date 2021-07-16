@@ -42,9 +42,9 @@ instruction 	= symbol [ parameter { SEPARATOR_CHAR parameter } ]
 parameter		= register
 				| direct
 				| indirect
-register		= 'r' number
-direct			= DIRECT_CHAR ( number | LABEL_CHAR label_name )
-indirect		= number
+register		= 'r' integer
+direct			= DIRECT_CHAR ( integer | LABEL_CHAR label_name )
+indirect		= integer
 				| LABEL_CHAR label_name
 
 # Lexer rules (expressed with regular expressions for brevity)
@@ -53,7 +53,7 @@ comment			= #[^\n\r]+
 label_name		= [LABEL_CHARS]+
 string			= \"([^\n\r"])+\"
 symbol			= [a-zA-Z][a-zA-Z0-9_]*
-number			= -?[0-9]+
+integer			= -?[0-9]+
 
 # In addition, any whitespace is skipped and considered token delimiters
 ```
