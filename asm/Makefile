@@ -21,8 +21,13 @@ COMPILE.c	=	$(CC) $(DEPFLAGS) $(CFLAGS) $(CPPFLAGS) -c
 
 SRC_BASE	=	asm_main.c \
 				asm_read_input.c \
-				asm_lexer.c \
+				asm_init_lexer.c \
+				asm_lexer_advance.c \
+				asm_get_next_token.c \
+				asm_peek_next_token.c \
+				asm_init_parser.c \
 				asm_parser.c \
+				asm_print_ast_dot.c \
 				asm_exit_error.c
 
 SRC			=	$(addprefix $(SRC_DIR), $(SRC_BASE))

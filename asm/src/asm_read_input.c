@@ -29,12 +29,14 @@ static int	result_append(char **result, char *buf, size_t len)
 	static size_t	current_size;
 	static size_t	current_capacity;
 	size_t			i;
+	size_t			new_size;
 
 	if (len >= current_capacity - current_size)
 	{
-		if (result_resize(result, current_size, current_capacity * 2 + len + 1) != 1)
+		new_size = current_capacity * 2 + len + 1;
+		if (result_resize(result, current_size, new_size) != 1)
 			return (0);
-		current_capacity = current_capacity * 2 + len + 1;
+		current_capacity = new_size;
 	}
 	i = 0;
 	while (i < len)
