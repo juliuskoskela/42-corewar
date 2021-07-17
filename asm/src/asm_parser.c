@@ -25,7 +25,9 @@ int	asm_consume_token(t_parser *parser, t_token_type expected_type)
 	}
 	else
 	{
-		dprintf(2, "Error: token does not match expected type\n");
+		dprintf(2, "Error at [%zu, %zu]: token '%s' does not match expected type\n",
+			parser->current_token.file_row, parser->current_token.file_col,
+			parser->current_token.value);
 		return (0);
 	}
 }
@@ -155,8 +157,10 @@ t_astnode	*asm_ast_statement(t_parser *parser)
 	}
 	if (parser->current_token.type != NEWLINE_TOKEN)
 	{
-		printf("token %s\n", parser->current_token.value);
-		asm_exit_error("Expected newline token");
+		dprintf(2, "Error at [%zu, %zu]: token '%s' does not match expected type\n",
+			parser->current_token.file_row, parser->current_token.file_col,
+			parser->current_token.value);
+		asm_exit_error("");
 	}
 	while (parser->current_token.type == NEWLINE_TOKEN)
 		asm_consume_token(parser, NEWLINE_TOKEN);

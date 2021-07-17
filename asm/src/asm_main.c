@@ -33,6 +33,6 @@ int	main(int argc, char **argv)
 	//code generation
 
 	free(input);
-	//system("leaks asm");
+	system("leaks asm");
 	return (0);
 }

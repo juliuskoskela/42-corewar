@@ -63,6 +63,8 @@ typedef struct s_token
 {
 	t_token_type	type;
 	char			*value;
+	size_t			file_row;
+	size_t			file_col;
 }					t_token;
 
 typedef struct s_lexer
@@ -70,6 +72,8 @@ typedef struct s_lexer
 	const char		*input;
 	size_t			current_pos;
 	char			current_char;
+	size_t			file_row;
+	size_t			file_col;
 }					t_lexer;
 
 typedef struct s_parser

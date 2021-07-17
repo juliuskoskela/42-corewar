@@ -3,7 +3,6 @@
 
 typedef enum e_astnode_type
 {
-	NONE,
 	PROGRAM,
 	STATEMENT_LIST,
 	STATEMENT,
@@ -17,12 +16,12 @@ typedef enum e_astnode_type
 	REGISTER,
 	INTEGER,
 	DIRECT,
-	INDIRECT
+	INDIRECT,
+	NONE,
 }	t_astnode_type;
 
 static const char	*g_astnode_types[15] =
 {
-	"NONE",
 	"PROGRAM",
 	"STATEMENT_LIST",
 	"STATEMENT",
@@ -36,7 +35,8 @@ static const char	*g_astnode_types[15] =
 	"REGISTER",
 	"INTEGER",
 	"DIRECT",
-	"INDIRECT"
+	"INDIRECT",
+	"NONE",
 };
 
 typedef struct s_astnode
