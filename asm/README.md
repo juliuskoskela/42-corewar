@@ -24,7 +24,7 @@ A basic compiler is made up of the following components:
      - register exists
      - label is declared
      - literal values have correct size
-4) Code emitter (?)
+4) Code generation
    - traverses the abstract syntax tree and outputs the bytecode representation in the output file
 
 If any errors are detected during the lexing, parsing or semantic analysis, nothing is written to the output file, and a meaninful error message should be displayed, showing the type and location of the error in the source file.
@@ -33,26 +33,27 @@ Therefore, a grammar and some lexing rules for defining tokens are needed. An ex
 
 ```
 # Grammar
-program			= { [ label ] [ directive | instruction ] [ comment ] newline }
-label			= label_name LABEL_CHAR
-directive		= '.' command_string string
-command_string	= NAME_CMD_STRING
-				| COMMENT_CMD_STRING
-instruction 	= symbol [ parameter { SEPARATOR_CHAR parameter } ]
+program			= statement_list
+statement_list  = statement [ statement_list ]
+statement       = { [ label ] [ directive | instruction ] [ comment ] newline }
+label			= id LABEL_CHAR
+directive		= command_string [ string ]
+instruction 	= id [ parameter { SEPARATOR_CHAR parameter } ]
 parameter		= register
 				| direct
 				| indirect
-register		= 'r' integer
-direct			= DIRECT_CHAR ( integer | LABEL_CHAR label_name )
+register		= id
+direct			= DIRECT_CHAR ( integer | LABEL_CHAR id )
 indirect		= integer
-				| LABEL_CHAR label_name
+				| LABEL_CHAR id
 
 # Lexer rules (expressed with regular expressions for brevity)
 newline			= [\n\r]+
 comment			= #[^\n\r]+
 label_name		= [LABEL_CHARS]+
 string			= \"([^\n\r"])+\"
-symbol			= [a-zA-Z][a-zA-Z0-9_]*
+command_string = \.[a-zA-Z][a-zA-Z0-9_]*
+id	      		= [a-zA-Z][a-zA-Z0-9_]*
 integer			= -?[0-9]+
 
 # In addition, any whitespace is skipped and considered token delimiters
