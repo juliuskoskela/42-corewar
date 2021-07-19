@@ -47,4 +47,6 @@ typedef struct s_astnode
 	struct s_astnode	*right_child;
 }	t_astnode;
 
+t_astnode	*astnode_new(t_astnode_type type, char *value);
+
 #endif

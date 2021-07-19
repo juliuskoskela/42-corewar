@@ -6,7 +6,7 @@ t_token_type	asm_peek_next_token(t_lexer *lexer)
 	if (lexer->current_char == '\0')
 		return (EOF_TOKEN);
 	else if (lexer->current_char == '.')
-		return (DOT_CMD_TOKEN);
+		return (DOT_TOKEN);
 	else if (lexer->current_char == '"')
 		return (STRING_TOKEN);
 	else if (lexer->current_char == COMMENT_CHAR)

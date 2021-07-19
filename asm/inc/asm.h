@@ -34,7 +34,7 @@ typedef enum e_token_type
 	ID_TOKEN,
 	INTEGER_TOKEN,
 	NEWLINE_TOKEN,
-	DOT_CMD_TOKEN,
+	DOT_TOKEN,
 	STRING_TOKEN,
 	COMMENT_TOKEN,
 	LABEL_TOKEN,
@@ -49,7 +49,7 @@ static const char	*g_token_types[11] =
 	"ID_TOKEN",
 	"INTEGER_TOKEN",
 	"NEWLINE_TOKEN",
-	"DOT_CMD_TOKEN",
+	"DOT_TOKEN",
 	"STRING_TOKEN",
 	"COMMENT_TOKEN",
 	"LABEL_TOKEN",
@@ -80,19 +80,21 @@ typedef struct s_parser
 {
 	t_lexer			*lexer;
 	t_token			current_token;
+	int				error_occurred;
 }					t_parser;
 
 char				*asm_read_input(const char *filepath);
 
 t_lexer				asm_init_lexer(const char *input);
 void				asm_lexer_advance(t_lexer *lexer);
+char				asm_lexer_peek(t_lexer *lexer);
 t_token				asm_get_next_token(t_lexer *lexer);
 t_token_type		asm_peek_next_token(t_lexer *lexer);
 
 t_parser			asm_init_parser(t_lexer *lexer);
-t_astnode			*asm_parse(t_parser *parser);
+int					asm_parse(t_astnode **tree, t_parser *parser);
 
-void				asm_print_ast_dot(t_astnode *tree);
+void				asm_print_ast_dot(int fd, t_astnode *tree);
 
 void				asm_exit_error(char *msg);
 
