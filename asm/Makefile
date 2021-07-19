@@ -23,13 +23,15 @@ SRC_BASE	=	asm_main.c \
 				asm_read_input.c \
 				asm_init_lexer.c \
 				asm_lexer_advance.c \
+				asm_init_token.c \
 				asm_get_next_token.c \
 				asm_peek_next_token.c \
 				asm_init_parser.c \
-				asm_parser.c \
+				asm_parse.c \
+				asm_validate.c \
 				asm_print_ast_dot.c \
 				asm_exit_error.c \
-				asm_astnode_new.c
+				asm_astnode_new.c 
 
 SRC			=	$(addprefix $(SRC_DIR), $(SRC_BASE))
 OBJ			=	$(addprefix $(OBJ_DIR), $(SRC_BASE:.c=.o))
