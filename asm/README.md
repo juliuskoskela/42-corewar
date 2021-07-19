@@ -144,9 +144,12 @@ Breaking them down, row by row:
   - the mnemonic ``live``corresponds to opcode 1 => ``0x01``
   - takes one parameter, a 4-byte direct, and no argument coding byte. therefore, the opcode byte is directly followed by the argument ``%1`` that corresponds to ``0x00,0x00,0x00,0x01``.
 
+
 - ``zjmp %:live`` => ``0x09,0xff,0xfb``
   - the mnemonic ``zjmp`` corresponds to opcode 9 => ``0x09``
   - takes one parameter, a direct, and no argument coding byte. ``%:live`` corresponds to ``0xff,0xfb`` which appears to be -5 (big endian int16), again the offset from current instruction's address to the instruction denoted by ``:live``.
 
+
 - questions:
   - why do direct values sometimes take 2 bytes and sometimes 4 bytes?
+  - how are label offsets counted?
