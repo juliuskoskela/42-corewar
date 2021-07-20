@@ -9,7 +9,7 @@ typedef enum e_astnode_type
 	REGISTER = 1,
 	DIRECT = 2,
 	INDIRECT = 4,
-	LABEL = 8,
+	LABEL,
 	PROGRAM,
 	STATEMENT_LIST,
 	STATEMENT,
@@ -22,29 +22,31 @@ typedef enum e_astnode_type
 	INTEGER,
 }	t_astnode_type;
 
-static const char	*g_astnode_types[15] =
+static const char	*g_astnode_types[17] =
 {
+	"NONE",
+	"REGISTER",
+	"DIRECT",
+	NULL,
+	"INDIRECT",
+	"LABEL",
 	"PROGRAM",
 	"STATEMENT_LIST",
 	"STATEMENT",
-	"LABEL",
 	"DIRECTIVE",
 	"CMD",
 	"CMD_STRING",
 	"INSTRUCTION",
 	"COMMENT",
 	"PARAMETER_LIST",
-	"REGISTER",
 	"INTEGER",
-	"DIRECT",
-	"INDIRECT",
-	"NONE",
 };
 
 typedef struct s_astnode
 {
 	t_astnode_type		type;
 	char				*value;
+	int32_t				num_value;
 	t_token				token;
 	struct s_astnode	*left_child;
 	struct s_astnode	*right_child;

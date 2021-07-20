@@ -2,7 +2,7 @@
 #include <ctype.h>
 #include <stdio.h>
 
-void	asm_print_lexer_error(t_lexer *lexer, const char *msg)
+static void	asm_print_lexer_error(t_lexer *lexer, const char *msg)
 {
 	dprintf(2, "Lexer error at [%zu, %zu]: %s\n",
 		lexer->file_row,
@@ -10,13 +10,13 @@ void	asm_print_lexer_error(t_lexer *lexer, const char *msg)
 		msg);
 }
 
-void	asm_lexer_skip_whitespace(t_lexer *lexer)
+static void	asm_lexer_skip_whitespace(t_lexer *lexer)
 {
 	while (lexer->current_char == ' ' || lexer->current_char == '\t')
 		asm_lexer_advance(lexer);
 }
 
-void	asm_lexer_skip_comment(t_lexer *lexer)
+static void	asm_lexer_skip_comment(t_lexer *lexer)
 {
 	asm_lexer_advance(lexer);
 	while (lexer->current_char != '\0' && lexer->current_char != '\n')
@@ -37,6 +37,7 @@ t_token	asm_get_error_token(t_lexer *lexer)
 
 	token = asm_init_token(ERROR_TOKEN, NULL, lexer->file_row, lexer->file_col);
 	asm_print_lexer_error(lexer, "Unrecognized token");
+	token.value = strndup(&lexer->input[lexer->current_pos], 1);
 	asm_lexer_advance(lexer);
 	return (token);
 }

@@ -23,12 +23,19 @@ SRC_BASE	=	asm_main.c \
 				asm_read_input.c \
 				asm_init_lexer.c \
 				asm_lexer_advance.c \
+				asm_lexer_peek.c \
 				asm_init_token.c \
 				asm_get_next_token.c \
 				asm_peek_next_token.c \
 				asm_init_parser.c \
 				asm_parse.c \
 				asm_validate.c \
+				asm_generate_output.c \
+				asm_symbol_list_new.c \
+				asm_symbol_list_lookup.c \
+				asm_symbol_list_define.c \
+				asm_print_symbol_list.c \
+				asm_write_dot_to_file.c \
 				asm_print_ast_dot.c \
 				asm_exit_error.c \
 				asm_astnode_new.c 

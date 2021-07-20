@@ -16,6 +16,8 @@
 # include <string.h>
 # include <stdint.h>
 
+// GENERAL
+
 # define COMMENT_CHAR		'#'
 # define LABEL_CHAR			':'
 # define DIRECT_CHAR		'%'
@@ -46,13 +48,11 @@
 # define DIR_CODE			2
 # define IND_CODE			3
 
-# define MAX_ARGS_NUMBER	4
+# define MAX_paramS_NUMBER	4
 # define MAX_PLAYERS		4
 # define MEM_SIZE			(4*1024)
 # define IDX_MOD			(MEM_SIZE / 8)
 # define CHAMP_MAX_SIZE		(MEM_SIZE / 6)
-
-typedef struct s_astnode t_astnode;
 
 typedef enum e_token_type
 {
@@ -70,8 +70,9 @@ typedef enum e_token_type
 	ERROR_TOKEN
 }	t_token_type;
 
-static const char	*g_token_types[11] =
+static const char	*g_token_types[12] =
 {
+	"NO_TOKEN",
 	"ID_TOKEN",
 	"INTEGER_TOKEN",
 	"NEWLINE_TOKEN",
@@ -109,6 +110,8 @@ typedef struct s_parser
 	int				error_occurred;
 }	t_parser;
 
+typedef struct s_astnode t_astnode;
+
 typedef struct s_symbol_list
 {
 	char					*symbol;
@@ -117,23 +120,38 @@ typedef struct s_symbol_list
 
 }	t_symbol_list;
 
-typedef struct s_arg_flags
+typedef struct s_header
+{
+  uint32_t		magic;
+  char			prog_name[PROG_NAME_LENGTH + 1];
+  uint32_t		prog_size;
+  char			comment[COMMENT_LENGTH + 1];
+}	t_header;
+
+typedef struct s_output_data
+{
+	t_symbol_list	symbols;
+	t_header		header;
+	int8_t			program[CHAMP_MAX_SIZE + 1];
+}	t_output_data;
+
+typedef struct s_param_types
 {
 	uint8_t		param1;
 	uint8_t		param2;
 	uint8_t		param3;
-}	t_arg_flags;
+}	t_param_types;
 
 typedef struct s_op
 {
 	const char	*mnemonic;
-	uint32_t	arg_count;
-	t_arg_flags	arg_flags;
+	uint32_t	param_count;
+	t_param_types	param_types;
 	uint8_t		opcode;
 	uint32_t	cycles;
 	const char	*description;
-	int			has_argument_coding_byte;
-	int			unknown2;
+	int			has_paramument_coding_byte;
+	int			unknown;
 }	t_op;
 
 # define OP_COUNT			17
@@ -159,14 +177,6 @@ static const t_op    g_op_tab[17] =
 	{0, 0, {0}, 0, 0, 0, 0, 0}
 };
 
-typedef struct s_header
-{
-  uint32_t		magic;
-  char			prog_name[PROG_NAME_LENGTH + 1];
-  uint32_t		prog_size;
-  char			comment[COMMENT_LENGTH + 1];
-}	t_header;
-
 char				*asm_read_input(const char *filepath);
 
 t_lexer				asm_init_lexer(const char *input);
@@ -178,8 +188,17 @@ t_token_type		asm_peek_next_token(t_lexer *lexer);
 
 t_parser			asm_init_parser(t_lexer *lexer);
 int					asm_parse(t_astnode **tree, t_parser *parser);
-int					asm_validate_ast(t_astnode *tree);
 
+int					asm_validate_ast(t_output_data *data, t_astnode *tree);
+
+int					asm_generate_output(char *filepath, t_output_data *data, t_astnode *tree);
+
+t_symbol_list		*asm_symbol_list_new(t_astnode *node, char *symbol);
+int					asm_symbol_list_define(t_symbol_list *list, t_astnode *node);
+t_symbol_list		*asm_symbol_list_lookup(t_symbol_list *list, char *symbol);
+void				asm_print_symbol_list(t_symbol_list *symbols);
+
+void				asm_write_ast_dot_to_file(char *path, t_astnode *tree);
 void				asm_print_ast_dot(int fd, t_astnode *tree);
 
 void				asm_exit_error(char *msg);

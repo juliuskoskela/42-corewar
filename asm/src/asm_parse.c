@@ -5,13 +5,13 @@
 
 void	asm_print_parser_error(t_parser *parser, t_token_type expected_type)
 {
-		dprintf(2, "Parser error at [%zu, %zu]: token '%s' of type %s\
-			does not match expected type %s\n",
-			parser->current_token.file_row,
-			parser->current_token.file_col,
-			parser->current_token.value,
-			g_token_types[parser->current_token.type],
-			g_token_types[expected_type]);
+	dprintf(2, "Parser error at [%zu, %zu]: token '%s' of type %s\
+	does not match expected type %s\n",
+		parser->current_token.file_row,
+		parser->current_token.file_col,
+		parser->current_token.value,
+		g_token_types[parser->current_token.type],
+		g_token_types[expected_type]);
 }
 
 int	asm_consume_token(t_parser *parser, t_token_type expected_type)
@@ -174,7 +174,7 @@ t_astnode	*asm_ast_program(t_parser *parser)
 	t_astnode	*program_node;
 
 	program_node = astnode_new(PROGRAM, "", asm_init_token(NO_TOKEN, NULL, parser->current_token.file_row, parser->current_token.file_col));
-	program_node->left_child = asm_ast_statement_list(parser);
+	program_node->right_child = asm_ast_statement_list(parser);
 	return (program_node);
 }
 
