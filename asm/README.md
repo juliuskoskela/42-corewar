@@ -7,30 +7,31 @@
 - reads the assembly code from the file with a suffix ``.s`` given as argument, parses it into a bytecode format that it then writes to a file with the same name as the argument but with the suffix ``.cor``
 - in case of error, writes an error message to stderr
 
-In essence, the asm program constitutes a simple compiler.
+In essence, the asm program constitutes a simple compiler / assembler.
 
-A basic compiler is made up of the following components:
+Our assembler is currently made up of the following components:
 
-1) Lexer / scanner
+1) Lexer / scanner (asm_get_next_token)
    - reads the input file character by character to produce tokens
-2) Parser
+2) Parser (asm_parse)
    - parses the input into an abstract syntax tree (AST) according to a specified grammar
    - according to the grammar rules, requests tokens from the lexer and checks that their ordering is in line with the rules => syntax analysis
-3) Semantic analysis: first pass of the AST
+3) Semantic analysis: first pass of the AST (asm_validate)
    - traverses the abstract syntax tree and makes some static semantic checks, e.g. whether
-     - an instruction exists
-     - number of operands/parameters is correct for a given instruction
-     - operands/parameters are of correct type
-     - register exists
-     - label is declared
-     - literal values have correct size
-4) Code generation
-   - traverses the abstract syntax tree and outputs the bytecode representation in the output file
+     - given directive exists and is not duplicate
+     - given instruction exists and
+       - number of operands/parameters is correct
+       - operands/parameters are of correct type
+       - register exists (not yet)
+       - literal values have correct size (not yet)
+   - saves all label definitions to a symbol table
+4) Code generation (asm_generate_output)
+   - traverses the abstract syntax tree and generates the bytecode representation
+     - see bytecode format for instruction statements below
+     - name resolution for labels (not yet)
+   - writes header contents and program to output file
 
-
-- location counter
-- symbol table : define, lookup
-- hex numbers
+- at which point should string values of parameters be converted to the integer values?
 
 If any errors are detected during the lexing, parsing or semantic analysis, nothing is written to the output file, and a meaninful error message should be displayed, showing the type and location of the error in the source file.
 
