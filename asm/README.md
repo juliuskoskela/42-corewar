@@ -46,20 +46,21 @@ statement_list  = statement [ statement_list ]
 statement       = { [ label ] [ directive | instruction ] [ comment ] newline }
 label			= id LABEL_CHAR
 directive		= '.' id [ string ]
-instruction 	= id [ parameter { SEPARATOR_CHAR parameter } ]
+instruction 	= id parameter_list
+parameter_list  = parameter [ SEPARATOR_CHAR parameter_list ]
 parameter		= register
 				| direct
 				| indirect
 register		= id
 direct			= DIRECT_CHAR ( number | LABEL_CHAR id )
-indirect		= integer
+indirect		= number
 				| LABEL_CHAR id
 
 # Lexer rules (expressed with regular expressions for brevity)
 newline			= [\n\r]+
 comment			= #[^\n\r]+
 label_name		= [LABEL_CHARS]+
-string			= \"([^\n\r"])+\"
+string			= \"[^\n\r"]+\"
 id	      		= [a-zA-Z][a-zA-Z0-9_]*
 number			= -?[0-9]+ | 0x[0-9a-f]+
 
