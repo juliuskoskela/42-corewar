@@ -17,8 +17,8 @@ int	asm_visit_parameter(t_astnode *node, uint32_t param_number, t_op instruction
 
 	type = (uint8_t)node->type;
 	if ((param_number == 1 && ((type & instruction.param_types.param1) == 0))
-	|| (param_number == 2 && ((type & instruction.param_types.param2) == 0))
-	|| (param_number == 3 && ((type & instruction.param_types.param3) == 0)))
+		|| (param_number == 2 && ((type & instruction.param_types.param2) == 0))
+		|| (param_number == 3 && ((type & instruction.param_types.param3) == 0)))
 	{
 		asm_print_semantic_error(node, "Invalid argument type");
 		return (0);
@@ -201,6 +201,6 @@ int	asm_validate_ast(t_output_data *data, t_astnode *tree)
 	memset(&data->symbols, 0, sizeof(t_symbol_list));
 	data->header.magic = COREWAR_EXEC_MAGIC;
 	ret = asm_visit_program(tree, &data->symbols, &data->header);
-	asm_print_symbol_list(&data->symbols);
+	asm_print_symbol_list(&data->symbols, "Symbol table after first pass through AST:");
 	return (ret);
 }

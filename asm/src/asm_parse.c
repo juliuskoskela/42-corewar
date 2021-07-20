@@ -14,8 +14,10 @@ void	asm_print_parser_error(t_parser *parser, t_token_type expected_type)
 		g_token_types[expected_type]);
 }
 
-int	asm_consume_token(t_parser *parser, t_token_type expected_type)
+int	asm_consume_token(t_parser *parser, t_token_type expected_type, int free_token_value)
 {
+	if (free_token_value)
+		free(parser->current_token.value);
 	if (parser->current_token.type == expected_type)
 	{
 		parser->current_token = asm_get_next_token(parser->lexer);
@@ -34,8 +36,8 @@ t_astnode	*asm_ast_label(t_parser *parser)
 	t_astnode	*node;
 
 	node = astnode_new(LABEL, parser->current_token.value, parser->current_token);
-	asm_consume_token(parser, ID_TOKEN);
-	asm_consume_token(parser, LABEL_TOKEN);
+	asm_consume_token(parser, ID_TOKEN, 0);
+	asm_consume_token(parser, LABEL_TOKEN, 1);
 	return (node);
 }
 
@@ -44,7 +46,7 @@ t_astnode	*asm_ast_register(t_parser *parser)
 	t_astnode	*node;
 
 	node = astnode_new(REGISTER, parser->current_token.value, parser->current_token);
-	asm_consume_token(parser, ID_TOKEN);
+	asm_consume_token(parser, ID_TOKEN, 0);
 	return (node);
 }
 
@@ -55,14 +57,14 @@ t_astnode	*asm_ast_indirect(t_parser *parser)
 	node = astnode_new(INDIRECT, "", asm_init_token(NO_TOKEN, NULL, parser->current_token.file_row, parser->current_token.file_col));
 	if (parser->current_token.type == INTEGER_TOKEN)
 	{
-		node->left_child = astnode_new(INTEGER, parser->current_token.value, parser->current_token);
-		asm_consume_token(parser, INTEGER_TOKEN);
+		node->right_child = astnode_new(INTEGER, parser->current_token.value, parser->current_token);
+		asm_consume_token(parser, INTEGER_TOKEN, 0);
 	}
 	else
 	{
-		asm_consume_token(parser, LABEL_TOKEN);
-		node->left_child = astnode_new(LABEL, parser->current_token.value, parser->current_token);
-		asm_consume_token(parser, ID_TOKEN);
+		asm_consume_token(parser, LABEL_TOKEN, 1);
+		node->right_child = astnode_new(LABEL, parser->current_token.value, parser->current_token);
+		asm_consume_token(parser, ID_TOKEN, 0);
 	}
 	return (node);
 }
@@ -72,17 +74,17 @@ t_astnode	*asm_ast_direct(t_parser *parser)
 	t_astnode	*node;
 
 	node = astnode_new(DIRECT, "", asm_init_token(NO_TOKEN, NULL, parser->current_token.file_row, parser->current_token.file_col));
-	asm_consume_token(parser, DIRECT_TOKEN);
+	asm_consume_token(parser, DIRECT_TOKEN, 1);
 	if (parser->current_token.type == INTEGER_TOKEN)
 	{
-		node->left_child = astnode_new(INTEGER, parser->current_token.value, parser->current_token);
-		asm_consume_token(parser, INTEGER_TOKEN);
+		node->right_child = astnode_new(INTEGER, parser->current_token.value, parser->current_token);
+		asm_consume_token(parser, INTEGER_TOKEN, 0);
 	}
 	else
 	{
-		asm_consume_token(parser, LABEL_TOKEN);
-		node->left_child = astnode_new(LABEL, parser->current_token.value, parser->current_token);
-		asm_consume_token(parser, ID_TOKEN);
+		asm_consume_token(parser, LABEL_TOKEN, 1);
+		node->right_child = astnode_new(LABEL, parser->current_token.value, parser->current_token);
+		asm_consume_token(parser, ID_TOKEN, 0);
 	}
 	return (node);
 }
@@ -106,7 +108,7 @@ t_astnode	*asm_ast_parameter_list(t_parser *parser)
 	node->left_child = asm_ast_parameter(parser);
 	if (parser->current_token.type == SEPARATOR_TOKEN)
 	{
-		asm_consume_token(parser, SEPARATOR_TOKEN);
+		asm_consume_token(parser, SEPARATOR_TOKEN, 1);
 		node->right_child = asm_ast_parameter_list(parser);
 	}
 	return (node);
@@ -117,7 +119,7 @@ t_astnode	*asm_ast_instruction(t_parser *parser)
 	t_astnode	*node;
 
 	node = astnode_new(INSTRUCTION, parser->current_token.value, parser->current_token);
-	asm_consume_token(parser, ID_TOKEN);
+	asm_consume_token(parser, ID_TOKEN, 0);
 	node->right_child = asm_ast_parameter_list(parser);
 	return (node);
 }
@@ -127,13 +129,13 @@ t_astnode	*asm_ast_directive(t_parser *parser)
 	t_astnode	*node;
 
 	node = astnode_new(DIRECTIVE, "", asm_init_token(NO_TOKEN, NULL, parser->current_token.file_row, parser->current_token.file_col));
-	asm_consume_token(parser, DOT_TOKEN);
+	asm_consume_token(parser, DOT_TOKEN, 1);
 	node->left_child = astnode_new(CMD, parser->current_token.value, parser->current_token);
-	asm_consume_token(parser, ID_TOKEN);
+	asm_consume_token(parser, ID_TOKEN, 0);
 	if (parser->current_token.type == STRING_TOKEN)
 	{
 		node->right_child = astnode_new(CMD_STRING, parser->current_token.value, parser->current_token);
-		asm_consume_token(parser, STRING_TOKEN);
+		asm_consume_token(parser, STRING_TOKEN, 0);
 	}
 	return (node);
 }
@@ -149,9 +151,9 @@ t_astnode	*asm_ast_statement(t_parser *parser)
 		node->right_child = asm_ast_directive(parser);
 	else if (parser->current_token.type == ID_TOKEN)
 		node->right_child = asm_ast_instruction(parser);
-	asm_consume_token(parser, NEWLINE_TOKEN);
+	asm_consume_token(parser, NEWLINE_TOKEN, 1);
 	while (parser->current_token.type == NEWLINE_TOKEN)
-		asm_consume_token(parser, NEWLINE_TOKEN);
+		asm_consume_token(parser, NEWLINE_TOKEN, 1);
 	return (node);
 }
 

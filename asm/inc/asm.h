@@ -192,11 +192,13 @@ int					asm_parse(t_astnode **tree, t_parser *parser);
 int					asm_validate_ast(t_output_data *data, t_astnode *tree);
 
 int					asm_generate_output(char *filepath, t_output_data *data, t_astnode *tree);
+void				asm_write_output_to_file(char *path, t_output_data *data);
 
 t_symbol_list		*asm_symbol_list_new(t_astnode *node, char *symbol);
 int					asm_symbol_list_define(t_symbol_list *list, t_astnode *node);
 t_symbol_list		*asm_symbol_list_lookup(t_symbol_list *list, char *symbol);
-void				asm_print_symbol_list(t_symbol_list *symbols);
+int					asm_symbol_list_delete(t_symbol_list **list, char *symbol);
+void				asm_print_symbol_list(t_symbol_list *symbols, const char *title);
 
 void				asm_write_ast_dot_to_file(char *path, t_astnode *tree);
 void				asm_print_ast_dot(int fd, t_astnode *tree);

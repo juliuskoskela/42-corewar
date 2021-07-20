@@ -4,7 +4,7 @@
 
 static void	asm_print_usage(void)
 {
-	static const char *usage = "Usage: ./asm [--dot] path/to/player.s\n\
+	static const char	*usage = "Usage: ./asm [--dot] path/to/player.s\n\
 	\n\
 	--dot : write the intermediate abstract syntax tree to path/to/player.dot\n\
 		from which an image can be generated with\n\

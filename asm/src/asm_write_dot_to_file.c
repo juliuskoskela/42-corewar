@@ -20,6 +20,7 @@ void	asm_write_ast_dot_to_file(char *path, t_astnode *tree)
 	if (fd < 0)
 		asm_exit_error("Error on writing output to .dot file");
 	printf("Writing AST to %s\n", dot_file);
+	free(dot_file);
 	asm_print_ast_dot(fd, tree);
 	close(fd);
 }
