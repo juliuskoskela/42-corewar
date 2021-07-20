@@ -6,6 +6,15 @@
 #include <stdio.h>
 #include <ctype.h>
 
+void	asm_print_output_info(const char *str,
+const char *param_type, int32_t value)
+{
+	if (param_type != NULL)
+		printf("%s %s %d : %#x\n", str, param_type, value, value);
+	else
+		printf("%s %d : %#x\n", str, value, value);
+}
+
 int	asm_add_label_to_list(t_symbol_list **labels, t_astnode *label)
 {
 	t_symbol_list	*node;
@@ -22,62 +31,7 @@ int	asm_add_label_to_list(t_symbol_list **labels, t_astnode *label)
 	return (1);
 }
 
-int	get_instruction(t_op *dst, char *mnemonic)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < OP_COUNT)
-	{
-		if (strcmp(mnemonic, g_op_tab[i].mnemonic) == 0)
-		{
-			*dst = g_op_tab[i];
-			return (1);
-		}
-		i++;
-	}
-	return (0);
-}
-
-int	get_numeric_value(int32_t *dst, char *str)
-{
-	static const char	digits[17] = "0123456789abcdef";
-	int32_t				base;
-	int32_t				value;
-	int32_t				sign;
-	int32_t				i;
-
-	value = 0;
-	sign = 1;
-	if (strncmp(str, "0x", 2) == 0)
-	{
-		base = 16;
-		str += 2;
-	}
-	else
-	{
-		base = 10;
-		if (*str == '-')
-		{
-			sign = -1;
-			str++;
-		}
-	}
-	while (isdigit(*str) || (*str >= 'a' && *str <= 'f'))
-	{
-		i = 0;
-		while (digits[i] != *str)
-			i++;
-		value = value * base + i;
-		str++;
-	}
-	if (*str != '\0')
-		return (0);
-	*dst = sign * value;
-	return (1);
-}
-
-void	write_bytes(int8_t *program, uint32_t *lc, void *bytes, int n)
+void	asm_write_bytes(int8_t *program, uint32_t *lc, void *bytes, int n)
 {
 	int	i;
 
@@ -92,7 +46,7 @@ void	write_bytes(int8_t *program, uint32_t *lc, void *bytes, int n)
 	}
 }
 
-void	write_register(int8_t *program, uint32_t *lc, t_astnode *parameter)
+void	asm_write_register(int8_t *program, uint32_t *lc, t_astnode *parameter)
 {
 	char	*value;
 
@@ -100,24 +54,21 @@ void	write_register(int8_t *program, uint32_t *lc, t_astnode *parameter)
 	if (*value != 'r')
 		asm_exit_error("Invalid register");
 	value++;
-	if (!get_numeric_value(&parameter->num_value, value))
+	if (!asm_get_numeric_value(&parameter->num_value, value))
 		asm_exit_error("Invalid register");
 	if (parameter->num_value < 1 || parameter->num_value > REG_NUMBER)
 		asm_exit_error("Invalid register");
-	printf("write register %d : %#x\n", parameter->num_value, parameter->num_value);
-	write_bytes(program, lc, &parameter->num_value, 1);
+	asm_print_output_info("write register", NULL, parameter->num_value);
+	asm_write_bytes(program, lc, &parameter->num_value, 1);
 }
 
-void	write_direct(int8_t *program, uint32_t *lc,
+void	asm_write_direct(int8_t *program, uint32_t *lc,
 t_symbol_list symbols, t_astnode *parameter)
 {
 	t_symbol_list	*label;
 
 	if (parameter->type == INTEGER)
-	{
-		if (!get_numeric_value(&parameter->num_value, parameter->value))
-			asm_exit_error("Invalid direct");
-	}
+		asm_get_numeric_value(&parameter->num_value, parameter->value);
 	else
 	{
 		label = asm_symbol_list_lookup(&symbols, parameter->value);
@@ -128,24 +79,21 @@ t_symbol_list symbols, t_astnode *parameter)
 		else
 		{
 			//forward reference!
-			parameter->num_value = *lc;
+			parameter->num_value = (-1) * (*lc);
 		}
 	}
-	printf("write direct %s %d : %#x\n", g_astnode_types[parameter->type],
-		parameter->num_value, parameter->num_value);
-	write_bytes(program, lc, &parameter->num_value, 2);
+	asm_print_output_info("write direct", g_astnode_types[parameter->type],
+		parameter->num_value);
+	asm_write_bytes(program, lc, &parameter->num_value, 2);
 }
 
-void	write_indirect(int8_t *program, uint32_t *lc,
+void	asm_write_indirect(int8_t *program, uint32_t *lc,
 t_symbol_list symbols, t_astnode *parameter)
 {
 	t_symbol_list	*label;
 
 	if (parameter->type == INTEGER)
-	{
-		if (!get_numeric_value(&parameter->num_value, parameter->value))
-			asm_exit_error("Invalid direct");
-	}
+		asm_get_numeric_value(&parameter->num_value, parameter->value);
 	else
 	{
 		label = asm_symbol_list_lookup(&symbols, parameter->value);
@@ -156,15 +104,15 @@ t_symbol_list symbols, t_astnode *parameter)
 		else
 		{
 			//forward reference!
-			parameter->num_value = *lc;
+			parameter->num_value = (-1) * (*lc);
 		}
 	}
-	printf("write indirect %s %d : %#x\n", g_astnode_types[parameter->type],
-		parameter->num_value, parameter->num_value);
-	write_bytes(program, lc, &parameter->num_value, 2);
+	asm_print_output_info("write indirect", g_astnode_types[parameter->type],
+		parameter->num_value);
+	asm_write_bytes(program, lc, &parameter->num_value, 2);
 }
 
-void	write_arguments(int8_t *program, uint32_t *lc,
+void	asm_write_arguments(int8_t *program, uint32_t *lc,
 t_symbol_list symbols, t_astnode *parameter_list)
 {
 	t_astnode	*parameter;
@@ -173,16 +121,16 @@ t_symbol_list symbols, t_astnode *parameter_list)
 	{
 		parameter = parameter_list->left_child;
 		if (parameter->type == REGISTER)
-			write_register(program, lc, parameter);
+			asm_write_register(program, lc, parameter);
 		else if (parameter->type == INDIRECT)
-			write_indirect(program, lc, symbols, parameter->right_child);
+			asm_write_indirect(program, lc, symbols, parameter->right_child);
 		else
-			write_direct(program, lc, symbols, parameter->right_child);
+			asm_write_direct(program, lc, symbols, parameter->right_child);
 		parameter_list = parameter_list->right_child;
 	}
 }
 
-void	write_argument_coding_byte(int8_t *program, uint32_t *lc,
+void	asm_write_argument_coding_byte(int8_t *program, uint32_t *lc,
 t_astnode *parameter_list)
 {
 	t_astnode	*parameter;
@@ -205,22 +153,22 @@ t_astnode *parameter_list)
 		i -= 2;
 		parameter_list = parameter_list->right_child;
 	}
-	printf("\n=> write argument coding byte %d : %#x\n", acb, acb);
-	write_bytes(program, lc, &acb, 1);
+	asm_print_output_info("\n=> write argument coding byte", NULL, acb);
+	asm_write_bytes(program, lc, &acb, 1);
 }
 
 void	asm_save_label_address(t_output_data *data, uint32_t *lc,
 t_symbol_list **labels)
 {
-	t_symbol_list *symtable_label;
+	t_symbol_list	*label;
 
 	while (*labels != NULL)
 	{
-		symtable_label = asm_symbol_list_lookup(&data->symbols, (*labels)->symbol);
-		if (symtable_label == NULL)
+		label = asm_symbol_list_lookup(&data->symbols, (*labels)->symbol);
+		if (label == NULL)
 			asm_exit_error("Label not found from symbol table");
-		printf("save address %d : %#x to label '%s'\n", *lc, *lc, symtable_label->symbol);
-		symtable_label->node->num_value = (int32_t)*lc;
+		asm_print_output_info("save address to label", label->symbol, *lc);
+		label->node->num_value = (int32_t)(*lc);
 		asm_symbol_list_delete(labels, (*labels)->symbol);
 	}
 }
@@ -233,14 +181,14 @@ t_symbol_list **labels, t_astnode *node)
 	printf("\nGenerate instruction: %s\n", node->value);
 	if (*labels != NULL)
 		asm_save_label_address(data, lc, labels);
-	get_instruction(&instruction, node->value);
-	printf("write opcode %d : %#x\n", instruction.opcode, instruction.opcode);
-	write_bytes(data->program, lc, &instruction.opcode, 1);
+	asm_get_instruction(&instruction, node->value);
+	asm_print_output_info("write opcode", NULL, instruction.opcode);
+	asm_write_bytes(data->program, lc, &instruction.opcode, 1);
 	if (instruction.has_paramument_coding_byte)
-		write_argument_coding_byte(data->program, lc, node->right_child);
+		asm_write_argument_coding_byte(data->program, lc, node->right_child);
 	else
 		printf("no argument coding byte\n");
-	write_arguments(data->program, lc, data->symbols, node->right_child);
+	asm_write_arguments(data->program, lc, data->symbols, node->right_child);
 	return (1);
 }
 
@@ -260,23 +208,23 @@ t_symbol_list **labels, t_astnode *node)
 int	asm_generate_bytecode_program(t_output_data *data, t_astnode *tree)
 {
 	uint32_t		location_counter;
-	t_symbol_list	*labels;
+	t_symbol_list	*defined_labels;
 	t_astnode		*statement_list;
 
 	memset(data->program, 0, sizeof(data->program));
 	location_counter = 0;
-	labels = NULL;
+	defined_labels = NULL;
 	statement_list = tree->right_child;
 	while (statement_list != NULL)
 	{
 		if (!asm_generate_statement(data, &location_counter,
-			&labels, statement_list->left_child))
+				&defined_labels, statement_list->left_child))
 			return (0);
 		statement_list = statement_list->right_child;
 	}
 	data->header.prog_size = location_counter;
-	printf("\n");
-	asm_print_symbol_list(&data->symbols, "\nSymbol table after second pass through AST:");
+	asm_print_symbol_list(&data->symbols,
+		"\n\nSymbol table after second pass through AST:");
 	// resolve forward references to labels
 	return (1);
 }

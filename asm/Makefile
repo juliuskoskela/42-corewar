@@ -12,7 +12,7 @@ OBJ_DIR		=	obj/
 DEP_DIR		=	.deps/
 
 CC			=	gcc
-CFLAGS 		=	-g -Wall -Wextra -Werror -fPIC #-fsanitize=address
+CFLAGS 		=	-g -Wall -Wextra -Werror -fPIC -fsanitize=address
 DFLAGS		=	-Wunreachable-code -Wconversion -Wpedantic -Wtype-limits
 CPPFLAGS	=	-I $(INC_DIR) -I ../inc
 DEPFLAGS	=	-MT $@ -MMD -MP -MF $(DEP_DIR)$*.d
@@ -37,8 +37,10 @@ SRC_BASE	=	asm_main.c \
 				asm_symbol_list_define.c \
 				asm_symbol_list_delete.c \
 				asm_print_symbol_list.c \
-				asm_write_dot_to_file.c \
+				asm_write_ast_dot_to_file.c \
 				asm_print_ast_dot.c \
+				asm_get_instruction.c \
+				asm_get_numeric_value.c \
 				asm_exit_error.c \
 				asm_astnode_new.c 
 

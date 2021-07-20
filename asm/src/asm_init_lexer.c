@@ -7,7 +7,7 @@ t_lexer	asm_init_lexer(const char *input)
 	lexer.input = input;
 	lexer.current_pos = 0;
 	lexer.current_char = input[0];
-	lexer.file_row = 1;
-	lexer.file_col = 1;
+	lexer.line_no = 1;
+	lexer.col = 1;
 	return (lexer);
 }

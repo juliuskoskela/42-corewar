@@ -6,7 +6,7 @@ static void	asm_print_usage(void)
 {
 	static const char	*usage = "Usage: ./asm [--dot] path/to/player.s\n\
 	\n\
-	--dot : write the intermediate abstract syntax tree to path/to/player.dot\n\
+	--dot: write the intermediate abstract syntax tree to path/to/player.dot\n\
 		from which an image can be generated with\n\
 		`dot -Tpng -o player_dot.png path/to/player.dot`";
 
@@ -37,11 +37,9 @@ int	main(int argc, char **argv)
 	if (strcmp(argv[1], "--dot") == 0)
 		asm_write_ast_dot_to_file(argv[argc - 1], tree);
 
-	// semantic analysis
 	if (!asm_validate_ast(&data, tree))
 		asm_exit_error(NULL);
 
-	// code generation
 	asm_generate_output(argv[argc - 1], &data, tree);
 
 	free(input);
