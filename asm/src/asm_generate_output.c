@@ -244,9 +244,6 @@ t_symbol_list **labels, t_astnode *node)
 int	asm_generate_statement(t_output_data *data, uint32_t *lc,
 t_symbol_list **labels, t_astnode *node)
 {
-	t_astnode	*label;
-
-	label = NULL;
 	if (node->left_child != NULL)
 		asm_add_label_to_list(labels, node->left_child);
 	if (node->right_child != NULL && node->right_child->type == INSTRUCTION)

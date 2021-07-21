@@ -20,7 +20,7 @@ static int	asm_get_decimal(int32_t *dst, char *str)
 	}
 	if (*str != '\0')
 		return (0);
-	*dst = value;
+	*dst = sign * value;
 	return (1);
 }
 
