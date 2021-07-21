@@ -22,7 +22,7 @@ typedef enum e_astnode_type
 	INTEGER,
 }	t_astnode_type;
 
-static const char	*g_astnode_types[17] =
+static const char * const	g_astnode_types[17] =
 {
 	"NONE",
 	"REGISTER",

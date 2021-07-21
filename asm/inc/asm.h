@@ -66,7 +66,7 @@ typedef enum e_token_type
 	ERROR_TOKEN
 }	t_token_type;
 
-static const char			*g_token_types[12] =
+static const char * const		g_token_types[12] =
 {
 	"NO_TOKEN",
 	"ID_TOKEN",
