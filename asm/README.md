@@ -22,13 +22,15 @@ Our assembler is currently made up of the following components:
      - given instruction exists and
        - number of operands/parameters is correct
        - operands/parameters are of correct type
-       - register exists (not yet)
+       - register exists (now done during code generation)
        - literal values have correct size (not yet)
    - saves all label definitions to a symbol table
 4) Code generation (asm_generate_output)
    - traverses the abstract syntax tree and generates the bytecode representation
      - see bytecode format for instruction statements below
-     - name resolution for labels (not yet)
+     - checks that label arguments are valid (defined somewhere)
+     - converts all string values to numeric ones
+     - resolves label arguments to the relative offsets
    - writes header contents and program to output file
 
 - at which point should string values of parameters be converted to the integer values?
@@ -37,7 +39,7 @@ If any errors are detected during the lexing, parsing or semantic analysis, noth
 
 # Grammar and lexing rules
 
-Therefore, a grammar and some lexing rules for defining tokens are needed. An example following [the EBNF notation](https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form), inspired by [this post about parsing RISC-V assembly](https://web.eecs.utk.edu/~azh/blog/parsingriscv.html), would be
+Therefore, a grammar and some lexing rules for defining tokens are needed. An example following [the EBNF notation](https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form), inspired by [this post about parsing RISC-V assembly](https://web.eecs.utk.edu/~azh/blog/parsingriscv.html) that our current parser is based on, would be
 
 ```
 # Grammar
@@ -66,6 +68,8 @@ number			= -?[0-9]+ | 0x[0-9a-f]+
 
 # In addition, any whitespace is skipped and considered token delimiters
 ```
+
+``[ ]`` denote an optional part, ``{ }`` denote potentially multiple occurrences and ``|`` stands for "or". Our parser implements this grammar as a [recursive descent parser](https://en.wikipedia.org/wiki/Recursive_descent_parser).
 
 # Code generation: bytecode format
 
