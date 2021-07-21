@@ -11,7 +11,7 @@ INC_DIR		=	inc/
 OBJ_DIR		=	obj/
 DEP_DIR		=	.deps/
 
-CC			=	gcc-10
+CC			=	gcc
 CFLAGS 		=	-g -Wall -Wextra -Werror -fPIC -fsanitize=address
 DFLAGS		=	-Wunreachable-code -Wconversion -Wpedantic -Wtype-limits
 CPPFLAGS	=	-I $(INC_DIR) -I ../inc
