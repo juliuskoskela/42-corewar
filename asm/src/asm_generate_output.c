@@ -77,7 +77,6 @@ void	asm_resolve_label_forward_refs(int8_t *program, t_symbol_list *label)
 	ref_node = label->forward_refs;
 	while (ref_node != NULL)
 	{
-		printf("write to %d\n", ref_node->ref_location);
 		value = label->node->num_value - ref_node->op_location;
 		asm_print_output_info("resolve forward reference for label",
 			label->symbol, value);
@@ -117,11 +116,11 @@ uint32_t current_op_lc, t_symbol_list *symbols, t_astnode *parameter)
 		if (label->node->num_value != 0)
 		{
 			parameter->num_value = label->node->num_value - current_op_lc;
-			printf("offset to label %d - %d = %d\n", label->node->num_value, current_op_lc, parameter->num_value);
 		}
 		else
 		{
-			asm_print_output_info("add forward reference for label", label->symbol, parameter->num_value);
+			asm_print_output_info("add forward reference for label",
+				label->symbol, parameter->num_value);
 			asm_add_forward_reference_to_label(label, *lc, current_op_lc);
 		}
 	}
@@ -145,10 +144,11 @@ uint32_t current_op_lc, t_symbol_list *symbols, t_astnode *parameter)
 		if (label->node->num_value != 0)
 		{
 			parameter->num_value = label->node->num_value - current_op_lc;
-			printf("offset to label %d - %d = %d\n", label->node->num_value, current_op_lc, parameter->num_value);
 		}
 		else
 		{
+			asm_print_output_info("add forward reference for label",
+				label->symbol, parameter->num_value);
 			asm_add_forward_reference_to_label(label, *lc, current_op_lc);
 		}
 	}
