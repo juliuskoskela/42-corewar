@@ -10,6 +10,7 @@ t_symbol_list	*asm_symbol_list_new(t_astnode *node, char *symbol)
 	if (list == NULL)
 		asm_exit_error("Malloc error in allocating symbol list");
 	list->node = node;
+	list->forward_refs = NULL;
 	list->symbol = symbol;
 	list->next = NULL;
 	return (list);

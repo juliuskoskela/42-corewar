@@ -15,6 +15,21 @@ const char *param_type, int32_t value)
 		printf("%s %d : %#x\n", str, value, value);
 }
 
+void	asm_write_bytes(int8_t *program, uint32_t *lc, void *bytes, int n)
+{
+	int	i;
+
+	i = n - 1;
+	while (i >= 0)
+	{
+		if (*lc == CHAMP_MAX_SIZE)
+			asm_exit_error("Program too large");
+		program[*lc] = ((int8_t *)bytes)[i];
+		*lc = *lc + 1;
+		i--;
+	}
+}
+
 int	asm_add_label_to_list(t_symbol_list **labels, t_astnode *label)
 {
 	t_symbol_list	*node;
@@ -31,18 +46,43 @@ int	asm_add_label_to_list(t_symbol_list **labels, t_astnode *label)
 	return (1);
 }
 
-void	asm_write_bytes(int8_t *program, uint32_t *lc, void *bytes, int n)
+void	asm_add_forward_reference_to_label(t_symbol_list *label,
+uint32_t ref_location, uint32_t op_location)
 {
-	int	i;
+	t_refnode	*new_node;
+	t_refnode	*node;
 
-	i = n - 1;
-	while (i >= 0)
+	new_node = (t_refnode *)malloc(sizeof(t_refnode));
+	if (new_node == NULL)
+		asm_exit_error("Malloc error in allocating ref node");
+	new_node->op_location = op_location;
+	new_node->ref_location = ref_location;
+	new_node->next = NULL;
+	if (label->forward_refs == NULL)
+		label->forward_refs = new_node;
+	else
 	{
-		if (*lc == CHAMP_MAX_SIZE)
-			asm_exit_error("Program too large");
-		program[*lc] = ((int8_t *)bytes)[i];
-		*lc = *lc + 1;
-		i--;
+		node = label->forward_refs;
+		while (node->next != NULL)
+			node = node->next;
+		node->next = new_node;
+	}
+}
+
+void	asm_resolve_label_forward_refs(int8_t *program, t_symbol_list *label)
+{
+	t_refnode	*ref_node;
+	int32_t		value;
+
+	ref_node = label->forward_refs;
+	while (ref_node != NULL)
+	{
+		printf("write to %d\n", ref_node->ref_location);
+		value = label->node->num_value - ref_node->op_location;
+		asm_print_output_info("resolve forward reference for label",
+			label->symbol, value);
+		asm_write_bytes(program, &ref_node->ref_location, &value, 2);
+		ref_node = ref_node->next;
 	}
 }
 
@@ -63,7 +103,7 @@ void	asm_write_register(int8_t *program, uint32_t *lc, t_astnode *parameter)
 }
 
 void	asm_write_direct(int8_t *program, uint32_t *lc,
-t_symbol_list symbols, t_astnode *parameter)
+uint32_t current_op_lc, t_symbol_list *symbols, t_astnode *parameter)
 {
 	t_symbol_list	*label;
 
@@ -71,15 +111,18 @@ t_symbol_list symbols, t_astnode *parameter)
 		asm_get_numeric_value(&parameter->num_value, parameter->value);
 	else
 	{
-		label = asm_symbol_list_lookup(&symbols, parameter->value);
+		label = asm_symbol_list_lookup(symbols, parameter->value);
 		if (label == NULL)
 			asm_exit_error("Undefined label");
 		if (label->node->num_value != 0)
-			parameter->num_value = label->node->num_value - *lc;
+		{
+			parameter->num_value = label->node->num_value - current_op_lc;
+			printf("offset to label %d - %d = %d\n", label->node->num_value, current_op_lc, parameter->num_value);
+		}
 		else
 		{
-			//forward reference!
-			parameter->num_value = (-1) * (*lc);
+			asm_print_output_info("add forward reference for label", label->symbol, parameter->num_value);
+			asm_add_forward_reference_to_label(label, *lc, current_op_lc);
 		}
 	}
 	asm_print_output_info("write direct", g_astnode_types[parameter->type],
@@ -88,7 +131,7 @@ t_symbol_list symbols, t_astnode *parameter)
 }
 
 void	asm_write_indirect(int8_t *program, uint32_t *lc,
-t_symbol_list symbols, t_astnode *parameter)
+uint32_t current_op_lc, t_symbol_list *symbols, t_astnode *parameter)
 {
 	t_symbol_list	*label;
 
@@ -96,15 +139,17 @@ t_symbol_list symbols, t_astnode *parameter)
 		asm_get_numeric_value(&parameter->num_value, parameter->value);
 	else
 	{
-		label = asm_symbol_list_lookup(&symbols, parameter->value);
+		label = asm_symbol_list_lookup(symbols, parameter->value);
 		if (label == NULL)
 			asm_exit_error("Undefined label");
 		if (label->node->num_value != 0)
-			parameter->num_value = label->node->num_value - *lc;
+		{
+			parameter->num_value = label->node->num_value - current_op_lc;
+			printf("offset to label %d - %d = %d\n", label->node->num_value, current_op_lc, parameter->num_value);
+		}
 		else
 		{
-			//forward reference!
-			parameter->num_value = (-1) * (*lc);
+			asm_add_forward_reference_to_label(label, *lc, current_op_lc);
 		}
 	}
 	asm_print_output_info("write indirect", g_astnode_types[parameter->type],
@@ -113,7 +158,7 @@ t_symbol_list symbols, t_astnode *parameter)
 }
 
 void	asm_write_arguments(int8_t *program, uint32_t *lc,
-t_symbol_list symbols, t_astnode *parameter_list)
+uint32_t current_op_lc, t_symbol_list *symbols, t_astnode *parameter_list)
 {
 	t_astnode	*parameter;
 
@@ -123,9 +168,9 @@ t_symbol_list symbols, t_astnode *parameter_list)
 		if (parameter->type == REGISTER)
 			asm_write_register(program, lc, parameter);
 		else if (parameter->type == INDIRECT)
-			asm_write_indirect(program, lc, symbols, parameter->right_child);
+			asm_write_indirect(program, lc, current_op_lc, symbols, parameter->right_child);
 		else
-			asm_write_direct(program, lc, symbols, parameter->right_child);
+			asm_write_direct(program, lc, current_op_lc, symbols, parameter->right_child);
 		parameter_list = parameter_list->right_child;
 	}
 }
@@ -157,7 +202,7 @@ t_astnode *parameter_list)
 	asm_write_bytes(program, lc, &acb, 1);
 }
 
-void	asm_save_label_address(t_output_data *data, uint32_t *lc,
+void	asm_save_label_address(t_output_data *data, uint32_t lc,
 t_symbol_list **labels)
 {
 	t_symbol_list	*label;
@@ -167,8 +212,9 @@ t_symbol_list **labels)
 		label = asm_symbol_list_lookup(&data->symbols, (*labels)->symbol);
 		if (label == NULL)
 			asm_exit_error("Label not found from symbol table");
-		asm_print_output_info("save address to label", label->symbol, *lc);
-		label->node->num_value = (int32_t)(*lc);
+		asm_print_output_info("save address for label", label->symbol, lc);
+		label->node->num_value = (int32_t)lc;
+		asm_resolve_label_forward_refs(data->program, label);
 		asm_symbol_list_delete(labels, (*labels)->symbol);
 	}
 }
@@ -176,11 +222,13 @@ t_symbol_list **labels)
 int	asm_generate_instruction(t_output_data *data, uint32_t *lc,
 t_symbol_list **labels, t_astnode *node)
 {
-	t_op	instruction;
+	t_op		instruction;
+	uint32_t	current_op_lc;
 
-	printf("\nGenerate instruction: %s\n", node->value);
+	asm_print_output_info("\nGenerate instruction", node->value, *lc);
+	current_op_lc = *lc;
 	if (*labels != NULL)
-		asm_save_label_address(data, lc, labels);
+		asm_save_label_address(data, current_op_lc, labels);
 	asm_get_instruction(&instruction, node->value);
 	asm_print_output_info("write opcode", NULL, instruction.opcode);
 	asm_write_bytes(data->program, lc, &instruction.opcode, 1);
@@ -188,7 +236,8 @@ t_symbol_list **labels, t_astnode *node)
 		asm_write_argument_coding_byte(data->program, lc, node->right_child);
 	else
 		printf("no argument coding byte\n");
-	asm_write_arguments(data->program, lc, data->symbols, node->right_child);
+	asm_write_arguments(data->program, lc, current_op_lc,
+		&data->symbols, node->right_child);
 	return (1);
 }
 
@@ -225,7 +274,6 @@ int	asm_generate_bytecode_program(t_output_data *data, t_astnode *tree)
 	data->header.prog_size = location_counter;
 	asm_print_symbol_list(&data->symbols,
 		"\n\nSymbol table after second pass through AST:");
-	// resolve forward references to labels
 	return (1);
 }
 
