@@ -22,4 +22,5 @@ jobs:
         make clean
     - name: asm_test_zork
       run: |
+        cd asm
         ./asm zork.s
