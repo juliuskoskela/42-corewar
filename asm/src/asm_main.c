@@ -1,6 +1,31 @@
 #include "asm.h"
+#include "ast.h"
 #include <stdlib.h>
 #include <stdio.h>
+
+static void	asm_ast_free(t_astnode *tree)
+{
+	if (tree->left_child != NULL)
+		asm_ast_free(tree->left_child);
+	if (tree->right_child != NULL)
+		asm_ast_free(tree->right_child);
+	free(tree->token.value);
+	free(tree);
+}
+
+static void	asm_symbol_list_free(t_symbol_list list)
+{
+	t_symbol_list	*node;
+	t_symbol_list	*next;
+
+	node = list.next;
+	while (node != NULL)
+	{
+		next = node->next;
+		free(node);
+		node = next;
+	}
+}
 
 static void	asm_print_usage(void)
 {
@@ -42,6 +67,8 @@ int	main(int argc, char **argv)
 
 	asm_generate_output(argv[argc - 1], &data, tree);
 
+	asm_ast_free(tree);
+	asm_symbol_list_free(data.symbols);
 	free(input);
 	//system("leaks asm");
 	return (0);

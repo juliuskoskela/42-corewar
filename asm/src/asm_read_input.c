@@ -54,7 +54,7 @@ char	*asm_read_input(const char *filepath)
 	char	*result;
 	char	buf[BUF_SIZE + 1];
 	int		fd;
-	int		ret;
+	ssize_t	ret;
 
 	fd = open(filepath, O_RDONLY);
 	if (fd < 0)

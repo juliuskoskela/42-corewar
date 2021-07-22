@@ -77,7 +77,7 @@ void	asm_resolve_label_forward_refs(int8_t *program, t_symbol_list *label)
 	ref_node = label->forward_refs;
 	while (ref_node != NULL)
 	{
-		value = label->node->num_value - ref_node->op_location;
+		value = label->node->num_value - (int32_t)ref_node->op_location;
 		asm_print_output_info("resolve forward reference for label",
 			label->symbol, value);
 		asm_write_bytes(program, &ref_node->ref_location, &value, 2);
@@ -115,7 +115,7 @@ uint32_t current_op_lc, t_symbol_list *symbols, t_astnode *parameter)
 			asm_exit_error("Undefined label");
 		if (label->node->num_value != 0)
 		{
-			parameter->num_value = label->node->num_value - current_op_lc;
+			parameter->num_value = label->node->num_value - (int32_t)current_op_lc;
 		}
 		else
 		{
@@ -143,7 +143,7 @@ uint32_t current_op_lc, t_symbol_list *symbols, t_astnode *parameter)
 			asm_exit_error("Undefined label");
 		if (label->node->num_value != 0)
 		{
-			parameter->num_value = label->node->num_value - current_op_lc;
+			parameter->num_value = label->node->num_value - (int32_t)current_op_lc;
 		}
 		else
 		{
@@ -190,11 +190,11 @@ t_astnode *parameter_list)
 		parameter = parameter_list->left_child;
 		printf("%s ", g_astnode_types[parameter->type]);
 		if (parameter->type == REGISTER)
-			acb = acb | (REG_CODE << i);
+			acb = (uint8_t)(acb | (REG_CODE << i));
 		else if (parameter->type == DIRECT)
-			acb = acb | (DIR_CODE << i);
+			acb = (uint8_t)(acb | (DIR_CODE << i));
 		else if (parameter->type == INDIRECT)
-			acb = acb | (IND_CODE << i);
+			acb = (uint8_t)(acb | (IND_CODE << i));
 		i -= 2;
 		parameter_list = parameter_list->right_child;
 	}
@@ -212,7 +212,7 @@ t_symbol_list **labels)
 		label = asm_symbol_list_lookup(&data->symbols, (*labels)->symbol);
 		if (label == NULL)
 			asm_exit_error("Label not found from symbol table");
-		asm_print_output_info("save address for label", label->symbol, lc);
+		asm_print_output_info("save address for label", label->symbol, (int32_t)lc);
 		label->node->num_value = (int32_t)lc;
 		asm_resolve_label_forward_refs(data->program, label);
 		asm_symbol_list_delete(labels, (*labels)->symbol);
@@ -225,7 +225,7 @@ t_symbol_list **labels, t_astnode *node)
 	t_op		instruction;
 	uint32_t	current_op_lc;
 
-	asm_print_output_info("\nGenerate instruction", node->value, *lc);
+	asm_print_output_info("\nGenerate instruction", node->value, (int32_t)*lc);
 	current_op_lc = *lc;
 	if (*labels != NULL)
 		asm_save_label_address(data, current_op_lc, labels);

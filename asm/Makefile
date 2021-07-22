@@ -17,7 +17,8 @@ DFLAGS		=	-Wunreachable-code -Wconversion -Wpedantic -Wtype-limits
 CPPFLAGS	=	-I $(INC_DIR) -I ../inc
 DEPFLAGS	=	-MT $@ -MMD -MP -MF $(DEP_DIR)$*.d
 LDLIBS		=	#../lib/core/libcore.a
-COMPILE.c	=	$(CC) $(DEPFLAGS) $(CFLAGS) $(CPPFLAGS) -c
+LDFLAGS		=	#
+COMPILE.c	=	$(CC) $(DEPFLAGS) $(CFLAGS) $(DFLAGS) $(CPPFLAGS) -c
 
 SRC_BASE	=	asm_main.c \
 				asm_read_input.c \
@@ -50,10 +51,10 @@ OBJ			=	$(addprefix $(OBJ_DIR), $(SRC_BASE:.c=.o))
 all: $(NAME)
 
 $(NAME): $(OBJ)
-				@$(CC) $(CFLAGS) -o $@ $(OBJ) $(CPPFLAGS) $(LDLIBS)
+				@$(CC) $(CFLAGS) $(DFLAGS) -o $@ $(OBJ) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS)
 				@echo "\\n\033[32;1mASSEMBLER COMPILED\033[0m \\n"
 
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c $(DEP_DIR)%.d | $(OBJ_DIR) $(DEP_DIR)
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c $(DEP_DIR)%.d | $(DEP_DIR) $(OBJ_DIR)
 				@$(COMPILE.c) $< -o $@
 				@echo $@
 

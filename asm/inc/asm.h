@@ -111,7 +111,7 @@ typedef struct s_astnode	t_astnode;
 typedef struct s_refnode
 {
 	uint32_t					ref_location;
-	int32_t						op_location;
+	uint32_t					op_location;
 	struct s_refnode			*next;
 }	t_refnode;
 
