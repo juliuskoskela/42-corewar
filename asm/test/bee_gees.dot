@@ -1,0 +1,265 @@
+digraph astgraph {          node [shape=circle, fontsize=12, fontname="Courier",height=.1];          ranksep=.3;          edge [arrowsize=.5]
+node1 [label=<PROGRAM:>]
+node2 [label=<STATEMENT_LIST:>]
+node1 -> node2
+node3 [label=<STATEMENT:>]
+node2 -> node3
+node4 [label=<STATEMENT_LIST:>]
+node2 -> node4
+node5 [label=<DIRECTIVE:>]
+node3 -> node5
+node6 [label=<CMD:name>]
+node5 -> node6
+node7 [label=<CMD_STRING:"stayin' alive">]
+node5 -> node7
+node8 [label=<STATEMENT:>]
+node4 -> node8
+node9 [label=<STATEMENT_LIST:>]
+node4 -> node9
+node10 [label=<DIRECTIVE:>]
+node8 -> node10
+node11 [label=<CMD:comment>]
+node10 -> node11
+node12 [label=<CMD_STRING:"Ha, Ha, Ha, stayiiiiin' aliiiiiiiiiive">]
+node10 -> node12
+node13 [label=<STATEMENT:>]
+node9 -> node13
+node14 [label=<STATEMENT_LIST:>]
+node9 -> node14
+node15 [label=<INSTRUCTION:sti>]
+node13 -> node15
+node16 [label=<PARAMETER_LIST:>]
+node15 -> node16
+node17 [label=<REGISTER:r1>]
+node16 -> node17
+node18 [label=<PARAMETER_LIST:>]
+node16 -> node18
+node19 [label=<DIRECT:>]
+node18 -> node19
+node20 [label=<PARAMETER_LIST:>]
+node18 -> node20
+node21 [label=<LABEL:live>]
+node19 -> node21
+node22 [label=<DIRECT:>]
+node20 -> node22
+node23 [label=<INTEGER:1>]
+node22 -> node23
+node24 [label=<STATEMENT:>]
+node14 -> node24
+node25 [label=<STATEMENT_LIST:>]
+node14 -> node25
+node26 [label=<INSTRUCTION:sti>]
+node24 -> node26
+node27 [label=<PARAMETER_LIST:>]
+node26 -> node27
+node28 [label=<REGISTER:r1>]
+node27 -> node28
+node29 [label=<PARAMETER_LIST:>]
+node27 -> node29
+node30 [label=<DIRECT:>]
+node29 -> node30
+node31 [label=<PARAMETER_LIST:>]
+node29 -> node31
+node32 [label=<LABEL:live2>]
+node30 -> node32
+node33 [label=<DIRECT:>]
+node31 -> node33
+node34 [label=<INTEGER:1>]
+node33 -> node34
+node35 [label=<STATEMENT:>]
+node25 -> node35
+node36 [label=<STATEMENT_LIST:>]
+node25 -> node36
+node37 [label=<INSTRUCTION:ld>]
+node35 -> node37
+node38 [label=<PARAMETER_LIST:>]
+node37 -> node38
+node39 [label=<DIRECT:>]
+node38 -> node39
+node40 [label=<PARAMETER_LIST:>]
+node38 -> node40
+node41 [label=<INTEGER:1>]
+node39 -> node41
+node42 [label=<REGISTER:r3>]
+node40 -> node42
+node43 [label=<STATEMENT:>]
+node36 -> node43
+node44 [label=<STATEMENT_LIST:>]
+node36 -> node44
+node45 [label=<INSTRUCTION:ld>]
+node43 -> node45
+node46 [label=<PARAMETER_LIST:>]
+node45 -> node46
+node47 [label=<DIRECT:>]
+node46 -> node47
+node48 [label=<PARAMETER_LIST:>]
+node46 -> node48
+node49 [label=<INTEGER:33>]
+node47 -> node49
+node50 [label=<REGISTER:r6>]
+node48 -> node50
+node51 [label=<STATEMENT:>]
+node44 -> node51
+node52 [label=<STATEMENT_LIST:>]
+node44 -> node52
+node53 [label=<LABEL:forks>]
+node51 -> node53
+node54 [label=<STATEMENT:>]
+node52 -> node54
+node55 [label=<STATEMENT_LIST:>]
+node52 -> node55
+node56 [label=<INSTRUCTION:add>]
+node54 -> node56
+node57 [label=<PARAMETER_LIST:>]
+node56 -> node57
+node58 [label=<REGISTER:r2>]
+node57 -> node58
+node59 [label=<PARAMETER_LIST:>]
+node57 -> node59
+node60 [label=<REGISTER:r3>]
+node59 -> node60
+node61 [label=<PARAMETER_LIST:>]
+node59 -> node61
+node62 [label=<REGISTER:r2>]
+node61 -> node62
+node63 [label=<STATEMENT:>]
+node55 -> node63
+node64 [label=<STATEMENT_LIST:>]
+node55 -> node64
+node65 [label=<INSTRUCTION:xor>]
+node63 -> node65
+node66 [label=<PARAMETER_LIST:>]
+node65 -> node66
+node67 [label=<REGISTER:r2>]
+node66 -> node67
+node68 [label=<PARAMETER_LIST:>]
+node66 -> node68
+node69 [label=<DIRECT:>]
+node68 -> node69
+node70 [label=<PARAMETER_LIST:>]
+node68 -> node70
+node71 [label=<INTEGER:15>]
+node69 -> node71
+node72 [label=<REGISTER:r4>]
+node70 -> node72
+node73 [label=<STATEMENT:>]
+node64 -> node73
+node74 [label=<STATEMENT_LIST:>]
+node64 -> node74
+node75 [label=<LABEL:live2>]
+node73 -> node75
+node76 [label=<STATEMENT:>]
+node74 -> node76
+node77 [label=<STATEMENT_LIST:>]
+node74 -> node77
+node78 [label=<INSTRUCTION:live>]
+node76 -> node78
+node79 [label=<PARAMETER_LIST:>]
+node78 -> node79
+node80 [label=<DIRECT:>]
+node79 -> node80
+node81 [label=<INTEGER:4>]
+node80 -> node81
+node82 [label=<STATEMENT:>]
+node77 -> node82
+node83 [label=<STATEMENT_LIST:>]
+node77 -> node83
+node84 [label=<INSTRUCTION:zjmp>]
+node82 -> node84
+node85 [label=<PARAMETER_LIST:>]
+node84 -> node85
+node86 [label=<DIRECT:>]
+node85 -> node86
+node87 [label=<LABEL:endwhile>]
+node86 -> node87
+node88 [label=<STATEMENT:>]
+node83 -> node88
+node89 [label=<STATEMENT_LIST:>]
+node83 -> node89
+node90 [label=<INSTRUCTION:fork>]
+node88 -> node90
+node91 [label=<PARAMETER_LIST:>]
+node90 -> node91
+node92 [label=<DIRECT:>]
+node91 -> node92
+node93 [label=<LABEL:forks>]
+node92 -> node93
+node94 [label=<STATEMENT:>]
+node89 -> node94
+node95 [label=<STATEMENT_LIST:>]
+node89 -> node95
+node96 [label=<INSTRUCTION:ld>]
+node94 -> node96
+node97 [label=<PARAMETER_LIST:>]
+node96 -> node97
+node98 [label=<DIRECT:>]
+node97 -> node98
+node99 [label=<PARAMETER_LIST:>]
+node97 -> node99
+node100 [label=<INTEGER:0>]
+node98 -> node100
+node101 [label=<REGISTER:r4>]
+node99 -> node101
+node102 [label=<STATEMENT:>]
+node95 -> node102
+node103 [label=<STATEMENT_LIST:>]
+node95 -> node103
+node104 [label=<INSTRUCTION:zjmp>]
+node102 -> node104
+node105 [label=<PARAMETER_LIST:>]
+node104 -> node105
+node106 [label=<DIRECT:>]
+node105 -> node106
+node107 [label=<LABEL:forks>]
+node106 -> node107
+node108 [label=<STATEMENT:>]
+node103 -> node108
+node109 [label=<STATEMENT_LIST:>]
+node103 -> node109
+node110 [label=<LABEL:endwhile>]
+node108 -> node110
+node111 [label=<STATEMENT:>]
+node109 -> node111
+node112 [label=<STATEMENT_LIST:>]
+node109 -> node112
+node113 [label=<INSTRUCTION:ld>]
+node111 -> node113
+node114 [label=<PARAMETER_LIST:>]
+node113 -> node114
+node115 [label=<DIRECT:>]
+node114 -> node115
+node116 [label=<PARAMETER_LIST:>]
+node114 -> node116
+node117 [label=<INTEGER:0>]
+node115 -> node117
+node118 [label=<REGISTER:r4>]
+node116 -> node118
+node119 [label=<STATEMENT:>]
+node112 -> node119
+node120 [label=<STATEMENT_LIST:>]
+node112 -> node120
+node121 [label=<LABEL:live>]
+node119 -> node121
+node122 [label=<STATEMENT:>]
+node120 -> node122
+node123 [label=<STATEMENT_LIST:>]
+node120 -> node123
+node124 [label=<INSTRUCTION:live>]
+node122 -> node124
+node125 [label=<PARAMETER_LIST:>]
+node124 -> node125
+node126 [label=<DIRECT:>]
+node125 -> node126
+node127 [label=<INTEGER:4>]
+node126 -> node127
+node128 [label=<STATEMENT:>]
+node123 -> node128
+node129 [label=<INSTRUCTION:zjmp>]
+node128 -> node129
+node130 [label=<PARAMETER_LIST:>]
+node129 -> node130
+node131 [label=<DIRECT:>]
+node130 -> node131
+node132 [label=<LABEL:live>]
+node131 -> node132
+}
