@@ -72,6 +72,7 @@ uint32_t ref_location, uint32_t op_location)
 void	asm_resolve_label_forward_refs(int8_t *program, t_symbol_list *label)
 {
 	t_refnode	*ref_node;
+	t_refnode	*next;
 	int32_t		value;
 
 	ref_node = label->forward_refs;
@@ -81,7 +82,9 @@ void	asm_resolve_label_forward_refs(int8_t *program, t_symbol_list *label)
 		asm_print_output_info("resolve forward reference for label",
 			label->symbol, value);
 		asm_write_bytes(program, &ref_node->ref_location, &value, 2);
-		ref_node = ref_node->next;
+		next = ref_node->next;
+		free(ref_node);
+		ref_node = next;
 	}
 }
 
