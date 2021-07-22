@@ -13,5 +13,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: make_asm
-      run: make -C asm
+    - name: asm_make
+      run: |
+        cd asm
+        make
+        make fclean
+        make
+        make clean
+    - name: asm_test_zork
+      run: |
+        ./asm zork.s
