@@ -1,0 +1,6 @@
+version: "3.9" #what does this mean?
+services: 
+    ubuntu-container:
+        build: .
+#        volumes:
+#            - ./:/code

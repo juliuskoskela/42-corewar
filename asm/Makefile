@@ -14,7 +14,7 @@ DEP_DIR		=	.deps/
 CC			=	gcc
 CFLAGS 		=	-g -Wall -Wextra -Werror -fPIC -fsanitize=address
 DFLAGS		=	-Wunreachable-code -Wpedantic -Wtype-limits #-Wconversion
-CPPFLAGS	=	-I $(INC_DIR) -I ../inc
+CPPFLAGS	=	-I $(INC_DIR) -I ../inc/
 DEPFLAGS	=	-MT $@ -MMD -MP -MF $(DEP_DIR)$*.d
 LDLIBS		=	#../lib/core/libcore.a
 LDFLAGS		=	#
