@@ -42,22 +42,28 @@ void	vm_create_player(t_arena *arena, int *player_number, char *name)
 }
 
 
-// Is prog_name always the same as the .cor file name?
+/*
+**	Checking that the arguments given to the vm are valid. Saving the room
+**	numbers to all_players[].number defined by the -n flag. -n and -dump
+** flags must be followed by a numeric argument.
+*/
 
 void	vm_read_input(t_arena *arena, int argc, char **argv)
 {
 	int i;
 	int	set_number;
 
-	i = 0;
-	while(i < argc)
+	i = -1;
+	while(++i < argc)
 	{
+			if (argv[i][0] == '-' && i + 1 == argc)
+				vm_error("No argument after -flag\n");
 		if (!s_cmp(argv[i], "-n"))
 		{
 			set_number = s_toi(argv[++i]);
 			if (set_number <= 0 || set_number > MAX_PLAYERS)
 				vm_error("Invalid value after -n flag\n");
-			if (arena->all_players[set_number - 1].header.prog_name[0])
+			if (arena->all_players[set_number - 1].number)
 				vm_error("All champions must be given unique numbers\n");
 			s_cpy(arena->all_players[set_number - 1].header.prog_name, argv[++i]);
 			arena->all_players[set_number - 1].number = set_number;
@@ -66,9 +72,8 @@ void	vm_read_input(t_arena *arena, int argc, char **argv)
 		{
 			arena->dump_nbr_cycles = s_toi(argv[++i]);
 			if (!arena->dump_nbr_cycles)
-				vm_error("Incorrect nbr_cycles input\n");
+				vm_error("Invalid value after -dump\n");
 		}
-		i++;
 	}
 }
 
