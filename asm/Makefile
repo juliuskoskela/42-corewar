@@ -31,6 +31,7 @@ SRC_BASE	=	asm_main.c \
 				asm_init_parser.c \
 				asm_parse.c \
 				asm_validate.c \
+				asm_init_output_data.c \
 				asm_generate_output.c \
 				asm_write_output_to_file.c \
 				asm_symbol_list_new.c \
