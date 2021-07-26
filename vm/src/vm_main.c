@@ -1,104 +1,106 @@
 #include "../inc/vm.h"
 
-t_bool	vm_init_player(
-		t_arena *arena,
-		t_player *player,
-		t_instructions *instr,
-		t_size id)
+// Segfault when -n or -dump is the last argument.
+
+// first we need to read the arguments. A function that counts the players and saves
+// the data that other arguments may contain. The identification numbers can be reassigned with the flag -n.
+// read_input
+// 		if (-n save_player(next))
+//		else (save_player[i++])
+// what is the smallest data type a processor can actually save in a register and read?
+
+/*
+** Reading the arguments passed to the VM. -n flag is followed by a player number that is
+** given to the player named in the following argument. If -n is not specified,
+*/
+
+void	vm_error(const char *message)
 {
-	player = malloc(sizeof(t_player));
-	if (!player)
-		return (FALSE);
-	mzero(player, sizeof(t_player));
-	player->id = id;
-	player->pc = &arena->mem[arena->offset];
-	player->zf = 0;
-	player->r1 = player->id;
-	// Copy player instructions to shared memory.
-	mcpy(player->pc, instr->bytes, instr->size * sizeof(t_byte));
-	return (TRUE);
+	print("%s", message);
+	exit(0);
 }
 
-t_bool	vm_get_instructions(
-		t_instructions *instr,
-		char *filename)
+void	vm_parse_bytecode(t_arena *arena, int *player_number, char *name)
 {
-	// Read instructions from file.
-	t_parray	file;
-
-	file = parr_new(1);
-	if (!(parr_read_file(&file, filename)))
-	{
-		print("Error reading file.\n");
-		parr_free(&file);
-		return (FALSE);
-	}
-
-	// Parse instructions from file to instr->mem.
-	// File is an array of string lines.
-	instr = NULL;
-	instr->size = 0;
-	// Free page.
-	parr_free(&file);
-	return (TRUE);
+	if (arena && player_number && name)
+		return ;
 }
 
-void	vm_free_instr(t_instructions *instr)
+void	vm_create_player(t_arena *arena, int *player_number, char *name)
 {
-	free(instr->bytes);
-	instr->bytes = 0;
+	t_player	player;
+
+	if (arena->all_players[*player_number].number)
+		*player_number += 1;
+	if (*player_number > MAX_PLAYERS)
+		vm_error("player_number is not within MAX_PLAYERS\n");
+	mzero(&player, sizeof(t_player));
+	player.number = *player_number;
+	arena->all_players[*player_number - 1] = player;
+	vm_parse_bytecode(arena, player_number, name);
+	*player_number += 1;
 }
 
-t_bool	vm_init_arena(t_arena *arena, t_size argc, char **argv)
-{
-	t_instructions	instr;
-	t_uint32		i;
 
-	mzero(arena->mem, sizeof(t_byte) * MEM_SIZE);
-	arena->player_count = s_toi(argv[1]);
-	if (argc - 2 != arena->player_count)
-	{
-		print("Player count doesn't match with input files!\n");
-		exit(-1);
-	}
-	arena->offset = MEM_SIZE / arena->player_count;
-	arena->all_players = malloc(sizeof(t_player *) * arena->player_count);
-	i = 2;
-	while (i < arena->player_count)
-	{
-		if (!(vm_get_instructions(&instr, argv[i])))
-			return (FALSE);
-		if (!(vm_init_player(arena, &arena->all_players[i], &instr, i)))
-			return (FALSE);
-		vm_free_instr(&instr);
-		i++;
-	}
-	return (TRUE);
-}
+// Is prog_name always the same as the .cor file name?
 
-void	vm_free_arena(t_arena *arena)
+void	vm_read_input(t_arena *arena, int argc, char **argv)
 {
-	t_size	i;
+	int i;
+	int	set_number;
 
 	i = 0;
-	while (i < arena->player_count)
+	while(i < argc)
 	{
-		free(&arena->all_players[i]);
+		if (!s_cmp(argv[i], "-n"))
+		{
+			set_number = s_toi(argv[++i]);
+			if (set_number <= 0 || set_number > MAX_PLAYERS)
+				vm_error("Invalid value after -n flag\n");
+			if (arena->all_players[set_number - 1].header.prog_name[0])
+				vm_error("All champions must be given unique numbers\n");
+			s_cpy(arena->all_players[set_number - 1].header.prog_name, argv[++i]);
+			arena->all_players[set_number - 1].number = set_number;
+		}
+		else if (!s_cmp(argv[i], "-dump"))
+		{
+			arena->dump_nbr_cycles = s_toi(argv[++i]);
+			if (!arena->dump_nbr_cycles)
+				vm_error("Incorrect nbr_cycles input\n");
+		}
 		i++;
 	}
-	free(arena->all_players);
+}
+
+void	vm_init(t_arena *arena, int argc, char **argv)
+{
+	int	i;
+	int	player_number;
+
+	i = 0;
+	player_number = 1;
+	vm_read_input(arena, argc, argv);
+	while (i < argc)
+	{
+		if (!s_cmp(argv[i], "-n"))
+			i += 3;
+		else if (!s_cmp(argv[i], "-dump"))
+			i += 2;
+		else
+			vm_create_player(arena, &player_number, argv[i++]);
+	}
 }
 
 int main(int argc, char **argv)
 {
-	t_arena			arena;
+	t_arena	arena;
 
 	if (argc < 2)
 	{
 		print("usage: vm [player_count][.cor]\n");
 		return (0);
 	}
-	vm_init_arena(&arena, argc, argv);
-	vm_free_arena(&arena);
+	mzero(&arena, sizeof(t_arena));
+	vm_init(&arena, argc, argv);
 	return (0);
 }

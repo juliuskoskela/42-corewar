@@ -31,7 +31,7 @@ $(NAME): $(OBJ)
 				@$(CC) $(CFLAGS) -o $@ $(OBJ) $(CPPFLAGS) $(LDLIBS)
 				@echo "\\n\033[32;1mCOREWAR VIRTUAL MACHINE COMPILED\033[0m \\n"
 
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c $(DEP_DIR)%.d | $(OBJ_DIR) $(DEP_DIR)
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c $(DEP_DIR)%.d | $(OBJ_DIR) $(DEP_DIR) $(LDLIBS)
 				@$(COMPILE.c) $< -o $@
 				@echo $@
 
@@ -43,6 +43,9 @@ $(DEP_DIR):
 
 DEPFILES = $(addprefix $(DEP_DIR), $(SRC_BASE:.c=.d))
 $(DEPFILES):
+
+$(LDLIBS):
+	make -C ../lib/core/
 
 clean:
 				@rm -rf $(OBJ_DIR) $(DEP_DIR)
