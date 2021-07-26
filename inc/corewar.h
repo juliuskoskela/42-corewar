@@ -57,6 +57,7 @@
 
 typedef struct s_player
 {
+	t_header	header;
 	// 32 bit identfier.
 	t_uint32	id;
 
@@ -103,7 +104,6 @@ typedef struct s_header
 
 typedef struct s_arena
 {
-	t_header	header;
 	t_player	*all_players;
 	t_size		player_count;
 	t_byte		mem[MEM_SIZE];
