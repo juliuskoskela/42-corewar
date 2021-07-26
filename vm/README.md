@@ -15,3 +15,5 @@ The following COMMENT_LENGTH bytes contain the comment of our program.
 The comment is followed by four NULL bytes.
 
 The following bytes are for the code to be executed. This is not padded with zeros.
+
+Playeriin prog_size, prog name, comment, header
