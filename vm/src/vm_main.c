@@ -1,14 +1,5 @@
 #include "../inc/vm.h"
 
-// Segfault when -n or -dump is the last argument.
-
-// first we need to read the arguments. A function that counts the players and saves
-// the data that other arguments may contain. The identification numbers can be reassigned with the flag -n.
-// read_input
-// 		if (-n save_player(next))
-//		else (save_player[i++])
-// what is the smallest data type a processor can actually save in a register and read?
-
 /*
 ** Reading the arguments passed to the VM. -n flag is followed by a player number that is
 ** given to the player named in the following argument. If -n is not specified,
