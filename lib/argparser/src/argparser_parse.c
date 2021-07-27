@@ -10,7 +10,11 @@ void	argparser_help(struct argparser_state *state)
 
 char	*argparser_get_arg(struct argparser_state *state)
 {
-	
+	char	*next_argument;
+
+	if (state->next + 1 == argc)
+		return (NULL);
+	next_argument = state->argv[state->next + 1];
 }
 
 struct argparser_option	*argparser_get_option(char *argument, const struct argparser_option *options, int long_option)
