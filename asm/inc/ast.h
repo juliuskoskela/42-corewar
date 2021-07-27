@@ -22,7 +22,7 @@ typedef enum e_astnode_type
 	INTEGER,
 }	t_astnode_type;
 
-static const char * const	g_astnode_types[17] =
+static const char *const	g_astnode_types[17] =
 {
 	"NONE",
 	"REGISTER",
@@ -52,6 +52,7 @@ typedef struct s_astnode
 	struct s_astnode	*right_child;
 }	t_astnode;
 
-t_astnode	*astnode_new(t_astnode_type type, char *value, t_token token);
+t_astnode	*asm_astnode_new(t_astnode_type type, char *value, t_token token);
+void		asm_astnode_free(t_astnode *tree);
 
 #endif

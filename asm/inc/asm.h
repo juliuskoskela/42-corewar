@@ -45,7 +45,7 @@ typedef enum e_token_type
 	ERROR_TOKEN
 }	t_token_type;
 
-static const char * const		g_token_types[12] =
+static const char *const	g_token_types[12] =
 {
 	"NO_TOKEN",
 	"ID_TOKEN",
@@ -85,14 +85,14 @@ typedef struct s_parser
 	int						error_occurred;
 }	t_parser;
 
-typedef struct s_astnode	t_astnode;
-
 typedef struct s_refnode
 {
-	uint32_t					ref_location;
-	uint32_t					op_location;
-	struct s_refnode			*next;
+	uint32_t				ref_location;
+	uint32_t				op_location;
+	struct s_refnode		*next;
 }	t_refnode;
+
+typedef struct s_astnode	t_astnode;
 
 typedef struct s_symbol_list
 {
@@ -112,28 +112,30 @@ typedef struct s_output_data
 
 char				*asm_read_input(const char *filepath);
 
-t_lexer				asm_init_lexer(const char *input);
+void				asm_init_lexer(t_lexer *lexer, const char *input);
 void				asm_lexer_advance(t_lexer *lexer);
 char				asm_lexer_peek(t_lexer *lexer);
 t_token				asm_init_token(t_token_type type, char *value,
 						size_t row, size_t col);
 t_token				asm_get_next_token(t_lexer *lexer);
 t_token_type		asm_peek_next_token(t_lexer *lexer);
-t_parser			asm_init_parser(t_lexer *lexer);
+void				asm_init_parser(t_parser *parser, t_lexer *lexer);
 int					asm_parse(t_astnode **tree, t_parser *parser);
 
 int					asm_validate_ast(t_output_data *data, t_astnode *tree);
 
 void				asm_init_output_data(t_output_data *data);
-int					asm_generate_output(char *filepath, t_output_data *data,
+int					asm_generate_output(t_output_data *data,
 						t_astnode *tree);
-void				asm_write_output_to_file(char *path, t_output_data *data);
+void				asm_write_output_to_file(char *path, t_output_data data);
+void				asm_print_output_hexdump(t_output_data data);
 
 t_symbol_list		*asm_symbol_list_new(t_astnode *node, char *symbol);
 int					asm_symbol_list_define(t_symbol_list *list,
 						t_astnode *node);
 t_symbol_list		*asm_symbol_list_lookup(t_symbol_list *list, char *symbol);
 int					asm_symbol_list_delete(t_symbol_list **list, char *symbol);
+void				asm_symbol_list_free(t_symbol_list list);
 void				asm_print_symbol_list(t_symbol_list *symbols,
 						const char *title);
 

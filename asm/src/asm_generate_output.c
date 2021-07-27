@@ -247,7 +247,7 @@ t_symbol_list **labels, t_astnode *node)
 	uint32_t	current_op_lc;
 
 	if (ASM_PRINT_DEBUG)
-		asm_print_output_info("\nGenerate instruction", node->value, (int32_t)*lc);
+		asm_print_output_info("\nGenerate instruction", node->value, (int32_t)(*lc));
 	current_op_lc = *lc;
 	if (*labels != NULL)
 		asm_save_label_address(data, current_op_lc, labels);
@@ -297,13 +297,12 @@ int	asm_generate_bytecode_program(t_output_data *data, t_astnode *tree)
 	return (1);
 }
 
-int	asm_generate_output(char *input_path, t_output_data *data, t_astnode *tree)
+int	asm_generate_output(t_output_data *data, t_astnode *tree)
 {
 	int	ret;
 
 	ret = asm_generate_bytecode_program(data, tree);
 	if (!ret)
 		return (0);
-	asm_write_output_to_file(input_path, data);
 	return (1);
 }
