@@ -17,3 +17,8 @@ The comment is followed by four NULL bytes.
 The following bytes are for the code to be executed. This is not padded with zeros.
 
 Playeriin prog_size, prog name, comment, header
+
+When __ is introduced, it produces the following code: 
+"* Player 2, weighing 325 bytes, "Celebration Funebre v0.99pl42" ("Jour J") !"
+
+Player player_number, weighing prog_size bytes, "prog_name" ("comment") !

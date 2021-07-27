@@ -20,10 +20,37 @@ void	vm_error(const char *message)
 	exit(0);
 }
 
+void	vm_get_data_from_file(t_arena *arena, int player_number, int fd)
+{
+	t_player	*player;
+	t_byte		buf[MEM_SIZE];
+
+	player = &arena->all_players[player_number];
+	read(fd, buf, sizeof(t_byte) * 4);
+	player->header.magic = (t_uint32)*buf;
+	print("magic number: %d\n", COREWAR_EXEC_MAGIC, player->header.magic);
+	read(fd, buf, sizeof(t_byte) * PROG_NAME_LENGTH);
+	buf[PROG_NAME_LENGTH] = '\0';
+	s_cpy(player->header.prog_name, (const char*)buf);
+	print("prog_name: %s\n", player->header.prog_name);
+	read(fd, buf, sizeof(t_byte) * 4);
+	print("four NULL bytes: %d%d%d%d\n", buf[0], buf[1], buf[2], buf[3]);
+	read(fd, buf, sizeof(t_byte) * 4);
+	player->header.prog_size = (t_uint32)*buf;
+	print("prog_size %d\n", player->header.prog_size);
+}
+
 void	vm_parse_bytecode(t_arena *arena, int *player_number, char *name)
 {
-	if (arena && player_number && name)
-		return ;
+	int	fd;
+
+	if (s_cmp(".cor", s_rchr(name, '.')))
+		vm_error("Champions must be .cor files\n");
+	fd = open(name, O_RDONLY);
+	if (fd < 0)
+		vm_error("Unable to open .cor file \n");
+	vm_get_data_from_file(arena, *player_number, fd);
+		
 }
 
 void	vm_create_player(t_arena *arena, int *player_number, char *name)
@@ -45,7 +72,7 @@ void	vm_create_player(t_arena *arena, int *player_number, char *name)
 /*
 **	Checking that the arguments given to the vm are valid. Saving the room
 **	numbers to all_players[].number defined by the -n flag. -n and -dump
-** flags must be followed by a numeric argument.
+**	flags must be followed by a numeric argument.
 */
 
 void	vm_read_input(t_arena *arena, int argc, char **argv)
@@ -53,7 +80,7 @@ void	vm_read_input(t_arena *arena, int argc, char **argv)
 	int i;
 	int	set_number;
 
-	i = -1;
+	i = 0;
 	while(++i < argc)
 	{
 			if (argv[i][0] == '-' && i + 1 == argc)
@@ -82,7 +109,7 @@ void	vm_init(t_arena *arena, int argc, char **argv)
 	int	i;
 	int	player_number;
 
-	i = 0;
+	i = 1;
 	player_number = 1;
 	vm_read_input(arena, argc, argv);
 	while (i < argc)
