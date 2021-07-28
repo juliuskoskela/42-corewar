@@ -2,6 +2,7 @@
 #include "argparser_internal.h"
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 static int	argparser_parse_option(const t_argparser *argp,
 t_argparser_state *state, int long_option)
@@ -12,7 +13,8 @@ t_argparser_state *state, int long_option)
 	if ((long_option && _argparser_get_long_opt(&key, &arg, argp, state))
 		|| (!long_option && _argparser_get_short_opt(&key, &arg, argp, state)))
 	{
-		argp->parser(key, arg, state);
+		if (argp->parser(key, arg, state) == ARGP_ERR_UNKNOWN)
+			return (0);
 	}
 	else if (_argparser_get_default_opt(&key, &arg, state, long_option))
 	{
@@ -32,7 +34,8 @@ t_argparser_state *state)
 
 	key = ARGP_KEY_ARG;
 	arg = state->argv[state->next];
-	argp->parser(key, arg, state);
+	if (argp->parser(key, arg, state) == ARGP_ERR_UNKNOWN)
+		return (0);
 	state->arg_num = state->arg_num + 1;
 	state->next = state->next + 1;
 	return (1);
@@ -52,7 +55,7 @@ static int	argparser_loop(const t_argparser *argp, t_argparser_state *state)
 		}
 		else if (strncmp(argument, "-", 1) == 0)
 		{
-			if (!argparser_parse_option(argp, state, 1))
+			if (!argparser_parse_option(argp, state, 0))
 				return (0);
 		}
 		else
@@ -92,8 +95,12 @@ int	argparser_parse(const t_argparser *argp, int argc, char **argv,
 	state = argparser_init_state(argc, argv, flags, input);
 	state.root_argp = argp;
 	ret = argparser_loop(argp, &state);
-	if (ret == 0 && (flags & ARGP_NO_EXIT) == 0)
-		argparser_usage(&state);
+	if (ret == 0 && (flags & ARGP_NO_ERRS) == 0)
+	{
+		dprintf(2, "Invalid option or argument: %s\n", state.argv[state.next]);
+		if ((flags & ARGP_NO_EXIT) == 0)
+			argparser_usage(&state);
+	}
 	if (arg_index != NULL)
 		*arg_index = state.next;
 	return (ret);

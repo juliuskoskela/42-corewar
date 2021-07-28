@@ -9,15 +9,16 @@
 */
 
 # define ARGP_PARSE_ARGV0			1U
-/* Currently unsupported parser flags
 # define ARGP_NO_ERRS 				2U
+# define ARGP_NO_EXIT 				32U
+/* Currently unsupported parser flags
 # define ARGP_NO_ARGS 				4U
 # define ARGP_IN_ORDER				8U
 # define ARGP_NO_HELP 				16U
 */
-# define ARGP_NO_EXIT 				32U
 
 # define ARGP_ERR_UNKNOWN			(-1)
+
 # define ARGP_KEY_ARG				0
 # define ARGP_KEY_END				1
 
