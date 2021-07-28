@@ -5,16 +5,6 @@
 ** given to the player named in the following argument. If -n is not specified,
 */
 
-t_uint32	vm_reverse_bytes(t_uint32 src)
-{
-	t_uint32	dst;
-
-	mcpy_safe((void *)&dst, (void *)&src + 3, sizeof(t_byte));
-	mcpy_safe((void *)&dst + 1, (void *)&src + 2, sizeof(t_byte));
-	mcpy_safe((void *)&dst + 2, (void *)&src + 1, sizeof(t_byte));
-	mcpy_safe((void *)&dst + 3, (void *)&src, sizeof(t_byte));
-	return (dst);
-}
 
 void	vm_error(const char *message)
 {
@@ -22,15 +12,35 @@ void	vm_error(const char *message)
 	exit(0);
 }
 
+void	*vm_reverse_bytes(void *dst, void *src, t_size size)
+{
+	t_byte	*tmp;
+	t_byte	*dst_ptr;
+	t_size 	i;
+
+	tmp = minit(size);
+	if (!tmp)
+		vm_error("malloc failed \n");
+	mcpy_safe(tmp, src, size);
+	dst_ptr = (t_byte *)dst;
+	i = 0;
+	while (size--)
+	{
+		dst_ptr[i++] = tmp[size];
+	}
+	mdel((void**)&tmp);
+	return ((void *)dst);
+}
+
 void	vm_get_data_from_file(t_arena *arena, int player_number, int fd)
 {
 	t_player	*player;
-	t_byte		buf[MEM_SIZE];
+	t_byte		buf[COMMENT_LENGTH];
 
+	mzero(buf, CHAMP_MAX_SIZE);
 	player = &arena->all_players[player_number];
 	read(fd, buf, sizeof(t_byte) * 4);
-	mcpy_safe((void*)&player->header.magic, (void*)buf, sizeof(t_uint32));
-	player->header.magic = vm_reverse_bytes(player->header.magic);
+	player->header.magic = *(t_uint32 *)vm_reverse_bytes(&player->header.magic, (void*)buf, sizeof(t_uint32));
 	print("magic number: %x\n", player->header.magic);
 	read(fd, buf, sizeof(t_byte) * PROG_NAME_LENGTH);
 	buf[PROG_NAME_LENGTH] = '\0';
@@ -39,9 +49,13 @@ void	vm_get_data_from_file(t_arena *arena, int player_number, int fd)
 	read(fd, buf, sizeof(t_byte) * 4);
 	print("four NULL bytes: %d%d%d%d\n", buf[0], buf[1], buf[2], buf[3]);
 	read(fd, buf, sizeof(t_byte) * 4);
-	mcpy_safe((void*)&player->header.prog_size, (void*)buf, sizeof(t_uint32));
-	player->header.prog_size = vm_reverse_bytes(player->header.prog_size);
+	player->header.prog_size = *(t_uint32 *)vm_reverse_bytes((void *)&player->header.prog_size, (void *)buf, sizeof(t_uint32));
 	print("prog_size %d\n", player->header.prog_size);
+	read(fd, buf, COMMENT_LENGTH);
+	s_cpy(player->header.comment, (const char*)buf);
+	print("comment: %s\n", player->header.comment);
+	read(fd, buf, sizeof(t_byte) * 4);
+	print("Four NULL bytes: %d%d%d%d\n", buf[0], buf[1], buf[2], buf[3]);
 }
 
 void	vm_parse_bytecode(t_arena *arena, t_uint32 *player_number, char *name)
@@ -79,7 +93,7 @@ void	vm_create_player(t_arena *arena, t_uint32 *player_number, char *name)
 **	flags must be followed by a numeric argument.
 */
 
-void	vm_read_input(t_arena *arena, int argc, char **argv)
+void	vm_validate_input(t_arena *arena, int argc, char **argv)
 {
 	int i;
 	int	set_number;
@@ -115,7 +129,7 @@ void	vm_init(t_arena *arena, t_uint32 argc, char **argv)
 
 	i = 1;
 	player_number = 1;
-	vm_read_input(arena, argc, argv);
+	vm_validate_input(arena, argc, argv);
 	while (i < argc)
 	{
 		if (!s_cmp(argv[i], "-n"))
