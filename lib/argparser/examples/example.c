@@ -21,7 +21,7 @@ struct arguments
    OPTIONS.  Field 1 in ARGP.
    Order of fields: {NAME, KEY, ARG, FLAGS, DOC}.
 */
-static struct argparser_option options[] =
+static t_argparser_option options[] =
 {
   {"verbose", 'v', 0, 0, "Produce verbose output"},
   {"alpha",   'a', "STRING1", 0,
@@ -37,7 +37,7 @@ static struct argparser_option options[] =
    PARSER. Field 2 in ARGP.
    Order of parameters: KEY, ARG, STATE.
 */
-static int parse_opt(int key, char *arg, struct argparser_state *state)
+static int parse_opt(int key, char *arg, t_argparser_state *state)
 {
   struct arguments *arguments = state->input;
 
@@ -65,7 +65,7 @@ static int parse_opt(int key, char *arg, struct argparser_state *state)
     case ARGP_KEY_END:
       if (state->arg_num < 2)
 	{
-	  argparser_usage (state);
+	  argparser_usage(state);
 	}
       break;
     default:
@@ -90,7 +90,7 @@ static char doc[] = "argex -- A program to demonstrate how to code command-line 
 /*
    The ARGP structure itself.
 */
-static struct argparser argp = {options, parse_opt, args_doc, doc};
+static t_argparser argp = {options, parse_opt, args_doc, doc};
 
 /*
    The main function.
@@ -142,7 +142,7 @@ int main (int argc, char **argv)
 
   /* If in verbose mode, print song stanza */
   if (arguments.verbose)
-    fprintf(outstream, waters);
+    fprintf(outstream, "%s", waters);
 
   return 0;
 }

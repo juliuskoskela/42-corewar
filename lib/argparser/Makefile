@@ -6,13 +6,23 @@ OBJ_DIR		=	obj/
 DEP_DIR		=	.deps/
 
 CC			=	gcc
-CFLAGS 		=	-O3 -Wall -Wextra -Werror -fPIC \
+CFLAGS 		=	-g -Wall -Wextra -Werror -fPIC \
 				-Wunreachable-code -Wconversion -Wpedantic -Wtype-limits
 CPPFLAGS	=	-I $(INC_DIR)
 DEPFLAGS	=	-MT $@ -MMD -MP -MF $(DEP_DIR)$*.d
 COMPILE.c	=	$(CC) $(DEPFLAGS) $(CFLAGS) $(CPPFLAGS) -c
 
-SRC_BASE	=	argparser_parse.c
+SRC_BASE	=	argparser_parse.c \
+				argparser_usage.c \
+				_argparser_help.c \
+				_argparser_long_usage.c \
+				_argparser_print_usage.c \
+				_argparser_get_option.c \
+				_argparser_get_arg.c \
+				_argparser_get_default_opt.c \
+				_argparser_get_long_opt.c \
+				_argparser_get_short_opt.c \
+				_argparser_parse_default_opt.c
 
 SRC			=	$(addprefix $(SRC_DIR), $(SRC_BASE))
 OBJ			=	$(addprefix $(OBJ_DIR), $(SRC_BASE:.c=.o))
