@@ -6,7 +6,7 @@ static void	vm_read_header(t_arena *arena, t_uint32 player_number, int fd)
 	t_byte		buf[COMMENT_LENGTH];
 
 	mzero(buf, CHAMP_MAX_SIZE);
-	player = &arena->all_players[player_number];
+	player = &arena->all_players[player_number - 1];
 	if (read(fd, buf, sizeof(t_byte) * 4) != 4)
 		vm_error("Invalid bytes in input file\n");
 	player->header.magic = *(t_uint32 *)vm_reverse_bytes(\
@@ -41,8 +41,8 @@ static void	vm_read_program(t_arena *arena, t_uint32 player_number, int fd)
 
 	player_mem_location = (player_number - 1) * arena->offset;
 	check = read(fd, arena->mem + player_mem_location, \
-		arena->all_players[player_number].header.prog_size + 1);
-	if (check != arena->all_players[player_number].header.prog_size)
+		arena->all_players[player_number - 1].header.prog_size + 1);
+	if (check != arena->all_players[player_number - 1].header.prog_size)
 		vm_error("Invalid amount of bytes in program\n");
 }
 
@@ -51,7 +51,7 @@ void	vm_create_player(t_arena *arena, t_uint32 *player_number, char *name)
 	t_player	player;
 	int			fd;
 
-	if (arena->all_players[*player_number].number)
+	if (arena->all_players[*player_number - 1].number)
 		*player_number += 1;
 	if (*player_number > MAX_PLAYERS)
 		vm_error("player_number is not within MAX_PLAYERS\n");
