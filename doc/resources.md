@@ -11,6 +11,10 @@ A good answer on Stack Exchange summarizing the steps for writing a basic compil
 
 ## Tutorials
 
+### Let's make a Teeny Tiny Compiler by Austin Henley
+
+[link](https://web.eecs.utk.edu/~azh/blog/teenytinycompiler1.html)
+
 ### Let's Build a Compiler by Jack Crenshaw
 
 Old and praised, fifteen-part series written from 1988 to 1995: [link](https://compilers.iecc.com/crenshaw/)
@@ -25,6 +29,10 @@ A compiler and an interpreter for the "Lox" language. An online book with two pa
 
 ## Miscellaneous
 
+### Parsing RISC-V assembly
+
+[link](https://web.eecs.utk.edu/~azh/blog/parsingriscv.html)
+
 ### ANTLR
 
 An open-source parser generator. [link](https://github.com/antlr/antlr4)
@@ -34,6 +42,8 @@ An open-source parser generator. [link](https://github.com/antlr/antlr4)
 [link](https://www.llvm.org/)
 
 ## To be explored:
+
+https://en.wikipedia.org/wiki/Recursive_descent_parser
 
 https://norasandler.com/2017/11/29/Write-a-Compiler.html
 
