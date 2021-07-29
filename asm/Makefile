@@ -26,6 +26,7 @@ SRC_BASE	=	asm_main.c \
 				asm_lexer_advance.c \
 				asm_lexer_peek.c \
 				asm_init_token.c \
+				asm_init_empty_token.c \
 				asm_get_next_token.c \
 				asm_peek_next_token.c \
 				asm_init_parser.c \
@@ -34,17 +35,20 @@ SRC_BASE	=	asm_main.c \
 				asm_init_output_data.c \
 				asm_generate_output.c \
 				asm_write_output_to_file.c \
+				asm_print_output_hexdump.c \
 				asm_symbol_list_new.c \
 				asm_symbol_list_lookup.c \
 				asm_symbol_list_define.c \
 				asm_symbol_list_delete.c \
+				asm_symbol_list_free.c \
 				asm_print_symbol_list.c \
 				asm_write_ast_dot_to_file.c \
 				asm_print_ast_dot.c \
 				asm_get_instruction.c \
 				asm_get_numeric_value.c \
 				asm_exit_error.c \
-				asm_astnode_new.c 
+				asm_astnode_new.c \
+				asm_astnode_free.c
 
 SRC			=	$(addprefix $(SRC_DIR), $(SRC_BASE))
 OBJ			=	$(addprefix $(OBJ_DIR), $(SRC_BASE:.c=.o))

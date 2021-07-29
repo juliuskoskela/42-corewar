@@ -10,7 +10,7 @@ t_token_type	asm_peek_next_token(t_lexer *lexer)
 	else if (lexer->current_char == '"')
 		return (STRING_TOKEN);
 	else if (lexer->current_char == COMMENT_CHAR
-			|| lexer->current_char == COMMENT_SEMICOLON)
+		|| lexer->current_char == COMMENT_SEMICOLON)
 		return (COMMENT_TOKEN);
 	else if (lexer->current_char == SEPARATOR_CHAR)
 		return (SEPARATOR_TOKEN);

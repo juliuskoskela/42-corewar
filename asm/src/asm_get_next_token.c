@@ -174,6 +174,18 @@ t_token	asm_get_character_token(t_lexer *lexer)
 	return (token);
 }
 
+static int	asm_is_character_token(char current_char)
+{
+	if (current_char == '\n' || current_char == '\r'
+		|| current_char == '.'
+		|| current_char == SEPARATOR_CHAR
+		|| current_char == LABEL_CHAR
+		|| current_char == DIRECT_CHAR)
+		return (1);
+	else
+		return (0);
+}
+
 t_token	asm_get_next_token(t_lexer *lexer)
 {
 	while (lexer->current_char != '\0')
@@ -189,11 +201,7 @@ t_token	asm_get_next_token(t_lexer *lexer)
 			asm_lexer_skip_comment(lexer);
 			continue ;
 		}
-		if (lexer->current_char == '\n' || lexer->current_char == '\r'
-			|| lexer->current_char == '.'
-			|| lexer->current_char == SEPARATOR_CHAR
-			|| lexer->current_char == LABEL_CHAR
-			|| lexer->current_char == DIRECT_CHAR)
+		if (asm_is_character_token(lexer->current_char))
 			return (asm_get_character_token(lexer));
 		else if (lexer->current_char == '"')
 			return (asm_get_string_token(lexer));
