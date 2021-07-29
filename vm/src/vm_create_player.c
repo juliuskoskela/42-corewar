@@ -17,7 +17,7 @@ static void	vm_read_header(t_arena *arena, t_uint32 player_number, int fd)
 	if (read(fd, buf, sizeof(t_byte) * 4) != 4)
 		vm_error("Invalid bytes in input file\n");
 	if (read(fd, buf, sizeof(t_byte) * 4) != 4)
-		vm_error("Invalid bytes in inputfilen\n");
+		vm_error("Invalid bytes in inputfile\n");
 	player->header.prog_size = *(t_uint32 *)vm_reverse_bytes(\
 		(void *)&player->header.prog_size, (void *)buf, sizeof(t_uint32));
 	if (player->header.prog_size > CHAMP_MAX_SIZE)

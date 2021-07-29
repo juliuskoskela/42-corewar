@@ -23,9 +23,9 @@ static t_uint32	vm_count_players(t_uint32 argc, char **argv)
 }
 
 /*
-**	Checking that the arguments given to the vm are valid. Saving the room
-**	numbers to all_players[].number defined by the -n flag. -n and -dump
-**	flags must be followed by a numeric argument.
+**	Checking that the arguments given to the vm are valid. The players that
+**	get id numbers assigned by the -n flag are saved to the arena at this
+**	stage. -n and -dump flags must be followed by a numeric argument.
 */
 
 static void	vm_validate_input(t_arena *arena, t_uint32 argc, char **argv)
@@ -45,8 +45,7 @@ static void	vm_validate_input(t_arena *arena, t_uint32 argc, char **argv)
 				vm_error("Invalid value after -n flag\n");
 			if (arena->all_players[set_nbr - 1].number)
 				vm_error("All champions must be given unique numbers\n");
-			s_cpy(arena->all_players[set_nbr - 1].header.prog_name, argv[++i]);
-			arena->all_players[set_nbr - 1].number = set_nbr;
+			vm_create_player(arena, &set_nbr, argv[++i]);
 		}
 		else if (!s_cmp(argv[i], "-dump"))
 		{
@@ -60,7 +59,7 @@ static void	vm_validate_input(t_arena *arena, t_uint32 argc, char **argv)
 /*
 ** vm_validate_input checks the arguments -n and -dump. In this loop flags and
 ** their arguments are skipped. Players are saved in argument order to the first
-** available spot in arena->all_players. Player numbers can be assigned with the 
+** available spot in arena->all_players. Player numbers can be assigned with the
 ** -n flag.
 */
 
