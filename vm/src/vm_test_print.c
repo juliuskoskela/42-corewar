@@ -31,7 +31,7 @@ void	vm_test_print_header(t_player player)
 
 void	vm_test_print_arena(t_arena arena)
 {
-	t_uint32 i;
+	t_uint32	i;
 
 	i = 0;
 	print("player_count: %d\n", arena.player_count);

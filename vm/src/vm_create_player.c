@@ -2,7 +2,6 @@
 
 static void	vm_read_header(t_arena *arena, t_uint32 player_number, int fd)
 {
-	// check MAX_PROG_SIZE
 	t_player	*player;
 	t_byte		buf[COMMENT_LENGTH];
 
@@ -21,6 +20,8 @@ static void	vm_read_header(t_arena *arena, t_uint32 player_number, int fd)
 		vm_error("Invalid bytes in inputfilen\n");
 	player->header.prog_size = *(t_uint32 *)vm_reverse_bytes(\
 		(void *)&player->header.prog_size, (void *)buf, sizeof(t_uint32));
+	if (player->header.prog_size > CHAMP_MAX_SIZE)
+		vm_error("Program size is larger than CHAMP_MAX_SIZE\n");
 	if (read(fd, buf, COMMENT_LENGTH) != COMMENT_LENGTH)
 		vm_error("Invalid bytes in inputfilen\n");
 	s_cpy(player->header.comment, (const char *)buf);
