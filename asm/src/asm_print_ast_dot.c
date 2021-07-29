@@ -74,3 +74,4 @@ void	asm_print_ast_dot(int fd, t_astnode *root)
 	print_tree(fd, root, 1);
 	dprintf(fd, "}\n");
 }
+

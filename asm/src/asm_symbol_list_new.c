@@ -15,3 +15,4 @@ t_symbol_list	*asm_symbol_list_new(t_astnode *node, char *symbol)
 	list->next = NULL;
 	return (list);
 }
+

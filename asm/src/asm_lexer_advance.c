@@ -12,3 +12,4 @@ void	asm_lexer_advance(t_lexer *lexer)
 	else
 		lexer->col++;
 }
+

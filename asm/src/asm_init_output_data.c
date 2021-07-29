@@ -7,3 +7,4 @@ void	asm_init_output_data(t_output_data *data)
 	memset(data->program, 0, sizeof(data->program));
 	data->header.magic = COREWAR_EXEC_MAGIC;
 }
+

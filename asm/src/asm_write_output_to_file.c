@@ -70,3 +70,4 @@ void	asm_write_output_to_file(char *path, t_output_data data)
 	asm_write_program_to_file(fd, data.program, data.header);
 	close(fd);
 }
+

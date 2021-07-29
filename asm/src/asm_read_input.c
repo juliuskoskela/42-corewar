@@ -76,3 +76,4 @@ char	*asm_read_input(const char *filepath)
 	close(fd);
 	return (result);
 }
+
