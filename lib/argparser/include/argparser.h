@@ -54,13 +54,13 @@ typedef struct s_argparser
 	t_parse_func					parser;
 	const char						*args_doc;
 	const char						*doc;
+	unsigned int					flags;
+	int								*arg_index;
 }	t_argparser;
 
 int									argparser_parse(const t_argparser *argp,
 										int argc,
 										char **argv,
-										unsigned int flags,
-										int *arg_index,
 										void *input);
 void								argparser_usage(t_argparser_state *state);
 

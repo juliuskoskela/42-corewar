@@ -125,7 +125,7 @@ int main (int argc, char **argv)
   arguments.verbose = 0;
 
   /* Where the magic happens */
-  argparser_parse(&argp, argc, argv, 0, 0, &arguments);
+  argparser_parse(&argp, argc, argv, &arguments);
 
   /* Where do we send output? */
   if (arguments.outfile)

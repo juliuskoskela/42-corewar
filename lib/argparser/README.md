@@ -6,15 +6,15 @@ Like ``argp``, ``argparser`` provides a relatively simple interface to parse com
 
 This library provides two function prototypes that can be called:
 ```c
-int		argparser_parse(const t_argparser *argp, int argc, char **argv, unsigned int flags, int *arg_index, void *input);
+int		argparser_parse(const t_argparser *argp, int argc, char **argv, void *input);
 void	argparser_usage(t_argparser_state *state);
 ```
 
-To use it, you need to define a couple of elements.
+The original ``argp_parse`` prototype differs from this in that it passes to additional parameters, ``unsigned int flags, int *arg_index``, but for ``argparser_parse``, these will have to be passed inside the ``argp`` struct. To use it, you need to define a couple of elements.
 
 First, you will need to define a structure where information about the parsed command line options and arguments will be saved, denoted by ``input`` in the function prototype. This pointer will be saved in a special ``state`` structure through which it will be available for your parser function.
 
-Second is a struct ``t_argparser`` that will contain four fields:
+Second is a struct ``t_argparser`` that will contain six fields:
 ```c
 typedef struct s_argparser
 {
@@ -22,6 +22,8 @@ typedef struct s_argparser
 	t_parse_func					parser;
 	const char						*args_doc;
 	const char						*doc;
+	unsigned int					flags;
+	int								*arg_index;
 }	t_argparser;
 ```
 
@@ -92,4 +94,8 @@ static int parse_opt(int key, char *arg, t_argparser_state *state)
 
 3) An ``argc_doc`` string that gives the format of non-optional arguments that the program takes. This string will be displayed in the builtin ``--help`` and ``--usage`` messages.
 
-4) A ``doc`` string that contains a short description of the program itself that, if given, is used in the ``--help`` and ``--usage`` messages 
+4) A ``doc`` string that contains a short description of the program itself that, if given, is used in the ``--help`` and ``--usage`` messages
+
+5) A flag variable that can be used to optionally specify additional constaints for the parser. Multiple flags can be or'ed. Currently, the ones supported are ``ARGP_PARSE_ARGV0``, ``ARGP_NO_ERRS`` and ``ARGP_NO_EXIT``. 
+
+6) Pointer to an integer, ``arg_index``. If non-null, this will be set to the index of last command line argument that was not parsed, or argc if all were successfully parsed.

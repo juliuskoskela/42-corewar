@@ -69,39 +69,39 @@ static int	argparser_loop(const t_argparser *argp, t_argparser_state *state)
 }
 
 static t_argparser_state	argparser_init_state(int argc, char **argv,
-unsigned int flags, void *input)
+const t_argparser *argp, void *input)
 {
 	t_argparser_state	state;
 
 	memset(&state, 0, sizeof(state));
+	state.root_argp = argp;
 	state.argc = argc;
 	state.argv = argv;
-	if ((flags & ARGP_PARSE_ARGV0) == 0)
+	if ((argp->flags & ARGP_PARSE_ARGV0) == 0)
 		state.next = 1;
 	else
 		state.next = 0;
-	state.flags = flags;
+	state.flags = argp->flags;
 	state.name = argv[0];
 	state.input = input;
 	return (state);
 }
 
 int	argparser_parse(const t_argparser *argp, int argc, char **argv,
-	unsigned int flags, int *arg_index, void *input)
+void *input)
 {
 	t_argparser_state	state;
 	int					ret;
 
-	state = argparser_init_state(argc, argv, flags, input);
-	state.root_argp = argp;
+	state = argparser_init_state(argc, argv, argp, input);
 	ret = argparser_loop(argp, &state);
-	if (ret == 0 && (flags & ARGP_NO_ERRS) == 0)
+	if (ret == 0 && (argp->flags & ARGP_NO_ERRS) == 0)
 	{
 		dprintf(2, "Invalid option or argument: %s\n", state.argv[state.next]);
-		if ((flags & ARGP_NO_EXIT) == 0)
+		if ((argp->flags & ARGP_NO_EXIT) == 0)
 			argparser_usage(&state);
 	}
-	if (arg_index != NULL)
-		*arg_index = state.next;
+	if (argp->arg_index != NULL)
+		*(argp->arg_index) = state.next;
 	return (ret);
 }
