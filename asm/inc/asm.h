@@ -11,12 +11,15 @@
 #ifndef ASM_H
 # define ASM_H
 
-//# include "corewar.h"
+# include "corewar.h"
 
 # include <string.h>
 # include <stdint.h>
 
+# define ASM_PRINT_DEBUG 0
+
 # define COMMENT_CHAR		'#'
+# define COMMENT_SEMICOLON	';'
 # define LABEL_CHAR			':'
 # define DIRECT_CHAR		'%'
 # define SEPARATOR_CHAR		','
@@ -25,30 +28,6 @@
 
 # define NAME_CMD_STRING	".name"
 # define COMMENT_CMD_STRING	".comment"
-
-# define EMPTY				0
-# define T_REG				1
-# define T_DIR				2
-# define T_IND				4
-# define T_LAB				8
-
-# define IND_SIZE			2
-# define REG_SIZE			4
-# define DIR_SIZE			REG_SIZE
-
-# define REG_CODE			1
-# define DIR_CODE			2
-# define IND_CODE			3
-
-# define REG_NUMBER			16
-
-# define PROG_NAME_LENGTH	(128)
-# define COMMENT_LENGTH		(2048)
-# define COREWAR_EXEC_MAGIC	0xea83f3
-
-# define MEM_SIZE			4096
-# define IDX_MOD			512
-# define CHAMP_MAX_SIZE		(MEM_SIZE / 6)
 
 typedef enum e_token_type
 {
@@ -124,68 +103,12 @@ typedef struct s_symbol_list
 
 }	t_symbol_list;
 
-typedef struct s_header
-{
-	uint32_t				magic;
-	char					prog_name[PROG_NAME_LENGTH + 1];
-	uint32_t				prog_size;
-	char					comment[COMMENT_LENGTH + 1];
-}	t_header;
-
 typedef struct s_output_data
 {
 	t_symbol_list			symbols;
 	t_header				header;
 	int8_t					program[CHAMP_MAX_SIZE + 1];
 }	t_output_data;
-
-typedef struct s_param_types
-{
-	uint8_t					param1;
-	uint8_t					param2;
-	uint8_t					param3;
-}	t_param_types;
-
-typedef struct s_op
-{
-	const char				*mnemonic;
-	uint32_t				param_count;
-	t_param_types			param_types;
-	uint8_t					opcode;
-	uint32_t				cycles;
-	const char				*description;
-	int						has_paramument_coding_byte;
-	int						unknown;
-}	t_op;
-
-# define OP_COUNT			16
-
-static const t_op			g_op_tab[17] =
-{
-	{"live", 1, {T_DIR, EMPTY, EMPTY}, 1, 10, "alive", 0, 0},
-	{"ld", 2, {T_DIR | T_IND, T_REG, EMPTY}, 2, 5, "load", 1, 0},
-	{"st", 2, {T_REG, T_IND | T_REG, EMPTY}, 3, 5, "store", 1, 0},
-	{"add", 3, {T_REG, T_REG, T_REG}, 4, 10, "addition", 1, 0},
-	{"sub", 3, {T_REG, T_REG, T_REG}, 5, 10, "substraction", 1, 0},
-	{"and", 3, {T_REG | T_DIR | T_IND, T_REG | T_IND | T_DIR, T_REG},
-		6, 6, "and  r1, r2, r3   r1&r2 -> r3", 1, 0},
-	{"or", 3, {T_REG | T_IND | T_DIR, T_REG | T_IND | T_DIR, T_REG},
-		7, 6, "or   r1, r2, r3   r1 | r2 -> r3", 1, 0},
-	{"xor", 3, {T_REG | T_IND | T_DIR, T_REG | T_IND | T_DIR, T_REG},
-		8, 6, "xor  r1, r2, r3   r1^r2 -> r3", 1, 0},
-	{"zjmp", 1, {T_DIR, EMPTY, EMPTY}, 9, 20, "jump if zero", 0, 1},
-	{"ldi", 3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG},
-		10, 25, "load index", 1, 1},
-	{"sti", 3, {T_REG, T_REG | T_DIR | T_IND, T_DIR | T_REG},
-		11, 25, "store index", 1, 1},
-	{"fork", 1, {T_DIR, EMPTY, EMPTY}, 12, 800, "fork", 0, 1},
-	{"lld", 2, {T_DIR | T_IND, T_REG, EMPTY}, 13, 10, "long load", 1, 0},
-	{"lldi", 3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG},
-		14, 50, "long load index", 1, 1},
-	{"lfork", 1, {T_DIR, EMPTY, EMPTY}, 15, 1000, "long fork", 0, 1},
-	{"aff", 1, {T_REG, EMPTY, EMPTY}, 16, 2, "aff", 1, 0},
-	{0, 0, {0}, 0, 0, 0, 0, 0}
-};
 
 char				*asm_read_input(const char *filepath);
 
@@ -201,6 +124,7 @@ int					asm_parse(t_astnode **tree, t_parser *parser);
 
 int					asm_validate_ast(t_output_data *data, t_astnode *tree);
 
+void				asm_init_output_data(t_output_data *data);
 int					asm_generate_output(char *filepath, t_output_data *data,
 						t_astnode *tree);
 void				asm_write_output_to_file(char *path, t_output_data *data);

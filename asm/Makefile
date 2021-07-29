@@ -14,7 +14,7 @@ DEP_DIR		=	.deps/
 CC			=	gcc
 CFLAGS 		=	-g -Wall -Wextra -Werror -fPIC -fsanitize=address
 DFLAGS		=	-Wunreachable-code -Wpedantic -Wtype-limits #-Wconversion
-CPPFLAGS	=	-I $(INC_DIR) -I ../inc
+CPPFLAGS	=	-I $(INC_DIR) -I ../inc/
 DEPFLAGS	=	-MT $@ -MMD -MP -MF $(DEP_DIR)$*.d
 LDLIBS		=	#../lib/core/libcore.a
 LDFLAGS		=	#
@@ -31,6 +31,7 @@ SRC_BASE	=	asm_main.c \
 				asm_init_parser.c \
 				asm_parse.c \
 				asm_validate.c \
+				asm_init_output_data.c \
 				asm_generate_output.c \
 				asm_write_output_to_file.c \
 				asm_symbol_list_new.c \

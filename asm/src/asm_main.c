@@ -3,12 +3,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-static void	asm_ast_free(t_astnode *tree)
+static void	asm_astnode_free(t_astnode *tree)
 {
 	if (tree->left_child != NULL)
-		asm_ast_free(tree->left_child);
+		asm_astnode_free(tree->left_child);
 	if (tree->right_child != NULL)
-		asm_ast_free(tree->right_child);
+		asm_astnode_free(tree->right_child);
 	free(tree->token.value);
 	free(tree);
 }
@@ -56,20 +56,21 @@ int	main(int argc, char **argv)
 
 	lexer = asm_init_lexer(input);
 	parser = asm_init_parser(&lexer);
+	tree = NULL;
 	if (!asm_parse(&tree, &parser))
 		asm_exit_error(NULL);
 
 	if (strcmp(argv[1], "--dot") == 0)
 		asm_write_ast_dot_to_file(argv[argc - 1], tree);
 
+	asm_init_output_data(&data);
 	if (!asm_validate_ast(&data, tree))
 		asm_exit_error(NULL);
 
 	asm_generate_output(argv[argc - 1], &data, tree);
 
-	asm_ast_free(tree);
+	asm_astnode_free(tree);
 	asm_symbol_list_free(data.symbols);
 	free(input);
-	//system("leaks asm");
 	return (0);
 }

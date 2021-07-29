@@ -5,22 +5,28 @@
 
 int	asm_semantic_error(t_astnode *node, char *msg)
 {
-	dprintf(2, "Semantic error at [%zu, %zu]: %s\n",
+	dprintf(2, "Semantic error at [%zu, %zu]: %s %s\n",
 		node->token.line_no,
 		node->token.col,
-		msg);
+		msg,
+		node->value);
 	return (0);
 }
 
 int	asm_visit_parameter(t_astnode *node, uint32_t param_nbr, t_op instruction)
 {
 	uint8_t	type;
+	uint8_t	allowed_param_types;
 
 	type = (uint8_t)node->type;
-	if ((param_nbr == 1 && ((type & instruction.param_types.param1) == 0))
-		|| (param_nbr == 2 && ((type & instruction.param_types.param2) == 0))
-		|| (param_nbr == 3 && ((type & instruction.param_types.param3) == 0)))
-		return (asm_semantic_error(node, "Invalid argument type"));
+	if (param_nbr == 1)
+		allowed_param_types = instruction.param_types.param1;
+	else if (param_nbr == 2)
+		allowed_param_types = instruction.param_types.param2;
+	else
+		allowed_param_types = instruction.param_types.param3;
+	if ((type & allowed_param_types) == 0)
+		return (asm_semantic_error(node->right_child, "Invalid argument type"));
 	return (1);
 }
 
@@ -73,7 +79,7 @@ int	asm_visit_directive(t_astnode *node, t_header *header)
 		&& len > PROG_NAME_LENGTH)
 		|| (strcmp(node->left_child->value, &cmd_string[1][1]) == 0
 		&& len > COMMENT_LENGTH))
-		return (asm_semantic_error(node, "String too long"));
+		return (asm_semantic_error(node, "String too long for directive"));
 	strncpy(dst, node->right_child->value, len);
 	return (1);
 }
@@ -148,13 +154,11 @@ int	asm_visit_program(t_astnode *node, t_symbol_list *symbols, t_header *header)
 
 int	asm_validate_ast(t_output_data *data, t_astnode *tree)
 {
-	int				ret;
+	int	ret;
 
-	memset(&data->header, 0, sizeof(t_header));
-	memset(&data->symbols, 0, sizeof(t_symbol_list));
-	data->header.magic = COREWAR_EXEC_MAGIC;
 	ret = asm_visit_program(tree, &data->symbols, &data->header);
-	asm_print_symbol_list(&data->symbols,
-		"Symbol table after first pass through AST:");
+	if (ASM_PRINT_DEBUG)
+		asm_print_symbol_list(&data->symbols,
+			"Symbol table after first pass through AST:");
 	return (ret);
 }

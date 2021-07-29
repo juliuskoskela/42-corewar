@@ -183,7 +183,8 @@ t_token	asm_get_next_token(t_lexer *lexer)
 			asm_lexer_skip_whitespace(lexer);
 			continue ;
 		}
-		if (lexer->current_char == COMMENT_CHAR)
+		if (lexer->current_char == COMMENT_CHAR
+			|| lexer->current_char == COMMENT_SEMICOLON)
 		{
 			asm_lexer_skip_comment(lexer);
 			continue ;
