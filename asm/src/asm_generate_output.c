@@ -316,3 +316,4 @@ int	asm_generate_output(t_output_data *data, t_astnode *tree)
 		return (0);
 	return (1);
 }
+

@@ -214,3 +214,4 @@ t_token	asm_get_next_token(t_lexer *lexer)
 	}
 	return (asm_get_eof_token(lexer));
 }
+

@@ -10,3 +10,4 @@ t_token	asm_init_empty_token(size_t row, size_t col)
 	token.col = col;
 	return (token);
 }
+

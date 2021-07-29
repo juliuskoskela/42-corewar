@@ -8,3 +8,4 @@ void	asm_init_lexer(t_lexer *lexer, const char *input)
 	lexer->line_no = 1;
 	lexer->col = 1;
 }
+

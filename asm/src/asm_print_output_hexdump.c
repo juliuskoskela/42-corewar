@@ -76,3 +76,4 @@ void	asm_print_output_hexdump(t_output_data data)
 	asm_print_hexdump_bytes(&data.program, header.prog_size, 0);
 	asm_print_hexdump_bytes(NULL, 0, 0);
 }
+
