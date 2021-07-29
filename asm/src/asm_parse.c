@@ -1,11 +1,11 @@
 #include "asm.h"
 #include "ast.h"
 #include <stdlib.h>
-#include <stdio.h>
+#include "core.h"
 
 int	asm_parser_error(t_parser *parser, t_token_type expected_type)
 {
-	dprintf(2, "Syntax error at [%zu, %zu]: token '%s' of type %s\
+	print_fd(2, "Syntax error at [%zu, %zu]: token '%s' of type %s\
  does not match expected type %s\n",
 		parser->current_token.line_no,
 		parser->current_token.col,
@@ -220,4 +220,3 @@ int	asm_parse(t_astnode **tree, char *input)
 		return (0);
 	return (1);
 }
-

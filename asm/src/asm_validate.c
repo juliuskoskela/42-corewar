@@ -1,11 +1,11 @@
 #include "asm.h"
 #include "ast.h"
 #include <stdlib.h>
-#include <stdio.h>
+#include "core.h"
 
 int	asm_semantic_error(t_astnode *node, char *msg)
 {
-	dprintf(2, "Semantic error at [%zu, %zu]: %s %s\n",
+	print_fd(2, "Semantic error at [%zu, %zu]: %s %s\n",
 		node->token.line_no,
 		node->token.col,
 		msg,
@@ -162,4 +162,3 @@ int	asm_validate_ast(t_output_data *data, t_astnode *tree)
 			"Symbol table after first pass through AST:");
 	return (ret);
 }
-

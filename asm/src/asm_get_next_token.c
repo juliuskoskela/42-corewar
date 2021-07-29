@@ -1,10 +1,10 @@
 #include "asm.h"
 #include <ctype.h>
-#include <stdio.h>
+#include "core.h"
 
 static void	asm_print_lexer_error(t_lexer *lexer, const char *msg)
 {
-	dprintf(2, "Lexer error at [%zu, %zu]: %s\n",
+	print_fd(2, "Lexer error at [%zu, %zu]: %s\n",
 		lexer->line_no,
 		lexer->col,
 		msg);
@@ -214,4 +214,3 @@ t_token	asm_get_next_token(t_lexer *lexer)
 	}
 	return (asm_get_eof_token(lexer));
 }
-

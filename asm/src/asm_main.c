@@ -1,7 +1,7 @@
 #include "asm.h"
 #include "ast.h"
 #include <stdlib.h>
-#include <stdio.h>
+#include "core.h"
 
 static void	asm_print_usage(void)
 {
@@ -12,7 +12,7 @@ static void	asm_print_usage(void)
 		`dot -Tpng -o player_dot.png path/to/player.dot`\n\
   --hex-dump:\tprint the resulting output as a hex dump to standard output";
 
-	printf("%s\n", usage);
+	print("%s\n", usage);
 	exit(0);
 }
 
@@ -53,4 +53,3 @@ int	main(int argc, char **argv)
 	free(input);
 	return (0);
 }
-

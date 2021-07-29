@@ -52,4 +52,3 @@ int	asm_get_numeric_value(int32_t *dst, char *str)
 	else
 		return (asm_get_decimal(dst, str));
 }
-

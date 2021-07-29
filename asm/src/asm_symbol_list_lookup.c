@@ -11,4 +11,3 @@ t_symbol_list	*asm_symbol_list_lookup(t_symbol_list *list, char *symbol)
 	}
 	return (NULL);
 }
-

@@ -147,4 +147,3 @@ int					asm_get_numeric_value(int32_t *dst, char *str);
 void				asm_exit_error(char *msg);
 
 #endif
-

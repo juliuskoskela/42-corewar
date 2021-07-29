@@ -16,4 +16,3 @@ int	asm_get_instruction(t_op *dst, char *mnemonic)
 	}
 	return (0);
 }
-

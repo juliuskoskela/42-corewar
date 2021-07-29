@@ -14,10 +14,10 @@ DEP_DIR		=	.deps/
 CC			=	gcc
 CFLAGS 		=	-g -Wall -Wextra -Werror -fPIC -fsanitize=address
 DFLAGS		=	-Wunreachable-code -Wpedantic -Wtype-limits #-Wconversion
-CPPFLAGS	=	-I $(INC_DIR) -I ../inc/
+CPPFLAGS	=	-I $(INC_DIR) -I ../inc/ -I ../lib/core/inc
 DEPFLAGS	=	-MT $@ -MMD -MP -MF $(DEP_DIR)$*.d
-LDLIBS		=	#../lib/core/libcore.a
-LDFLAGS		=	#
+LDLIBS		=	-L ../lib/core
+LDFLAGS		=	-l core
 COMPILE.c	=	$(CC) $(DEPFLAGS) $(CFLAGS) $(DFLAGS) $(CPPFLAGS) -c
 
 SRC_BASE	=	asm_main.c \
@@ -55,7 +55,7 @@ OBJ			=	$(addprefix $(OBJ_DIR), $(SRC_BASE:.c=.o))
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
+$(NAME): core $(OBJ)
 				@$(CC) $(CFLAGS) $(DFLAGS) -o $@ $(OBJ) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS)
 				@echo "\\n\033[32;1mASSEMBLER COMPILED\033[0m \\n"
 
@@ -68,6 +68,9 @@ $(OBJ_DIR):
 
 $(DEP_DIR):
 				@mkdir -p $@
+
+core:
+				@$(MAKE) -C ../lib/core
 
 DEPFILES = $(addprefix $(DEP_DIR), $(SRC_BASE:.c=.d))
 $(DEPFILES):

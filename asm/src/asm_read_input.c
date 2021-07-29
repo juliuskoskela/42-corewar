@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
+#include "core.h"
 
 #define BUF_SIZE 100
 
@@ -76,4 +76,3 @@ char	*asm_read_input(const char *filepath)
 	close(fd);
 	return (result);
 }
-

@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include <stdio.h>
+#include "core.h"
 
 void	asm_exit_error(char *msg)
 {
@@ -7,4 +7,3 @@ void	asm_exit_error(char *msg)
 		perror(msg);
 	exit(1);
 }
-

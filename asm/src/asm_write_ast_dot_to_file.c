@@ -1,7 +1,7 @@
 #include "ast.h"
 #include <stdlib.h>
 #include <fcntl.h>
-#include <stdio.h>
+#include "core.h"
 #include <unistd.h>
 
 void	asm_write_ast_dot_to_file(char *path, t_astnode *tree)
@@ -19,9 +19,8 @@ void	asm_write_ast_dot_to_file(char *path, t_astnode *tree)
 	fd = open(dot_file, O_CREAT | O_TRUNC | O_WRONLY, 0666);
 	if (fd < 0)
 		asm_exit_error("Error on writing output to .dot file");
-	printf("Writing AST to %s\n", dot_file);
+	print("Writing AST to %s\n", dot_file);
 	free(dot_file);
 	asm_print_ast_dot(fd, tree);
 	close(fd);
 }
-

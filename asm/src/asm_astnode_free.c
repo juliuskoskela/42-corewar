@@ -11,4 +11,3 @@ void	asm_astnode_free(t_astnode *tree)
 	free(tree->token.value);
 	free(tree);
 }
-

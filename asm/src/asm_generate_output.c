@@ -3,12 +3,12 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include <stdio.h>
+#include "core.h"
 #include <ctype.h>
 
 void	asm_generate_error(t_astnode *node, char *msg)
 {
-	dprintf(2, "Semantic error at [%zu, %zu]: %s %s\n",
+	print_fd(2, "Semantic error at [%zu, %zu]: %s %s\n",
 		node->token.line_no,
 		node->token.col,
 		msg,
@@ -20,9 +20,9 @@ void	asm_print_output_info(const char *str,
 const char *param_type, int32_t value)
 {
 	if (param_type != NULL)
-		printf("%s %s %d : %#x\n", str, param_type, value, value);
+		print("%s %s %d : %#x\n", str, param_type, value, value);
 	else
-		printf("%s %d : %#x\n", str, value, value);
+		print("%s %d : %#x\n", str, value, value);
 }
 
 void	asm_write_bytes(int8_t *program, uint32_t *lc, void *bytes, int n)
@@ -212,12 +212,12 @@ t_astnode *parameter_list)
 	acb = 0;
 	i = 6;
 	if (ASM_PRINT_DEBUG)
-		printf("arguments: ");
+		print("arguments: ");
 	while (parameter_list != NULL)
 	{
 		parameter = parameter_list->left_child;
 		if (ASM_PRINT_DEBUG)
-			printf("%s ", g_astnode_types[parameter->type]);
+			print("%s ", g_astnode_types[parameter->type]);
 		if (parameter->type == REGISTER)
 			acb = (uint8_t)(acb | (REG_CODE << i));
 		else if (parameter->type == DIRECT)
@@ -268,7 +268,7 @@ t_symbol_list **labels, t_astnode *node)
 	if (instruction.has_argument_coding_byte)
 		asm_write_argument_coding_byte(data->program, lc, node->right_child);
 	else if (ASM_PRINT_DEBUG)
-		printf("no argument coding byte\n");
+		print("no argument coding byte\n");
 	asm_write_arguments(data->program, lc, current_op_lc,
 		&data->symbols, node->right_child);
 	return (1);
@@ -316,4 +316,3 @@ int	asm_generate_output(t_output_data *data, t_astnode *tree)
 		return (0);
 	return (1);
 }
-

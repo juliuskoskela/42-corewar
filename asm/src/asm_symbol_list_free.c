@@ -14,4 +14,3 @@ void	asm_symbol_list_free(t_symbol_list list)
 		node = next;
 	}
 }
-

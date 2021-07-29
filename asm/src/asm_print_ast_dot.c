@@ -1,14 +1,14 @@
 #include "ast.h"
-#include <stdio.h>
+#include "core.h"
 
 static void	print_node(int fd, int nbr, const char *type, char *value)
 {
-	dprintf(fd, "node%d [label=<%s:%s>]\n", nbr, type, value);
+	print_fd(fd, "node%d [label=<%s:%s>]\n", nbr, type, value);
 }
 
 static void	print_edge(int fd, int src_nbr, int dst_nbr)
 {
-	dprintf(fd, "node%d -> node%d\n", src_nbr, dst_nbr);
+	print_fd(fd, "node%d -> node%d\n", src_nbr, dst_nbr);
 }
 
 static int	print_subtree(int fd, t_astnode *node, int parent_nbr, int nbr)
@@ -67,11 +67,10 @@ static void	print_tree(int fd, t_astnode *node, int nbr)
 
 void	asm_print_ast_dot(int fd, t_astnode *root)
 {
-	dprintf(fd, "digraph astgraph {\
+	print_fd(fd, "digraph astgraph {\
           node [shape=circle, fontsize=12, fontname=\"Courier\",height=.1];\
           ranksep=.3;\
           edge [arrowsize=.5]\n");
 	print_tree(fd, root, 1);
-	dprintf(fd, "}\n");
+	print_fd(fd, "}\n");
 }
-
