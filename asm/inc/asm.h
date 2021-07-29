@@ -45,8 +45,7 @@ typedef enum e_token_type
 	ERROR_TOKEN
 }	t_token_type;
 
-static const char *const	g_token_types[12] =
-{
+static const char *const	g_token_types[12] = {
 	"NO_TOKEN",
 	"ID_TOKEN",
 	"INTEGER_TOKEN",
@@ -117,10 +116,11 @@ void				asm_lexer_advance(t_lexer *lexer);
 char				asm_lexer_peek(t_lexer *lexer);
 t_token				asm_init_token(t_token_type type, char *value,
 						size_t row, size_t col);
+t_token				asm_init_empty_token(size_t row, size_t col);
 t_token				asm_get_next_token(t_lexer *lexer);
 t_token_type		asm_peek_next_token(t_lexer *lexer);
 void				asm_init_parser(t_parser *parser, t_lexer *lexer);
-int					asm_parse(t_astnode **tree, t_parser *parser);
+int					asm_parse(t_astnode **tree, char *input);
 
 int					asm_validate_ast(t_output_data *data, t_astnode *tree);
 

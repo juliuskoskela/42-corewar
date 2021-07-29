@@ -171,8 +171,8 @@ uint32_t current_op_lc, t_symbol_list *symbols, t_astnode *parameter)
 		}
 	}
 	if (ASM_PRINT_DEBUG)
-		asm_print_output_info("write indirect", g_astnode_types[parameter->type],
-			parameter->num_value);
+		asm_print_output_info("write indirect",
+			g_astnode_types[parameter->type], parameter->num_value);
 	asm_write_bytes(program, lc, &parameter->num_value, 2);
 }
 
@@ -185,11 +185,19 @@ uint32_t current_op_lc, t_symbol_list *symbols, t_astnode *parameter_list)
 	{
 		parameter = parameter_list->left_child;
 		if (parameter->type == REGISTER)
+		{
 			asm_write_register(program, lc, parameter);
+		}
 		else if (parameter->type == INDIRECT)
-			asm_write_indirect(program, lc, current_op_lc, symbols, parameter->right_child);
+		{
+			asm_write_indirect(program, lc, current_op_lc,
+				symbols, parameter->right_child);
+		}
 		else
-			asm_write_direct(program, lc, current_op_lc, symbols, parameter->right_child);
+		{
+			asm_write_direct(program, lc, current_op_lc,
+				symbols, parameter->right_child);
+		}
 		parameter_list = parameter_list->right_child;
 	}
 }
@@ -233,7 +241,8 @@ t_symbol_list **labels)
 	{
 		label = asm_symbol_list_lookup(&data->symbols, (*labels)->symbol);
 		if (ASM_PRINT_DEBUG)
-			asm_print_output_info("save address for label", label->symbol, (int32_t)lc);
+			asm_print_output_info("save address for label",
+				label->symbol, (int32_t)lc);
 		label->node->num_value = (int32_t)lc;
 		asm_resolve_label_forward_refs(data->program, label);
 		asm_symbol_list_delete(labels, (*labels)->symbol);
@@ -247,7 +256,8 @@ t_symbol_list **labels, t_astnode *node)
 	uint32_t	current_op_lc;
 
 	if (ASM_PRINT_DEBUG)
-		asm_print_output_info("\nGenerate instruction", node->value, (int32_t)(*lc));
+		asm_print_output_info("\nGenerate instruction",
+			node->value, (int32_t)(*lc));
 	current_op_lc = *lc;
 	if (*labels != NULL)
 		asm_save_label_address(data, current_op_lc, labels);

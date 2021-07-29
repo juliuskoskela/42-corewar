@@ -76,9 +76,9 @@ int	asm_visit_directive(t_astnode *node, t_header *header)
 		return (asm_semantic_error(node, "Missing string for directive"));
 	len = strlen(node->right_child->value);
 	if ((strcmp(node->left_child->value, &cmd_string[0][1]) == 0
-		&& len > PROG_NAME_LENGTH)
+			&& len > PROG_NAME_LENGTH)
 		|| (strcmp(node->left_child->value, &cmd_string[1][1]) == 0
-		&& len > COMMENT_LENGTH))
+			&& len > COMMENT_LENGTH))
 		return (asm_semantic_error(node, "String too long for directive"));
 	strncpy(dst, node->right_child->value, len);
 	return (1);

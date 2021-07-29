@@ -26,6 +26,7 @@ SRC_BASE	=	asm_main.c \
 				asm_lexer_advance.c \
 				asm_lexer_peek.c \
 				asm_init_token.c \
+				asm_init_empty_token.c \
 				asm_get_next_token.c \
 				asm_peek_next_token.c \
 				asm_init_parser.c \

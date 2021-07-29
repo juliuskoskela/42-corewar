@@ -19,8 +19,6 @@ static void	asm_print_usage(void)
 int	main(int argc, char **argv)
 {
 	char			*input;
-	t_lexer			lexer;
-	t_parser		parser;
 	t_astnode		*tree;
 	t_output_data	data;
 
@@ -33,10 +31,8 @@ int	main(int argc, char **argv)
 	if (input == NULL)
 		asm_exit_error("Error on reading input");
 
-	asm_init_lexer(&lexer, input);
-	asm_init_parser(&parser, &lexer);
 	tree = NULL;
-	if (!asm_parse(&tree, &parser))
+	if (!asm_parse(&tree, input))
 		asm_exit_error(NULL);
 
 	if (strcmp(argv[1], "--dot") == 0)
