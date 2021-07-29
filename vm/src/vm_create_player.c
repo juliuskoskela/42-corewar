@@ -2,6 +2,7 @@
 
 static void	vm_read_header(t_arena *arena, t_uint32 player_number, int fd)
 {
+	// check MAX_PROG_SIZE
 	t_player	*player;
 	t_byte		buf[COMMENT_LENGTH];
 
@@ -28,7 +29,7 @@ static void	vm_read_header(t_arena *arena, t_uint32 player_number, int fd)
 }
 
 /*
-** Reading the last prog_size bytes of the input file and saving them to 
+** Reading the last prog_size bytes of the input file and saving them to
 ** arena->mem. Checking that the size of the file == prog_size.
 ** offset (MEM_SIZE / player_count) bytes of memory will be available for each
 ** player.

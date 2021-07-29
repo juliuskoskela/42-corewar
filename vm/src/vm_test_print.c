@@ -1,5 +1,26 @@
 #include "vm.h"
 
+void	vm_test_print_program(t_arena arena)
+{
+	t_uint32	player;
+	t_uint32	byte_i;
+	t_byte		byte;
+
+	player = 1;
+	byte_i = 0;
+	while (player * arena.offset <= MEM_SIZE)
+	{
+		print("player %d memory:\n", player);
+		while (byte_i < player * arena.offset)
+		{
+			byte = arena.mem[byte_i++];
+			print("%x ", byte);
+		}
+		print("\n");
+		player++;
+	}
+}
+
 void	vm_test_print_header(t_player player)
 {
 	print("magic: %x\n", player.header.magic);
@@ -8,7 +29,7 @@ void	vm_test_print_header(t_player player)
 	print("comment: %s\n", player.header.comment);
 }
 
-void    vm_test_print_arena(t_arena arena)
+void	vm_test_print_arena(t_arena arena)
 {
 	t_uint32 i;
 
@@ -21,4 +42,5 @@ void    vm_test_print_arena(t_arena arena)
 		vm_test_print_header(arena.all_players[i]);
 		i++;
 	}
+	vm_test_print_program(arena);
 }
