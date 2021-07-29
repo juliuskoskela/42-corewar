@@ -25,3 +25,4 @@ t_token_type	asm_peek_next_token(t_lexer *lexer)
 	else
 		return (ERROR_TOKEN);
 }
+

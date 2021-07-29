@@ -24,3 +24,4 @@ void	asm_write_ast_dot_to_file(char *path, t_astnode *tree)
 	asm_print_ast_dot(fd, tree);
 	close(fd);
 }
+

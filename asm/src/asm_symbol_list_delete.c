@@ -24,3 +24,4 @@ int	asm_symbol_list_delete(t_symbol_list **list, char *symbol)
 	free(node);
 	return (1);
 }
+

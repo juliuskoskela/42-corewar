@@ -7,3 +7,4 @@ char	asm_lexer_peek(t_lexer *lexer)
 	else
 		return (lexer->input[lexer->current_pos + 1]);
 }
+
