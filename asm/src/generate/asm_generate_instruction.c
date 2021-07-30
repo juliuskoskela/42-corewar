@@ -32,7 +32,8 @@ t_astnode *parameter_list)
 	asm_write_bytes(program, lc, &acb, 1);
 }
 
-static void	asm_resolve_label_forward_refs(int8_t *program, t_symbol_list *label)
+static void	asm_resolve_label_forward_refs(int8_t *program,
+t_symbol_list *label)
 {
 	t_refnode	*ref_node;
 	t_refnode	*next;
@@ -89,7 +90,6 @@ t_symbol_list **labels, t_astnode *node)
 		asm_write_argument_coding_byte(data->program, lc, node->right_child);
 	else if (ASM_PRINT_DEBUG)
 		print("no argument coding byte\n");
-	asm_write_arguments(data->program, lc, current_op_lc,
-		&data->symbols, node->right_child);
+	asm_write_arguments(data, lc, current_op_lc, node->right_child);
 	return (1);
 }

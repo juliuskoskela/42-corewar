@@ -1,4 +1,5 @@
 #include "asm.h"
+#include "lexer.h"
 
 t_token	asm_get_id_token(t_lexer *lexer)
 {

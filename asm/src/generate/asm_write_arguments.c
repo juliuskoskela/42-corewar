@@ -3,7 +3,7 @@
 #include "generate.h"
 #include <stdlib.h>
 
-void	asm_add_forward_reference_to_label(t_symbol_list *label,
+static void	asm_add_forward_reference_to_label(t_symbol_list *label,
 uint32_t ref_location, uint32_t op_location)
 {
 	t_refnode	*new_node;
@@ -26,8 +26,8 @@ uint32_t ref_location, uint32_t op_location)
 	}
 }
 
-void	asm_write_direct(int8_t *program, uint32_t *lc,
-uint32_t current_op_lc, t_symbol_list *symbols, t_astnode *parameter)
+static void	asm_write_direct(t_output_data *data, uint32_t *lc,
+uint32_t curr_op_lc, t_astnode *parameter)
 {
 	t_symbol_list	*label;
 
@@ -35,29 +35,29 @@ uint32_t current_op_lc, t_symbol_list *symbols, t_astnode *parameter)
 		asm_get_numeric_value(&parameter->num_value, parameter->value);
 	else
 	{
-		label = asm_symbol_list_lookup(symbols, parameter->value);
+		label = asm_symbol_list_lookup(&data->symbols, parameter->value);
 		if (label == NULL)
 			asm_generate_error(parameter, "Undefined label");
 		if (label->node->num_value != 0)
 		{
-			parameter->num_value = label->node->num_value - (int32_t)current_op_lc;
+			parameter->num_value = label->node->num_value - (int32_t)curr_op_lc;
 		}
 		else
 		{
 			if (ASM_PRINT_DEBUG)
 				asm_print_output_info("add forward reference for label",
 					label->symbol, parameter->num_value);
-			asm_add_forward_reference_to_label(label, *lc, current_op_lc);
+			asm_add_forward_reference_to_label(label, *lc, curr_op_lc);
 		}
 	}
 	if (ASM_PRINT_DEBUG)
 		asm_print_output_info("write direct", g_astnode_types[parameter->type],
 			parameter->num_value);
-	asm_write_bytes(program, lc, &parameter->num_value, 2);
+	asm_write_bytes(data->program, lc, &parameter->num_value, 2);
 }
 
-void	asm_write_indirect(int8_t *program, uint32_t *lc,
-uint32_t current_op_lc, t_symbol_list *symbols, t_astnode *parameter)
+static void	asm_write_indirect(t_output_data *data, uint32_t *lc,
+uint32_t curr_op_lc, t_astnode *parameter)
 {
 	t_symbol_list	*label;
 
@@ -65,28 +65,29 @@ uint32_t current_op_lc, t_symbol_list *symbols, t_astnode *parameter)
 		asm_get_numeric_value(&parameter->num_value, parameter->value);
 	else
 	{
-		label = asm_symbol_list_lookup(symbols, parameter->value);
+		label = asm_symbol_list_lookup(&data->symbols, parameter->value);
 		if (label == NULL)
 			asm_generate_error(parameter, "Undefined label");
 		if (label->node->num_value != 0)
 		{
-			parameter->num_value = label->node->num_value - (int32_t)current_op_lc;
+			parameter->num_value = label->node->num_value - (int32_t)curr_op_lc;
 		}
 		else
 		{
 			if (ASM_PRINT_DEBUG)
 				asm_print_output_info("add forward reference for label",
 					label->symbol, parameter->num_value);
-			asm_add_forward_reference_to_label(label, *lc, current_op_lc);
+			asm_add_forward_reference_to_label(label, *lc, curr_op_lc);
 		}
 	}
 	if (ASM_PRINT_DEBUG)
 		asm_print_output_info("write indirect",
 			g_astnode_types[parameter->type], parameter->num_value);
-	asm_write_bytes(program, lc, &parameter->num_value, 2);
+	asm_write_bytes(data->program, lc, &parameter->num_value, 2);
 }
 
-void	asm_write_register(int8_t *program, uint32_t *lc, t_astnode *parameter)
+static void	asm_write_register(int8_t *program, uint32_t *lc,
+t_astnode *parameter)
 {
 	char	*value;
 
@@ -103,8 +104,8 @@ void	asm_write_register(int8_t *program, uint32_t *lc, t_astnode *parameter)
 	asm_write_bytes(program, lc, &parameter->num_value, 1);
 }
 
-void	asm_write_arguments(int8_t *program, uint32_t *lc,
-uint32_t current_op_lc, t_symbol_list *symbols, t_astnode *parameter_list)
+void	asm_write_arguments(t_output_data *data, uint32_t *lc,
+uint32_t curr_op_lc, t_astnode *parameter_list)
 {
 	t_astnode	*parameter;
 
@@ -113,17 +114,15 @@ uint32_t current_op_lc, t_symbol_list *symbols, t_astnode *parameter_list)
 		parameter = parameter_list->left_child;
 		if (parameter->type == REGISTER)
 		{
-			asm_write_register(program, lc, parameter);
+			asm_write_register(data->program, lc, parameter);
 		}
 		else if (parameter->type == INDIRECT)
 		{
-			asm_write_indirect(program, lc, current_op_lc,
-				symbols, parameter->right_child);
+			asm_write_indirect(data, lc, curr_op_lc, parameter->right_child);
 		}
 		else
 		{
-			asm_write_direct(program, lc, current_op_lc,
-				symbols, parameter->right_child);
+			asm_write_direct(data, lc, curr_op_lc, parameter->right_child);
 		}
 		parameter_list = parameter_list->right_child;
 	}

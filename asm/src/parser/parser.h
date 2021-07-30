@@ -9,6 +9,7 @@ int			asm_parse(t_astnode **tree, char *input);
 int			asm_parser_error(t_parser *parser, t_token_type expected_type);
 int			asm_consume_token(t_parser *parser, t_token_type expected_type,
 				int	free_token_value);
+t_token		asm_init_empty_token(size_t row, size_t col);
 t_astnode	*asm_ast_label(t_parser *parser);
 t_astnode	*asm_ast_register(t_parser *parser);
 t_astnode	*asm_ast_indirect(t_parser *parser);

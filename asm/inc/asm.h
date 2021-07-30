@@ -109,14 +109,18 @@ typedef struct s_output_data
 	int8_t					program[CHAMP_MAX_SIZE + 1];
 }	t_output_data;
 
+typedef struct s_input_args
+{
+	char	*input_path;
+	int		print_ast_dot;
+	int		print_hex_dump;
+}	t_input_args;
+
 char				*asm_read_input(const char *filepath);
 
 void				asm_init_lexer(t_lexer *lexer, const char *input);
-void				asm_lexer_advance(t_lexer *lexer);
-char				asm_lexer_peek(t_lexer *lexer);
 t_token				asm_init_token(t_token_type type, char *value,
 						size_t row, size_t col);
-t_token				asm_init_empty_token(size_t row, size_t col);
 t_token				asm_get_next_token(t_lexer *lexer);
 t_token_type		asm_peek_next_token(t_lexer *lexer);
 void				asm_init_parser(t_parser *parser, t_lexer *lexer);
@@ -142,8 +146,7 @@ void				asm_print_symbol_list(t_symbol_list *symbols,
 void				asm_write_ast_dot_to_file(char *path, t_astnode *tree);
 void				asm_print_ast_dot(int fd, t_astnode *tree);
 
-int					asm_get_instruction(t_op *dst, char *mnemonic);
-int					asm_get_numeric_value(int32_t *dst, char *str);
 void				asm_exit_error(char *msg);
+int					asm_get_instruction(t_op *dst, char *mnemonic);
 
 #endif

@@ -10,9 +10,8 @@ int		asm_generate_statement(t_output_data *data, uint32_t *lc,
 			t_symbol_list **labels, t_astnode *node);
 int		asm_generate_instruction(t_output_data *data, uint32_t *lc,
 			t_symbol_list **labels, t_astnode *node);
-void	asm_write_arguments(int8_t *program, uint32_t *lc,
-			uint32_t current_op_lc, t_symbol_list *symbols, t_astnode *parameter_list);
+void	asm_write_arguments(t_output_data *data, uint32_t *lc,
+			uint32_t current_op_lc, t_astnode *parameter_list);
 int		asm_get_numeric_value(int32_t *dst, char *str);
-int		asm_get_instruction(t_op *dst, char *mnemonic);
 
 #endif

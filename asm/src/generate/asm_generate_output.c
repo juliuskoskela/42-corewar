@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include "core.h"
 
-int	asm_generate_bytecode_program(t_output_data *data, t_astnode *tree)
+static int	asm_generate_bytecode_program(t_output_data *data, t_astnode *tree)
 {
 	uint32_t		location_counter;
 	t_symbol_list	*defined_labels;

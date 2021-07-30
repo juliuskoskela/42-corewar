@@ -1,13 +1,11 @@
 #include "asm.h"
 #include "lexer.h"
 
-static t_token	asm_get_decimal_token(t_lexer *lexer)
+static t_token	asm_get_decimal_token(t_token token, t_lexer *lexer)
 {
-	t_token		token;
 	const char	*token_start;
 	size_t		token_len;
 
-	token = asm_init_token(INTEGER_TOKEN, NULL, lexer->line_no, lexer->col);
 	token_start = &lexer->input[lexer->current_pos];
 	token_len = 0;
 	if (lexer->current_char == '-' && !is_digit(asm_lexer_peek(lexer)))
@@ -31,13 +29,11 @@ static t_token	asm_get_decimal_token(t_lexer *lexer)
 	return (token);
 }
 
-static t_token	asm_get_hex_token(t_lexer *lexer)
+static t_token	asm_get_hex_token(t_token token, t_lexer *lexer)
 {
-	t_token		token;
 	const char	*token_start;
 	size_t		token_len;
 
-	token = asm_init_token(INTEGER_TOKEN, NULL, lexer->line_no, lexer->col);
 	token_start = &lexer->input[lexer->current_pos];
 	asm_lexer_advance(lexer);
 	asm_lexer_advance(lexer);
@@ -62,8 +58,11 @@ static t_token	asm_get_hex_token(t_lexer *lexer)
 
 t_token	asm_get_int_token(t_lexer *lexer)
 {
+	t_token	token;
+
+	token = asm_init_token(INTEGER_TOKEN, NULL, lexer->line_no, lexer->col);
 	if (lexer->current_char == '0' && asm_lexer_peek(lexer) == 'x')
-		return (asm_get_hex_token(lexer));
+		return (asm_get_hex_token(token, lexer));
 	else
-		return (asm_get_decimal_token(lexer));
+		return (asm_get_decimal_token(token, lexer));
 }
