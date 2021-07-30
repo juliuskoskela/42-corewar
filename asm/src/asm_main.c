@@ -23,8 +23,8 @@ int	main(int argc, char **argv)
 	t_output_data	data;
 
 	if (argc < 2
-		|| strcmp(argv[1], "--help") == 0
-		|| strcmp(argv[1], "--usage") == 0)
+		|| s_cmp(argv[1], "--help") == 0
+		|| s_cmp(argv[1], "--usage") == 0)
 		asm_print_usage();
 
 	input = asm_read_input(argv[argc - 1]);
@@ -35,7 +35,7 @@ int	main(int argc, char **argv)
 	if (!asm_parse(&tree, input))
 		asm_exit_error(NULL);
 
-	if (strcmp(argv[1], "--dot") == 0)
+	if (s_cmp(argv[1], "--dot") == 0)
 		asm_write_ast_dot_to_file(argv[argc - 1], tree);
 
 	asm_init_output_data(&data);
@@ -45,7 +45,7 @@ int	main(int argc, char **argv)
 	asm_generate_output(&data, tree);
 	asm_write_output_to_file(argv[argc - 1], data);
 
-	if (strcmp(argv[1], "--hex-dump") == 0)
+	if (s_cmp(argv[1], "--hex-dump") == 0)
 		asm_print_output_hexdump(data);
 
 	asm_astnode_free(tree);

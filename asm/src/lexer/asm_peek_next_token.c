@@ -1,5 +1,5 @@
 #include "asm.h"
-#include <ctype.h>
+#include "core.h"
 
 t_token_type	asm_peek_next_token(t_lexer *lexer)
 {
@@ -18,9 +18,9 @@ t_token_type	asm_peek_next_token(t_lexer *lexer)
 		return (DIRECT_TOKEN);
 	else if (lexer->current_char == LABEL_CHAR)
 		return (LABEL_TOKEN);
-	else if (isdigit(lexer->current_char) || lexer->current_char == '-')
+	else if (is_digit(lexer->current_char) || lexer->current_char == '-')
 		return (INTEGER_TOKEN);
-	else if (isalpha(lexer->current_char))
+	else if (is_alpha(lexer->current_char))
 		return (ID_TOKEN);
 	else
 		return (ERROR_TOKEN);

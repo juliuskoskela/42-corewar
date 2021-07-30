@@ -1,5 +1,4 @@
 #include "asm.h"
-#include <ctype.h>
 
 static int	asm_get_decimal(int32_t *dst, char *str)
 {
@@ -13,7 +12,7 @@ static int	asm_get_decimal(int32_t *dst, char *str)
 		sign = -1;
 		str++;
 	}
-	while (isdigit(*str))
+	while (is_digit(*str))
 	{
 		value = value * 10 + *str - '0';
 		str++;
@@ -31,7 +30,7 @@ static int	asm_get_hex(int32_t *dst, char *str)
 	int32_t				i;
 
 	str += 2;
-	while (isdigit(*str) || (*str >= 'a' && *str <= 'f'))
+	while (is_digit(*str) || (*str >= 'a' && *str <= 'f'))
 	{
 		i = 0;
 		while (digits[i] != *str)
@@ -47,7 +46,7 @@ static int	asm_get_hex(int32_t *dst, char *str)
 
 int	asm_get_numeric_value(int32_t *dst, char *str)
 {
-	if (strncmp(str, "0x", 2) == 0)
+	if (s_ncmp(str, "0x", 2) == 0)
 		return (asm_get_hex(dst, str));
 	else
 		return (asm_get_decimal(dst, str));

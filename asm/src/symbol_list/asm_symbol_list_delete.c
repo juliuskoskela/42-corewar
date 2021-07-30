@@ -1,4 +1,5 @@
 #include "asm.h"
+#include "core.h"
 #include <stdlib.h>
 
 int	asm_symbol_list_delete(t_symbol_list **list, char *symbol)
@@ -10,7 +11,7 @@ int	asm_symbol_list_delete(t_symbol_list **list, char *symbol)
 	prev = NULL;
 	while (node != NULL)
 	{
-		if (strcmp(node->symbol, symbol) == 0)
+		if (s_cmp(node->symbol, symbol) == 0)
 			break ;
 		prev = node;
 		node = node->next;

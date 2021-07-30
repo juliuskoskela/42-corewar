@@ -16,7 +16,7 @@
 # include <string.h>
 # include <stdint.h>
 
-# define ASM_PRINT_DEBUG 0
+# define ASM_PRINT_DEBUG 1
 
 # define COMMENT_CHAR		'#'
 # define COMMENT_SEMICOLON	';'

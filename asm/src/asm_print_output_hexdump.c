@@ -1,6 +1,5 @@
 #include "asm.h"
 #include "core.h"
-#include <ctype.h>
 
 void	asm_print_char_row(unsigned char *row, int col)
 {
@@ -10,7 +9,7 @@ void	asm_print_char_row(unsigned char *row, int col)
 	i = 0;
 	while (i < col)
 	{
-		if (isprint(row[i]))
+		if (is_print(row[i]))
 			print("%c", row[i]);
 		else
 			print(".");

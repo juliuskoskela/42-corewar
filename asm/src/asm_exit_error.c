@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include "core.h"
+#include <stdio.h>
 
 void	asm_exit_error(char *msg)
 {

@@ -45,13 +45,13 @@ static char	*asm_get_output_path(char *path)
 	size_t	path_len;
 	size_t	file_name_len;
 
-	path_len = strlen(path);
+	path_len = s_len(path);
 	file_name_len = path_len + 2;
 	cor_file = (char *)malloc(sizeof(char) * (file_name_len + 1));
 	if (cor_file == NULL)
 		asm_exit_error("Malloc error in allocating output file name");
-	strcpy(cor_file, path);
-	strcpy(&cor_file[path_len - 1], "cor");
+	s_cpy(cor_file, path);
+	s_cpy(&cor_file[path_len - 1], "cor");
 	return (cor_file);
 }
 
