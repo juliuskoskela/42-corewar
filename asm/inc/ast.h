@@ -55,4 +55,3 @@ t_astnode	*asm_astnode_new(t_astnode_type type, char *value, t_token token);
 void		asm_astnode_free(t_astnode *tree);
 
 #endif
-
