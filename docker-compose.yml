@@ -1,4 +1,4 @@
-version: "3.9" #what does this mean?
+version: "2.2"
 services: 
     ubuntu-container:
         build: .
