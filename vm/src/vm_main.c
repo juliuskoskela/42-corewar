@@ -12,5 +12,6 @@ int	main(int argc, char **argv)
 	mzero(&arena, sizeof(t_arena));
 	vm_save_input(&arena, argc, argv);
 	vm_test_print_arena(arena);
+    vm_battle(arena);
 	return (0);
 }

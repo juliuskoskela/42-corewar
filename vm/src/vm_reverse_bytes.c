@@ -1,5 +1,11 @@
 #include "vm.h"
 
+/*
+**	In the bytecode the magic code and prog_size are stored as little endian.
+**	This function returns the bytes in big endian. All data in the header
+**	struct is stored in big endian.
+*/
+
 void	*vm_reverse_bytes(void *dst, void *src, t_size size)
 {
 	t_byte	*tmp;
