@@ -29,8 +29,8 @@ typedef struct s_process
 	struct s_process	*next;
 	t_instructions		next_instruction;
 	t_uint32			id;
-	t_uint32			last_live;
-	t_uint32			cycles_before_execution;
+	t_int32				last_live;
+	t_int32				cycles_before_execution;
 	// Program counter. Initialized at player id.
 	t_byte				*pc;
 
@@ -90,6 +90,10 @@ void	vm_save_input(t_arena *arena, t_uint32 argc, char **argv);
 void	vm_create_player(t_arena *arena, t_uint32 *player_number, char *name);
 void	*vm_reverse_bytes(void *dst, void *src, t_size size);
 void	vm_check_live(t_process *processes, t_battle *battle);
+void	vm_execute_cycle(t_process *processes, t_battle *battle);
+void	vm_introduce_champs(t_arena arena);
+
+
 
 
 

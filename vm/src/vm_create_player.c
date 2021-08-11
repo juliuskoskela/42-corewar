@@ -53,14 +53,12 @@ void	vm_create_player(t_arena *arena, t_uint32 *player_number, char *name)
 	t_header	player;
 	int			fd;
 
-// could these values be NULL with a valid champion?
 	if (arena->all_players[*player_number - 1].prog_size || \
-        arena->all_players[*player_number - 1].prog_name[0])
+		arena->all_players[*player_number - 1].prog_name[0])
 		*player_number += 1;
 	if (*player_number > MAX_PLAYERS)
 		vm_error("player_number is not within MAX_PLAYERS\n");
 	mzero(&player, sizeof(t_header));
-//	player.number = *player_number;
 	arena->all_players[*player_number - 1] = player;
 	if (s_cmp(".cor", s_rchr(name, '.')))
 		vm_error("Champions must be .cor files\n");

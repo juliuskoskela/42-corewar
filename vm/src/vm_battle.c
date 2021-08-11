@@ -20,28 +20,15 @@ t_process	*vm_free_processes(t_process **lst)
 	{
 		tmp = *lst;
 		*lst = lst[0]->next;
-		mdel(&tmp);
+		mdel((void **)&tmp);
 	}
 	return (NULL);
 }
 
-void		vm_introduce_champs(t_arena arena)
+t_process	*create_process(t_arena arena, t_process *process_lst, \
+int player_id)
 {
-	t_size i;
-
-	i = 0;
-	while (i < arena.player_count)
-	{
-		print("* Player %d, weighing %d bytes, \"%s\" (\"%s\") !\n", 
-		i + 1, arena.all_players[i].prog_size, arena.all_players[i].prog_name,\
-		arena.all_players[i].comment);
-		i++;
-	}
-}
-
-t_process	*create_process(t_arena arena, t_process *process_lst, int player_id)
-{
-	t_process *new_process;
+	t_process	*new_process;
 
 	new_process = minit(sizeof(t_process));
 	if (!new_process)
@@ -52,11 +39,10 @@ t_process	*create_process(t_arena arena, t_process *process_lst, int player_id)
 	return (new_process);
 }
 
-
-t_process   *init_processes(t_arena arena)
+t_process	*init_processes(t_arena arena)
 {
-	t_size     player_id;
-	t_process   *process_lst;
+	t_size		player_id;
+	t_process	*process_lst;
 
 	process_lst = NULL;
 	player_id = 0;
@@ -101,8 +87,8 @@ void	vm_battle(t_arena arena)
 	processes_alive = arena.player_count;
 	while (process_lst)
 	{
-		while(battle.cycles_since_check++ < battle.cycle_to_die)
-			vm_execute_cycle(&battle, process_lst);
+		while (battle.cycles_since_check++ < battle.cycle_to_die)
+			vm_execute_cycle(process_lst, &battle);
 		vm_check_live(process_lst, &battle);
 	}
 	process_lst = vm_free_processes(&process_lst);

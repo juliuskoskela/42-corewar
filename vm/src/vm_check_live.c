@@ -21,15 +21,16 @@ void	vm_check_live(t_process *processes, t_battle *battle)
 {
 	t_int32		processes_alive;
 	t_process	*tmp;
-	
+
 	processes_alive = 0;
 	while (processes)
 	{
-		if (processes->last_live <= battle->cycles_executed - battle->cycle_to_die)
+		if (processes->last_live <= \
+			battle->cycles_executed - battle->cycle_to_die)
 		{
 			tmp = processes->next;
 			*processes = *processes->next;
-			mdel((void**)&tmp);
+			mdel((void **)&tmp);
 		}
 		else
 			processes = processes->next;
