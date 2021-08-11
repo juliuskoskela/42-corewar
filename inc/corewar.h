@@ -44,48 +44,7 @@
 # define COMMENT_LENGTH			(2048)
 # define COREWAR_EXEC_MAGIC		0xea83f3
 
-typedef struct s_header
-{
-  t_uint32		magic;
-  t_uint32		prog_size;
-  char			prog_name[PROG_NAME_LENGTH + 1];
-  char			comment[COMMENT_LENGTH + 1];
-}	t_header;
 
-typedef struct s_player
-{
-
-	struct s_header	header;
-	// 32 bit identfier.
-	t_uint32	id;
-
-	// Program counter. Initialized at player id.
-	t_byte		*pc;
-	// not sure if id and number are the same.
-	t_uint32	number;
-	// Zero flag, Along with a carry flag, a sign flag and an overflow flag,
-	// the zero flag is used to check the result of an arithmetic operation,
-	// including bitwise logical instructions. Initalized at 0.
-	t_bool		zf;
-
-	// 32 bit registers 1 - 16
-	t_uint32	r1; // Initialized at player ID.
-	t_uint32	r2; // Rest initialized at 0.
-	t_uint32	r3;
-	t_uint32	r4;
-	t_uint32	r5;
-	t_uint32	r6;
-	t_uint32	r7;
-	t_uint32	r8;
-	t_uint32	r9;
-	t_uint32	r10;
-	t_uint32	r11;
-	t_uint32	r12;
-	t_uint32	r13;
-	t_uint32	r14;
-	t_uint32	r15;
-	t_uint32	r16;
-}	t_player;
 
 typedef struct s_instructions
 {
@@ -93,16 +52,6 @@ typedef struct s_instructions
 	t_size	size;
 }	t_instructions;
 
-
-typedef struct s_arena
-{
-	t_player	all_players[MAX_PLAYERS];
-	t_size		player_count;
-	t_byte		mem[MEM_SIZE];
-	t_size		offset;
-	// if -dump flag is missing, this will be 0.
-	t_size		dump_nbr_cycles;
-}	t_arena;
 
 typedef struct s_param_types
 {

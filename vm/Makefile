@@ -25,7 +25,8 @@ SRC_BASE	=	vm_main.c \
 				vm_save_input.c \
 				vm_test_print.c \
 				vm_create_player.c \
-				vm_battle.c
+				vm_battle.c \
+				vm_execute_cycle.c
 
 SRC			=	$(addprefix $(SRC_DIR), $(SRC_BASE))
 OBJ			=	$(addprefix $(OBJ_DIR), $(SRC_BASE:.c=.o))

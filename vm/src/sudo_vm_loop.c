@@ -1,12 +1,3 @@
-// Where is the number of the player stored and what is it used for?
-
-// The number of the player == r1 == id number of their first process.
-
-// Are the champions executed one instruction at a time?
-
-
-// Players are located only in the arena memory. What we call s_player in the .h file is 
-// actually a process.
 
 
 void    init_players()
