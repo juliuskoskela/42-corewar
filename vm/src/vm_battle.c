@@ -77,8 +77,11 @@ void	vm_init_battle(t_arena arena, t_battle *battle)
 // time (not in one whole cycles_to_die cycle or more) or if 
 // cycles_to_die is <= 0.
 //
-// So when cycles_to_die reaches 0, all processes will be dead? Or does each
-// process have it's own cycle_to_die variable?
+
+//
+// If CYCLE_TO_DIE wasn’t decreased since MAX_CHECKS checkups, decrease it.
+// What happens after MAX_CHECKS? If above statement is true, will CYCLE_TO_DIE
+// be decreased by CYCLE_DELTA?
 
 /*
 ** Cycles are executed until a live check occurs. Checks occur every
@@ -95,17 +98,12 @@ void	vm_battle(t_arena arena)
 	vm_test_print_processes(process_lst);
 	vm_introduce_champs(arena);
 	vm_init_battle(arena, &battle);
-
-	while (processes_alive)
+	processes_alive = arena.player_count;
+	while (process_lst)
 	{
-		while(battle.cycle_to_die)
-		{
+		while(battle.cycles_since_check++ < battle.cycle_to_die)
 			vm_execute_cycle(&battle, process_lst);
-		}
-		processes_alive = vm_check_lives(process_lst);
-		battle.cycle_to_die = \
-			CYCLE_TO_DIE - (CYCLE_DELTA * battle.checks_performed);
+		vm_check_live(process_lst, &battle);
 	}
-
 	process_lst = vm_free_processes(&process_lst);
 }

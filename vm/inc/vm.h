@@ -70,17 +70,27 @@ typedef struct s_arena
 
 typedef struct s_battle
 {
-	t_size	last_alive;
-	t_size	cycles_executed;
-	t_size	lives_since_check;
-	t_size	checks_performed;
-	t_size	cycle_to_die;
+	//the player who was last reported to be alive
+	t_int32	last_alive;
+	//number of cycles executed since starting the program.
+	t_int32	cycles_executed;
+	// number of lives reported within current cycle_to_die period.
+	t_int32	lives_since_check;
+	// number of checks with lives_since_check < NBR_LIVE. if this reaches
+	// MAX_CHECKS, cycle_to_die is decreased by CYCLE_DELTA and
+	// checks_performed is set to 0.
+	t_int32	checks_performed;
+	// every cycle_to_die cycles, each process will be checked for a live.
+	t_int32	cycle_to_die;
+	t_int32 cycles_since_check;
 }	t_battle;
 
 void	vm_error(const char *message);
 void	vm_save_input(t_arena *arena, t_uint32 argc, char **argv);
 void	vm_create_player(t_arena *arena, t_uint32 *player_number, char *name);
 void	*vm_reverse_bytes(void *dst, void *src, t_size size);
+void	vm_check_live(t_process *processes, t_battle *battle);
+
 
 
 void	vm_test_print_arena(t_arena arena);
