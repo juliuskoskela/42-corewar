@@ -43,7 +43,8 @@ static void	vm_validate_input(t_arena *arena, t_uint32 argc, char **argv)
 			set_nbr = s_toi(argv[++i]);
 			if (set_nbr <= 0 || set_nbr > MAX_PLAYERS)
 				vm_error("Invalid value after -n flag\n");
-			if (arena->all_players[set_nbr - 1].number)
+			if (arena->all_players[set_nbr - 1].prog_size || \
+			arena->all_players[set_nbr - 1].prog_name[0])
 				vm_error("All champions must be given unique numbers\n");
 			vm_create_player(arena, &set_nbr, argv[++i]);
 		}
