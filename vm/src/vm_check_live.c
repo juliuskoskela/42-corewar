@@ -1,10 +1,11 @@
 #include "vm.h"
 
-t_process	*vm_delete_process(t_process **head, t_process *current, t_process *prev)
+t_process	*vm_delete_process(t_process **head, t_process *current, \
+t_process *prev)
 {
 	if (!prev)
 	{
-		*head = head[0]->next;
+		*head = (*head)->next;
 		mdel((void **)current);
 		current = *head;
 	}
