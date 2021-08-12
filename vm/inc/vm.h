@@ -85,20 +85,16 @@ typedef struct s_battle
 	t_int32 cycles_since_check;
 }	t_battle;
 
-void	vm_error(const char *message);
-void	vm_save_input(t_arena *arena, t_uint32 argc, char **argv);
-void	vm_create_player(t_arena *arena, t_uint32 *player_number, char *name);
-void	*vm_reverse_bytes(void *dst, void *src, t_size size);
-void	vm_check_live(t_process *processes, t_battle *battle);
-void	vm_execute_cycle(t_process *processes, t_battle *battle);
-void	vm_introduce_champs(t_arena arena);
+void		vm_error(const char *message);
+void		vm_save_input(t_arena *arena, t_uint32 argc, char **argv);
+void		vm_create_player(t_arena *arena, t_uint32 *player_number, char *name);
+void		*vm_reverse_bytes(void *dst, void *src, t_size size);
+void		vm_check_live(t_process **processes, t_battle *battle);
+void		vm_execute_cycle(t_process *processes, t_battle *battle);
+void		vm_introduce_champs(t_arena arena);
 
-
-
-
-
-void	vm_test_print_arena(t_arena arena);
-void	vm_test_print_processes(t_process *lst);
-void	vm_battle(t_arena arena);
+void		vm_test_print_arena(t_arena arena);
+void		vm_test_print_processes(t_process *lst);
+void		vm_battle(t_arena arena);
 
 #endif

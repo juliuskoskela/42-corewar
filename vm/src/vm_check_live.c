@@ -1,5 +1,22 @@
 #include "vm.h"
 
+t_process	*vm_delete_process(t_process **head, t_process *current, t_process *prev)
+{
+	if (!prev)
+	{
+		*head = head[0]->next;
+		mdel((void **)current);
+		current = *head;
+	}
+	else
+	{
+		prev->next = current->next;
+		mdel((void **)current);
+		current = prev->next;
+	}
+	return (current);
+}
+
 /*
 **	A check occurs every cycle_to_die cycles, while cycle_to_die is greater
 ** than zero. If cycle_to_die >= 0, a check occurs after each cycle.
@@ -17,23 +34,23 @@
 **	After each check, the number of lives stated will be reset to 0.
 */
 
-void	vm_check_live(t_process *processes, t_battle *battle)
+void	vm_check_live(t_process **head, t_battle *battle)
 {
-	t_int32		processes_alive;
-	t_process	*tmp;
+	t_process	*current;
+	t_process	*prev;
 
-	processes_alive = 0;
-	while (processes)
+	current = *head;
+	prev = NULL;
+	while (current)
 	{
-		if (processes->last_live <= \
+		if (current->last_live <= \
 			battle->cycles_executed - battle->cycle_to_die)
-		{
-			tmp = processes->next;
-			*processes = *processes->next;
-			mdel((void **)&tmp);
-		}
+			current = vm_delete_process(head, current, prev);
 		else
-			processes = processes->next;
+		{
+			prev = current;
+			current = current->next;
+		}
 	}
 	battle->checks_performed += 1;
 	if (battle->lives_since_check >= NBR_LIVE || \
