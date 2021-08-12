@@ -44,7 +44,13 @@
 # define COMMENT_LENGTH			(2048)
 # define COREWAR_EXEC_MAGIC		0xea83f3
 
-
+typedef struct s_header
+{
+	t_uint32		magic;
+	t_uint32		prog_size;
+	char			prog_name[PROG_NAME_LENGTH + 1];
+	char			comment[COMMENT_LENGTH + 1];
+}	t_header;
 
 typedef struct s_instructions
 {

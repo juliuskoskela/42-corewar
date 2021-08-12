@@ -13,14 +13,6 @@
 
 # include "../../inc/corewar.h"
 
-typedef struct s_header
-{
-	t_uint32		magic;
-	t_uint32		prog_size;
-	char			prog_name[PROG_NAME_LENGTH + 1];
-	char			comment[COMMENT_LENGTH + 1];
-}	t_header;
-
 typedef struct s_process
 {
 	struct s_header		header;
