@@ -24,5 +24,6 @@ int		is_posinf(double n);
 int		is_space(int c);
 int		is_upper(int c);
 int		is_wspace(char c);
+int		is_print(int c);
 
 #endif
