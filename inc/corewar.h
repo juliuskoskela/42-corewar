@@ -21,6 +21,12 @@
 # define DIR_CODE				2
 # define IND_CODE				3
 
+# define EMPTY					0U
+# define T_REG					1U
+# define T_DIR					(1U << 1U)
+# define T_IND					(1U << 2U)
+# define T_LAB					(1U << 3U)
+
 # define MAX_ARGS_NUMBER		4
 # define MAX_PLAYERS			4
 # define MEM_SIZE				(4*1024)
@@ -29,17 +35,6 @@
 
 # define REG_NUMBER				16
 
-# define CYCLE_TO_DIE			1536
-# define CYCLE_DELTA			50
-# define NBR_LIVE				21
-# define MAX_CHECKS				10
-
-# define EMPTY					0U
-# define T_REG					1U
-# define T_DIR					(1U << 1U)
-# define T_IND					(1U << 2U)
-# define T_LAB					(1U << 3U)
-
 # define PROG_NAME_LENGTH		(128)
 # define COMMENT_LENGTH			(2048)
 # define COREWAR_EXEC_MAGIC		0xea83f3
@@ -47,8 +42,8 @@
 typedef struct s_header
 {
 	t_uint32		magic;
-	t_uint32		prog_size;
 	char			prog_name[PROG_NAME_LENGTH + 1];
+	t_uint32		prog_size;
 	char			comment[COMMENT_LENGTH + 1];
 }	t_header;
 
@@ -57,7 +52,6 @@ typedef struct s_instructions
 	t_byte	*bytes;
 	t_size	size;
 }	t_instructions;
-
 
 typedef struct s_param_types
 {
