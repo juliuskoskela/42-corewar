@@ -27,7 +27,8 @@ int player_id)
 	if (!new_process)
 		vm_error("Malloc failed in create_process\n");
 	new_process->id = player_id;
-	new_process->pc = &arena.mem[MEM_SIZE / arena.player_count * player_id];
+	new_process->pc = (player_id - 1) * arena.offset;
+//	new_process->pc = &arena.mem[MEM_SIZE / arena.player_count * player_id];
 	new_process->next = process_lst;
 	return (new_process);
 }
@@ -67,9 +68,16 @@ void	vm_battle(t_arena arena)
 	vm_introduce_champs(arena);
 	while (process_lst)
 	{
-		vm_execute_cycle(process_lst, &battle);
+		vm_execute_cycle(process_lst, &battle, &arena);
 		while (++battle.cycles_since_check < battle.cycle_to_die)
-			vm_execute_cycle(process_lst, &battle);
+		{
+			if (battle.cycles_executed == arena.dump_nbr_cycles)
+			{
+				vm_print_arena(arena, process_lst);
+				return ;
+			}
+			vm_execute_cycle(process_lst, &battle, &arena);
+		}
 		vm_check_live(&process_lst, &battle);
 	}
 	print("Player %d (%s) won\n", battle.last_alive, \
