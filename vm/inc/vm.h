@@ -21,7 +21,6 @@
 typedef struct s_process
 {
 	struct s_header		header;
-	struct s_process	*next;
 	t_instructions		next_instruction;
 	t_uint32			id;
 	t_int32				last_live;
@@ -37,6 +36,7 @@ typedef struct s_process
 
 	// 32 bit registers 1 - 16, r1 initialized at player ID and the rest at 0
 	t_uint32			registers[17];
+	struct s_process	*next;
 }	t_process;
 
 typedef struct s_arena
