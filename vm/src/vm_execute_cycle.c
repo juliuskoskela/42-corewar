@@ -13,8 +13,6 @@ t_arena *arena)
 	offset = 0;
 	if (instruction.has_argument_coding_byte)
 		print("\targument coding byte: %#x\n", arena->mem[process->pc + ++offset]);
-	
-	
 }
 
 t_op	vm_get_instruction(t_byte opcode)
@@ -31,7 +29,7 @@ t_op	vm_get_instruction(t_byte opcode)
 	return (g_op_tab[i]);
 }
 
-void	vm_init_process_execution(t_process *process, t_arena *arena)
+void	vm_init_instruction_execution(t_process *process, t_arena *arena)
 {
 	t_op	instruction;
 
@@ -46,7 +44,7 @@ void	vm_init_process_execution(t_process *process, t_arena *arena)
 	}
 }
 
-void	vm_finish_process_execution(t_process *process, t_arena *arena)
+void	vm_finish_instruction_execution(t_process *process, t_arena *arena)
 {
 	t_op	instruction;
 
@@ -62,15 +60,14 @@ void	vm_finish_process_execution(t_process *process, t_arena *arena)
 	process->cycles_before_execution = -1;
 }
 
-
 void	vm_execute_process(t_process *process, t_arena *arena)
 {
 	if (process->cycles_before_execution > 0)
 		process->cycles_before_execution--;
 	else if (process->cycles_before_execution == 0)
-		vm_finish_process_execution(process, arena);
+		vm_finish_instruction_execution(process, arena);
 	else
-		vm_init_process_execution(process, arena);
+		vm_init_instruction_execution(process, arena);
 }
 
 void	vm_execute_cycle(t_process *process, t_battle *battle, t_arena *arena)
