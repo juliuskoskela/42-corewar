@@ -74,7 +74,7 @@ typedef struct s_op
 
 # define OP_COUNT	16
 
-static const t_op	g_op_tab[17] =
+static const t_op	g_op_tab[] =
 {
 	{"live", 1, {T_DIR, EMPTY, EMPTY}, 1, 10, "alive", 0, 0},
 	{"ld", 2, {T_DIR | T_IND, T_REG, EMPTY}, 2, 5, "load", 1, 0},
@@ -94,5 +94,6 @@ static const t_op	g_op_tab[17] =
 	{"aff", 1, {T_REG, EMPTY, EMPTY}, 16, 2, "aff", 1, 0},
 	{0, 0, {0}, 0, 0, 0, 0, 0}
 };
+
 
 #endif

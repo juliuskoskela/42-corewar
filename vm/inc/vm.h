@@ -28,7 +28,7 @@ typedef struct s_process
 	t_int32				cycles_before_execution;
 	// Program counter.
 	// t_byte				*pc;
-	t_uint32			pc;
+	t_size				pc;
 
 	// Zero flag, Along with a carry flag, a sign flag and an overflow flag,
 	// the zero flag is used to check the result of an arithmetic operation,
@@ -36,7 +36,7 @@ typedef struct s_process
 	t_bool				zf;
 
 	// 32 bit registers 1 - 16, r1 initialized at player ID and the rest at 0
-	t_uint32			registers[17];
+	t_uint64			registers[17];
 }	t_process;
 
 typedef struct s_arena
@@ -66,6 +66,8 @@ typedef struct s_battle
 	t_int32	cycles_since_check;
 }	t_battle;
 
+typedef void (*t_instr)(t_arena *, t_process *);
+
 void		vm_error(const char *message);
 void		vm_save_input(t_arena *arena, t_uint32 argc, char **argv);
 void		vm_create_player(t_arena *arena, t_uint32 *player_number, \
@@ -79,5 +81,40 @@ void		vm_test_print_arena(t_arena arena);
 void		vm_test_print_processes(t_process *lst);
 void		vm_battle(t_arena arena);
 void		vm_print_arena(t_arena arena, t_process *process_list);
+
+void vm_instr_st(
+		t_arena *a,
+		t_process *p);
+
+void vm_instr_sti(
+		t_arena *a,
+		t_process *p);
+
+void vm_instr_null(
+		t_arena *a,
+		t_process *p);
+
+t_uint8	vm_check_acb(
+		t_uint8 acb,
+		t_size arg_i);
+
+static const t_instr g_inst[] =
+{
+	vm_instr_null,
+	vm_instr_null,
+	vm_instr_st,
+	vm_instr_null,
+	vm_instr_null,
+	vm_instr_null,
+	vm_instr_null,
+	vm_instr_null,
+	vm_instr_null,
+	vm_instr_null,
+	vm_instr_sti,
+	vm_instr_null,
+	vm_instr_null,
+	vm_instr_null,
+	vm_instr_null,
+};
 
 #endif
