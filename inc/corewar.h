@@ -13,9 +13,9 @@
 
 # include "../lib/core/inc/core.h"
 
-# define IND_SIZE				2
-# define REG_SIZE				4
-# define DIR_SIZE				REG_SIZE
+# define REG_ADDR_SIZE			1
+# define DIR_VAL_SIZE			2
+# define IND_ADDR_SIZE			2
 
 # define REG_CODE				1
 # define DIR_CODE				2
@@ -33,6 +33,7 @@
 # define IDX_MOD				(MEM_SIZE / 8)
 # define CHAMP_MAX_SIZE			(MEM_SIZE / 6)
 
+# define REG_SIZE				4
 # define REG_NUMBER				16
 
 # define PROG_NAME_LENGTH		(128)

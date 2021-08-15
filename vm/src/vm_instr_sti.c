@@ -18,31 +18,33 @@ void vm_instr_sti(
 
 	lhs = 0;
 	rhs = 0;
-	mem_i = (p->pc + 1) % MEM_SIZE;
 
-	// arg 1
+	// acb
+	mem_i = (p->pc + 1) % MEM_SIZE;
 	acb = a->mem[mem_i];
 	if (vm_check_acb(acb, 0) != REG_CODE)
 		vm_error("Error st arg1!\n");
+
+	// arg 1
 	mem_i = (mem_i + 1) % MEM_SIZE;
 	src = (t_byte *)&p->registers[a->mem[mem_i] - 1];
 
 	// arg 2
-	mem_i = (mem_i + 2) % MEM_SIZE;
+	mem_i = (mem_i + 1) % MEM_SIZE;
 	if (vm_check_acb(acb, 1) == REG_CODE)
 	{
-		mcpy(&lhs, &p->registers[a->mem[mem_i]], REG_SIZE);
-		mem_i = (mem_i + 2) % MEM_SIZE;
+		vm_reverse_bytes(&lhs, &p->registers[a->mem[mem_i]], REG_ADDR_SIZE);
+		mem_i = (mem_i + REG_ADDR_SIZE) % MEM_SIZE;
 	}
 	else if (vm_check_acb(acb, 1) == IND_CODE)
 	{
-		mcpy(&lhs, &a->mem[(a->mem[mem_i] + p->pc) % MEM_SIZE], IND_SIZE);
-		mem_i = (mem_i + 2) % MEM_SIZE;
+		vm_reverse_bytes(&lhs, &a->mem[a->mem[mem_i]], IND_ADDR_SIZE);
+		mem_i = (mem_i + IND_ADDR_SIZE) % MEM_SIZE;
 	}
 	else if (vm_check_acb(acb, 1) == DIR_CODE)
 	{
-		mcpy(&lhs, &a->mem[mem_i], DIR_SIZE);
-		mem_i = (mem_i + 2) % MEM_SIZE;
+		vm_reverse_bytes(&lhs, &a->mem[mem_i], DIR_VAL_SIZE);
+		mem_i = (mem_i + DIR_VAL_SIZE) % MEM_SIZE;
 	}
 	else
 		vm_error("Error st arg2!\n");
@@ -50,20 +52,20 @@ void vm_instr_sti(
 	// arg 3
 	if (vm_check_acb(acb, 2) == REG_CODE)
 	{
-		mcpy(&rhs, &p->registers[a->mem[mem_i]], REG_SIZE);
-		mem_i = (mem_i + 2) % MEM_SIZE;
+		vm_reverse_bytes(&rhs, &p->registers[a->mem[mem_i]], REG_ADDR_SIZE);
+		mem_i = (mem_i + REG_ADDR_SIZE) % MEM_SIZE;
 	}
 	else if (vm_check_acb(acb, 2) == DIR_CODE)
 	{
-		mcpy(&rhs, &a->mem[mem_i], DIR_SIZE);
-		mem_i = (mem_i + 2) % MEM_SIZE;
+		vm_reverse_bytes(&rhs, &a->mem[mem_i], DIR_VAL_SIZE);
+		mem_i = (mem_i + DIR_VAL_SIZE) % MEM_SIZE;
 	}
 	else
-		vm_error("Error st arg2!\n");
+		vm_error("Error st arg3!\n");
 
-	// work
-	print("%d + %d = %d\n", lhs, rhs, lhs + rhs);
+	// store at index
+	// print("%d + %d = %d\n", lhs, rhs, lhs + rhs);
 	dst = &a->mem[(lhs + rhs) % MEM_SIZE];
 	vm_reverse_bytes(dst, src, REG_SIZE);
-	p->pc = (mem_i + 1) % MEM_SIZE;
+	p->pc = mem_i;
 }

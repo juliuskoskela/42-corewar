@@ -53,7 +53,7 @@ uint32_t curr_op_lc, t_astnode *parameter)
 	if (ASM_PRINT_DEBUG)
 		asm_print_output_info("write direct", g_astnode_types[parameter->type],
 			parameter->num_value);
-	asm_write_bytes(data->program, lc, &parameter->num_value, 2);
+	asm_write_bytes(data->program, lc, &parameter->num_value, DIR_VAL_SIZE);
 }
 
 static void	asm_write_indirect(t_output_data *data, uint32_t *lc,
@@ -83,7 +83,7 @@ uint32_t curr_op_lc, t_astnode *parameter)
 	if (ASM_PRINT_DEBUG)
 		asm_print_output_info("write indirect",
 			g_astnode_types[parameter->type], parameter->num_value);
-	asm_write_bytes(data->program, lc, &parameter->num_value, 2);
+	asm_write_bytes(data->program, lc, &parameter->num_value, IND_ADDR_SIZE);
 }
 
 static void	asm_write_register(int8_t *program, uint32_t *lc,
@@ -101,7 +101,7 @@ t_astnode *parameter)
 		asm_generate_error(parameter, "Invalid register");
 	if (ASM_PRINT_DEBUG)
 		asm_print_output_info("write register", NULL, parameter->num_value);
-	asm_write_bytes(program, lc, &parameter->num_value, 1);
+	asm_write_bytes(program, lc, &parameter->num_value, REG_ADDR_SIZE);
 }
 
 void	asm_write_arguments(t_output_data *data, uint32_t *lc,
