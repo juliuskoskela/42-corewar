@@ -125,6 +125,10 @@ void vm_instr_alive(
 		t_arena *a,
 		t_process *p);
 
+void vm_instr_ld(
+		t_arena *a,
+		t_process *p);
+
 void vm_instr_st(
 		t_arena *a,
 		t_process *p);
