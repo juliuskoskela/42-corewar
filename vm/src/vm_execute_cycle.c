@@ -66,12 +66,12 @@ void	vm_execute_process(t_process *process, t_arena *arena)
 		vm_init_instruction_execution(process, arena);
 }
 
-void	vm_execute_cycle(t_process *process, t_battle *battle, t_arena *arena)
+void	vm_execute_cycle(t_process *process,t_arena *arena)
 {
-	while (process && battle)
+	while (process)
 	{
 		vm_execute_process(process, arena);
 		process = process->next;
 	}
-	battle->cycles_executed += 1;
+	arena->battle.cycles_executed += 1;
 }

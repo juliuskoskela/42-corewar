@@ -39,17 +39,8 @@ typedef struct s_process
 
 	// 32 bit registers 1 - 16, r1 initialized at player ID and the rest at 0
 	t_uint64			registers[17];
+	struct s_process	*next;
 }	t_process;
-
-typedef struct s_arena
-{
-	t_header	all_players[MAX_PLAYERS];
-	t_size		player_count;
-	t_byte		mem[MEM_SIZE];
-	t_size		offset;
-	// if -dump flag is missing, this will be 0.
-	t_int32		dump_nbr_cycles;
-}	t_arena;
 
 typedef struct s_battle
 {
@@ -67,6 +58,18 @@ typedef struct s_battle
 	t_int32	cycle_to_die;
 	t_int32	cycles_since_check;
 }	t_battle;
+
+typedef struct s_arena
+{
+	t_header	all_players[MAX_PLAYERS];
+	t_size		player_count;
+	t_byte		mem[MEM_SIZE];
+	t_size		offset;
+	// if -dump flag is missing, this will be 0.
+	t_battle	battle;
+	t_process	*processes;
+	t_int32		dump_nbr_cycles;
+}	t_arena;
 
 typedef void (*t_instr)(t_arena *, t_process *);
 
@@ -94,7 +97,6 @@ void vm_check_live(
 
 void vm_execute_cycle(
 		t_process *processes,
-		t_battle *battle,
 		t_arena *arena);
 
 void vm_introduce_champs(
