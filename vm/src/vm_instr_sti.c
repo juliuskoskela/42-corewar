@@ -1,51 +1,8 @@
 #include "vm.h"
 
-// 3 : { (T_REG), (T_REG | T_DIR | T_IND), (T_DIR | T_REG) }
-// sti src, lhs, rhs
+// STI (T_REG src, (T_REG | T_DIR | T_IND) lhs, T_DIR | T_REG rhs
 // Computes lhs + rhs and uses the result as an offset to address memory
 // and store the value of the register src at that memory location.
-
-typedef t_byte* t_mem_addr;
-typedef t_uint64* t_reg_addr;
-
-t_reg_addr	vm_get_reg_addr(t_process *p, t_size i)
-{
-	return (&p->registers[i]);
-}
-
-t_mem_addr	vm_get_mem_addr(t_arena *a, t_size i)
-{
-	return (&a->mem[i  % MEM_SIZE]);
-}
-
-t_uint64 vm_get_val(
-		t_arena *a,
-		t_process *p,
-		t_uint8 acb,
-		t_size *mem_i)
-{
-	t_uint64	arg;
-
-	arg = 0;
-	if (acb == REG_CODE)
-	{
-		vm_reverse_bytes(&arg, vm_get_reg_addr(p, a->mem[*mem_i] - 1), REG_SIZE);
-		*mem_i = (*mem_i + REG_ADDR_SIZE) % MEM_SIZE;
-	}
-	else if (acb == IND_CODE)
-	{
-		vm_reverse_bytes(&arg, vm_get_mem_addr(a, a->mem[*mem_i]), IND_ADDR_SIZE);
-		*mem_i = (*mem_i + IND_ADDR_SIZE) % MEM_SIZE;
-	}
-	else if (acb == DIR_CODE)
-	{
-		vm_reverse_bytes(&arg, vm_get_mem_addr(a, *mem_i), DIR_VAL_SIZE);
-		*mem_i = (*mem_i + DIR_VAL_SIZE) % MEM_SIZE;
-	}
-	else
-		vm_error("Error args!\n");
-	return (arg);
-}
 
 void vm_instr_sti(
 		t_arena *a,
@@ -67,9 +24,9 @@ void vm_instr_sti(
 		vm_error("Error arg 1 sti!\n");
 	mem_i = (mem_i + 1) % MEM_SIZE;
 	src = vm_get_reg_addr(p, a->mem[mem_i] - 1);
+	mem_i = (mem_i + 1) % MEM_SIZE;
 
 	// arg 2
-	mem_i = (mem_i + 1) % MEM_SIZE;
 	if (vm_check_acb(acb, 1) != REG_CODE
 		&& vm_check_acb(acb, 1) != IND_CODE
 		&& vm_check_acb(acb, 1) != DIR_CODE)

@@ -18,6 +18,9 @@
 # define NBR_LIVE				21
 # define MAX_CHECKS				10
 
+typedef t_byte* t_mem_addr;
+typedef t_uint64* t_reg_addr;
+
 typedef struct s_process
 {
 	struct s_header		header;
@@ -68,19 +71,48 @@ typedef struct s_battle
 
 typedef void (*t_instr)(t_arena *, t_process *);
 
-void		vm_error(const char *message);
-void		vm_save_input(t_arena *arena, t_uint32 argc, char **argv);
-void		vm_create_player(t_arena *arena, t_uint32 *player_number, \
-char *name);
-void		*vm_reverse_bytes(void *dst, void *src, t_size size);
-void		vm_check_live(t_process **processes, t_battle *battle);
-void		vm_execute_cycle(t_process *processes, t_battle *battle, t_arena *arena);
-void		vm_introduce_champs(t_arena arena);
+void vm_error(
+		const char *message);
 
-void		vm_test_print_arena(t_arena arena);
-void		vm_test_print_processes(t_process *lst);
-void		vm_battle(t_arena arena);
-void		vm_print_arena(t_arena arena, t_process *process_list);
+void vm_save_input(
+		t_arena *arena,
+		t_uint32 argc,
+		char **argv);
+
+void vm_create_player(
+		t_arena *arena,
+		t_uint32 *player_number,
+		char *name);
+
+void *vm_reverse_bytes(
+		void *dst,
+		void *src,
+		t_size size);
+
+void vm_check_live(
+		t_process **processes,
+		t_battle *battle);
+
+void vm_execute_cycle(
+		t_process *processes,
+		t_battle *battle,
+		t_arena *arena);
+
+void vm_introduce_champs(
+		t_arena arena);
+
+void vm_test_print_arena(
+		t_arena arena);
+
+void vm_test_print_processes(
+		t_process *lst);
+
+void vm_battle(
+		t_arena arena);
+
+void vm_print_arena(
+		t_arena arena,
+		t_process *process_list);
 
 void vm_instr_st(
 		t_arena *a,
@@ -97,6 +129,20 @@ void vm_instr_null(
 t_uint8	vm_check_acb(
 		t_uint8 acb,
 		t_size arg_i);
+
+t_reg_addr vm_get_reg_addr(
+		t_process *p,
+		t_size i);
+
+t_mem_addr vm_get_mem_addr(
+		t_arena *a,
+		t_size i);
+
+t_uint64 vm_get_val(
+		t_arena *a,
+		t_process *p,
+		t_uint8 acb,
+		t_size *mem_i);
 
 static const t_instr g_inst[] =
 {
