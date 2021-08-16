@@ -31,6 +31,7 @@ SRC_BASE	=	vm_main.c \
 				vm_introduce_champs.c \
 				vm_print_arena.c \
 				vm_instr_null.c \
+				vm_instr_alive.c \
 				vm_instr_st.c \
 				vm_instr_sti.c \
 				vm_check_acb.c \

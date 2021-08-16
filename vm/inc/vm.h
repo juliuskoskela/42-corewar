@@ -121,6 +121,10 @@ void vm_print_arena(
 		t_arena arena,
 		t_process *process_list);
 
+void vm_instr_alive(
+		t_arena *a,
+		t_process *p);
+
 void vm_instr_st(
 		t_arena *a,
 		t_process *p);
