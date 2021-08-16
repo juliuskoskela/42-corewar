@@ -11,10 +11,10 @@ void	vm_test_print_processes(t_process *lst)
 		5: |%d|\t6: |%d|\t7: |%d|\t8: |%d|\n\
 		9: |%d|\t10: |%d|\t11: |%d|\t12: |%d|\n\
 		13: |%d|\t14: |%d|\t15: |%d|\t16: |%d|\n",
-		lst->registers[1], lst->registers[2], lst->registers[3], lst->registers[4],
+		lst->registers[0], lst->registers[1], lst->registers[2], lst->registers[3], lst->registers[4],
 		lst->registers[5], lst->registers[6], lst->registers[7], lst->registers[8], 
 		lst->registers[9], lst->registers[10], lst->registers[11], lst->registers[12],
-		lst->registers[13], lst->registers[14], lst->registers[15], lst->registers[16]);
+		lst->registers[13], lst->registers[14], lst->registers[15]);
 		lst = lst->next;
 	}
 }

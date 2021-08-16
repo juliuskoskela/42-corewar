@@ -44,7 +44,7 @@ typedef struct s_process
 	t_bool				zf;
 
 	// 32 bit registers 1 - 16, r1 initialized at player ID and the rest at 0
-	t_uint64			registers[17];
+	t_uint64			registers[16];
 	struct s_process	*next;
 }	t_process;
 
@@ -151,7 +151,7 @@ t_uint64 vm_get_val(
 		t_uint8 acb,
 		t_size *mem_i);
 
-static const t_instr g_inst[] =
+static const t_instr g_instr_funcs[] =
 {
 	vm_instr_null,
 	vm_instr_null,

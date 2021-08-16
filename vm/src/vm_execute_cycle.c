@@ -8,7 +8,7 @@ t_arena *arena)
 		(int)arena->mem[process->pc],
 		(int)process->pc,
 		instruction.mnemonic);
-	g_inst[instruction.opcode - 1](arena, process);
+	g_instr_funcs[instruction.opcode - 1](arena, process);
 }
 
 t_op	vm_get_instruction(t_byte opcode)

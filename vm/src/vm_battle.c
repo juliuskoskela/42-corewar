@@ -27,9 +27,10 @@ int player_id)
 	if (!new_process)
 		vm_error("Malloc failed in create_process\n");
 	new_process->id = player_id;
-	new_process->registers[1] = player_id;
+	new_process->registers[0] = player_id;
 	new_process->pc = (player_id - 1) * arena.offset;
 //	new_process->pc = &arena.mem[MEM_SIZE / arena.player_count * player_id];
+	new_process->cycles_before_execution = -1;
 	new_process->next = process_lst;
 	return (new_process);
 }
