@@ -11,7 +11,7 @@ static void	vm_read_header(t_arena *arena, t_uint32 player_number, int fd)
 		vm_error("Invalid bytes in input file\n");
 	player->magic = *(t_uint32 *)vm_reverse_bytes(\
 		&player->magic, (void *)buf, sizeof(t_uint32));
-	if (read(fd, buf, sizeof(t_byte) * (PROG_NAME_LENGTH + 1)) != PROG_NAME_LENGTH + 1)
+	if (read(fd, buf, sizeof(t_byte) * PROG_NAME_LENGTH) != PROG_NAME_LENGTH)
 		vm_error("Invalid bytes in input file\n");
 	s_cpy(player->prog_name, (const char *)buf);
 	if (read(fd, buf, sizeof(t_byte) * 4) != 4)
@@ -20,7 +20,7 @@ static void	vm_read_header(t_arena *arena, t_uint32 player_number, int fd)
 		(void *)&player->prog_size, (void *)buf, sizeof(t_uint32));
 	if (player->prog_size > CHAMP_MAX_SIZE)
 		vm_error("Program size is larger than CHAMP_MAX_SIZE\n");
-	if (read(fd, buf, COMMENT_LENGTH + 1) != COMMENT_LENGTH + 1)
+	if (read(fd, buf, COMMENT_LENGTH) != COMMENT_LENGTH)
 		vm_error("Invalid bytes in inputfilen\n");
 	s_cpy(player->comment, (const char *)buf);
 }
@@ -39,7 +39,7 @@ static void	vm_read_program(t_arena *arena, t_uint32 player_number, int fd)
 
 	player_mem_location = (player_number - 1) * arena->offset;
 	check = read(fd, arena->mem + player_mem_location, \
-		arena->all_players[player_number - 1].prog_size + 1);
+		arena->all_players[player_number - 1].prog_size);
 	if (check != arena->all_players[player_number - 1].prog_size)
 		vm_error("Invalid amount of bytes in program\n");
 }

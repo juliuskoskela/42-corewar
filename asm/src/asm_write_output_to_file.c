@@ -23,13 +23,13 @@ static void	asm_write_header_to_file(int fd, t_header header)
 	asm_write_bytes_to_file(fd, &header.magic, sizeof(header.magic));
 	if (ASM_PRINT_DEBUG)
 		print("write prog_name '%s'\n", header.prog_name);
-	write(fd, header.prog_name, sizeof(header.prog_name));
+	write(fd, header.prog_name, PROG_NAME_LENGTH);
 	if (ASM_PRINT_DEBUG)
 		print("write prog_size %u : %#x\n", header.prog_size, header.prog_size);
 	asm_write_bytes_to_file(fd, &header.prog_size, sizeof(header.prog_size));
 	if (ASM_PRINT_DEBUG)
 		print("write comment '%s'\n", header.comment);
-	write(fd, header.comment, sizeof(header.comment));
+	write(fd, header.comment, COMMENT_LENGTH);
 }
 
 static void	asm_write_program_to_file(int fd, int8_t *program, t_header header)
