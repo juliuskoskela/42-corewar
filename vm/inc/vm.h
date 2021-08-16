@@ -21,10 +21,16 @@
 typedef t_byte* t_mem_addr;
 typedef t_uint64* t_reg_addr;
 
+typedef struct s_instruction
+{
+	t_op	instruction;
+	t_byte	acb;
+}	t_instruction;
+
 typedef struct s_process
 {
 	struct s_header		header;
-	t_instructions		next_instruction;
+	t_instruction		next_instruction;
 	t_uint32			id;
 	t_int32				last_live;
 	t_int32				cycles_before_execution;

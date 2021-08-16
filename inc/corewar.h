@@ -48,12 +48,6 @@ typedef struct s_header
 	char			comment[COMMENT_LENGTH + 1];
 }	t_header;
 
-typedef struct s_instructions
-{
-	t_byte	*bytes;
-	t_size	size;
-}	t_instructions;
-
 typedef struct s_param_types
 {
 	t_uint8		param1;

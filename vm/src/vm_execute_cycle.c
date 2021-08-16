@@ -36,23 +36,18 @@ void	vm_init_instruction_execution(t_process *process, t_arena *arena)
 	}
 	else
 	{
+		process->next_instruction.instruction = instruction;
+		if (instruction.has_argument_coding_byte)
+			process->next_instruction.acb = arena->mem[(process->pc + 1) % MEM_SIZE];
+		else
+			process->next_instruction.acb = 0;
 		process->cycles_before_execution = instruction.cycles;
 	}
 }
 
 void	vm_finish_instruction_execution(t_process *process, t_arena *arena)
 {
-	t_op	instruction;
-
-	instruction = vm_get_instruction(arena->mem[process->pc]);
-	if (instruction.mnemonic == 0)
-	{
-		process->pc = (process->pc + 1) % MEM_SIZE;
-	}
-	else
-	{
-		vm_execute_instruction(instruction, process, arena);
-	}
+	vm_execute_instruction(process->next_instruction.instruction, process, arena);
 	process->cycles_before_execution = -1;
 }
 
@@ -66,7 +61,7 @@ void	vm_execute_process(t_process *process, t_arena *arena)
 		vm_init_instruction_execution(process, arena);
 }
 
-void	vm_execute_cycle(t_process *process,t_arena *arena)
+void	vm_execute_cycle(t_process *process, t_arena *arena)
 {
 	while (process)
 	{
