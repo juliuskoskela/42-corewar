@@ -3,16 +3,12 @@
 void	vm_execute_instruction(t_op instruction, t_process *process,
 t_arena *arena)
 {
-	int	offset;
-
 	print("player %d: with opcode %d at pc %d, execute %s\n",
 		(int)process->id,
 		(int)arena->mem[process->pc],
 		(int)process->pc,
 		instruction.mnemonic);
-	offset = 0;
-	if (instruction.has_argument_coding_byte)
-		print("\targument coding byte: %#x\n", arena->mem[process->pc + ++offset]);
+	g_inst[instruction.opcode - 1](arena, process);
 }
 
 t_op	vm_get_instruction(t_byte opcode)
