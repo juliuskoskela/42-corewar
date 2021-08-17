@@ -92,7 +92,7 @@ void vm_create_player(
 t_process	*vm_create_process(
 		t_arena arena,
 		t_process *process_lst,
-		int player_id);
+		t_uint64 player_id);
 
 void *vm_reverse_bytes(
 		void *dst,
