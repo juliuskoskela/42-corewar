@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 static void	asm_add_forward_reference_to_label(t_symbol_list *label,
-uint32_t ref_location, uint32_t op_location)
+uint32_t ref_location, uint32_t op_location, size_t size)
 {
 	t_refnode	*new_node;
 	t_refnode	*node;
@@ -14,6 +14,7 @@ uint32_t ref_location, uint32_t op_location)
 		asm_exit_error("Malloc error in allocating ref node");
 	new_node->op_location = op_location;
 	new_node->ref_location = ref_location;
+	new_node->size = size;
 	new_node->next = NULL;
 	if (label->forward_refs == NULL)
 		label->forward_refs = new_node;
@@ -47,7 +48,7 @@ uint32_t curr_op_lc, t_astnode *parameter)
 			if (ASM_PRINT_DEBUG)
 				asm_print_output_info("add forward reference for label",
 					label->symbol, parameter->num_value);
-			asm_add_forward_reference_to_label(label, *lc, curr_op_lc);
+			asm_add_forward_reference_to_label(label, *lc, curr_op_lc, DIR_VAL_SIZE);
 		}
 	}
 	if (ASM_PRINT_DEBUG)
@@ -77,7 +78,7 @@ uint32_t curr_op_lc, t_astnode *parameter)
 			if (ASM_PRINT_DEBUG)
 				asm_print_output_info("add forward reference for label",
 					label->symbol, parameter->num_value);
-			asm_add_forward_reference_to_label(label, *lc, curr_op_lc);
+			asm_add_forward_reference_to_label(label, *lc, curr_op_lc, IND_ADDR_SIZE);
 		}
 	}
 	if (ASM_PRINT_DEBUG)

@@ -46,7 +46,7 @@ t_symbol_list *label)
 		if (ASM_PRINT_DEBUG)
 			asm_print_output_info("resolve forward reference for label",
 				label->symbol, value);
-		asm_write_bytes(program, &ref_node->ref_location, &value, 2);
+		asm_write_bytes(program, &ref_node->ref_location, &value, ref_node->size);
 		next = ref_node->next;
 		free(ref_node);
 		ref_node = next;

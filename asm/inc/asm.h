@@ -88,6 +88,7 @@ typedef struct s_refnode
 {
 	uint32_t				ref_location;
 	uint32_t				op_location;
+	size_t					size;
 	struct s_refnode		*next;
 }	t_refnode;
 
