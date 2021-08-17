@@ -15,7 +15,7 @@
 
 # define REG_ADDR_SIZE			1
 # define IND_ADDR_SIZE			2
-# define DIR_VAL_SIZE			4
+# define DIR_VAL_SIZE			REG_SIZE
 
 # define REG_CODE				1
 # define DIR_CODE				2
