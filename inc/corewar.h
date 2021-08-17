@@ -14,8 +14,8 @@
 # include "../lib/core/inc/core.h"
 
 # define REG_ADDR_SIZE			1
-# define DIR_VAL_SIZE			2
 # define IND_ADDR_SIZE			2
+# define DIR_VAL_SIZE			4
 
 # define REG_CODE				1
 # define DIR_CODE				2

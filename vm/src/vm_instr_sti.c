@@ -40,8 +40,8 @@ void vm_instr_sti(
 	rhs = vm_get_val(a, p, vm_check_acb(acb, 2), &mem_i);
 
 	// store at index
-	print("%d + %d = %d\n", lhs, rhs, lhs + rhs);
-	dst = vm_get_mem_addr(a, lhs + rhs);
+	print("(%d + %d) + pc = %d + %d => %d \n", lhs, rhs, lhs + rhs, p->pc, lhs + rhs + p->pc);
+	dst = vm_get_mem_addr(a, p->pc + lhs + rhs);
 	vm_reverse_bytes(dst, src, REG_SIZE);
 	p->pc = mem_i;
 }

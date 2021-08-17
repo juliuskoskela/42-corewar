@@ -161,7 +161,7 @@ t_uint64 vm_get_val(
 
 static const t_instr g_instr_funcs[] =
 {
-	vm_instr_null,
+	vm_instr_alive,
 	vm_instr_null,
 	vm_instr_st,
 	vm_instr_null,
