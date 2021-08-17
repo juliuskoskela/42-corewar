@@ -3,16 +3,12 @@
 void	vm_execute_instruction(t_op instruction, t_process *process,
 t_arena *arena)
 {
-	int	offset;
-
 	print("player %d: with opcode %d at pc %d, execute %s\n",
 		(int)process->id,
 		(int)arena->mem[process->pc],
 		(int)process->pc,
 		instruction.mnemonic);
-	offset = 0;
-	if (instruction.has_argument_coding_byte)
-		print("\targument coding byte: %#x\n", arena->mem[process->pc + ++offset]);
+	g_instr_funcs[instruction.opcode - 1](arena, process);
 }
 
 t_op	vm_get_instruction(t_byte opcode)
@@ -40,23 +36,18 @@ void	vm_init_instruction_execution(t_process *process, t_arena *arena)
 	}
 	else
 	{
-		process->cycles_before_execution = instruction.cycles;
+		process->next_instruction.instruction = instruction;
+		if (instruction.has_argument_coding_byte)
+			process->next_instruction.acb = arena->mem[(process->pc + 1) % MEM_SIZE];
+		else
+			process->next_instruction.acb = 0;
+		process->cycles_before_execution = instruction.cycles - 1;
 	}
 }
 
 void	vm_finish_instruction_execution(t_process *process, t_arena *arena)
 {
-	t_op	instruction;
-
-	instruction = vm_get_instruction(arena->mem[process->pc]);
-	if (instruction.mnemonic == 0)
-	{
-		process->pc = (process->pc + 1) % MEM_SIZE;
-	}
-	else
-	{
-		vm_execute_instruction(instruction, process, arena);
-	}
+	vm_execute_instruction(process->next_instruction.instruction, process, arena);
 	process->cycles_before_execution = -1;
 }
 
@@ -70,12 +61,12 @@ void	vm_execute_process(t_process *process, t_arena *arena)
 		vm_init_instruction_execution(process, arena);
 }
 
-void	vm_execute_cycle(t_process *process, t_battle *battle, t_arena *arena)
+void	vm_execute_cycle(t_process *process, t_arena *arena)
 {
-	while (process && battle)
+	while (process)
 	{
 		vm_execute_process(process, arena);
 		process = process->next;
 	}
-	battle->cycles_executed += 1;
+	arena->battle.cycles_executed += 1;
 }

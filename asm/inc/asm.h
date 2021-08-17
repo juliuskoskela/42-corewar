@@ -45,7 +45,7 @@ typedef enum e_token_type
 	ERROR_TOKEN
 }	t_token_type;
 
-static const char *const	g_token_types[12] = {
+static const char *const	g_token_types[] = {
 	"NO_TOKEN",
 	"ID_TOKEN",
 	"INTEGER_TOKEN",
@@ -88,6 +88,7 @@ typedef struct s_refnode
 {
 	uint32_t				ref_location;
 	uint32_t				op_location;
+	size_t					size;
 	struct s_refnode		*next;
 }	t_refnode;
 

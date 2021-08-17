@@ -13,9 +13,9 @@
 
 # include "../lib/core/inc/core.h"
 
-# define IND_SIZE				2
-# define REG_SIZE				4
-# define DIR_SIZE				REG_SIZE
+# define REG_ADDR_SIZE			1
+# define IND_ADDR_SIZE			2
+# define DIR_VAL_SIZE			REG_SIZE
 
 # define REG_CODE				1
 # define DIR_CODE				2
@@ -33,6 +33,7 @@
 # define IDX_MOD				(MEM_SIZE / 8)
 # define CHAMP_MAX_SIZE			(MEM_SIZE / 6)
 
+# define REG_SIZE				4
 # define REG_NUMBER				16
 
 # define PROG_NAME_LENGTH		(128)
@@ -46,12 +47,6 @@ typedef struct s_header
 	t_uint32		prog_size;
 	char			comment[COMMENT_LENGTH + 1];
 }	t_header;
-
-typedef struct s_instructions
-{
-	t_byte	*bytes;
-	t_size	size;
-}	t_instructions;
 
 typedef struct s_param_types
 {
@@ -74,7 +69,7 @@ typedef struct s_op
 
 # define OP_COUNT	16
 
-static const t_op	g_op_tab[17] =
+static const t_op	g_op_tab[] =
 {
 	{"live", 1, {T_DIR, EMPTY, EMPTY}, 1, 10, "alive", 0, 0},
 	{"ld", 2, {T_DIR | T_IND, T_REG, EMPTY}, 2, 5, "load", 1, 0},
@@ -94,5 +89,6 @@ static const t_op	g_op_tab[17] =
 	{"aff", 1, {T_REG, EMPTY, EMPTY}, 16, 2, "aff", 1, 0},
 	{0, 0, {0}, 0, 0, 0, 0, 0}
 };
+
 
 #endif

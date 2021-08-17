@@ -29,7 +29,16 @@ SRC_BASE	=	vm_main.c \
 				vm_execute_cycle.c \
 				vm_check_live.c \
 				vm_introduce_champs.c \
-				vm_print_arena.c
+				vm_print_arena.c \
+				vm_instr_null.c \
+				vm_instr_alive.c \
+				vm_instr_st.c \
+				vm_instr_sti.c \
+				vm_check_acb.c \
+				vm_get_val.c \
+				vm_get_mem_addr.c \
+				vm_get_reg_addr.c \
+				vm_instr_ld.c \
 
 SRC			=	$(addprefix $(SRC_DIR), $(SRC_BASE))
 OBJ			=	$(addprefix $(OBJ_DIR), $(SRC_BASE:.c=.o))

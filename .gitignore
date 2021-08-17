@@ -2,3 +2,4 @@
 *.deps
 *.a
 .vscode
+bin
