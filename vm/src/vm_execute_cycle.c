@@ -41,7 +41,7 @@ void	vm_init_instruction_execution(t_process *process, t_arena *arena)
 			process->next_instruction.acb = arena->mem[(process->pc + 1) % MEM_SIZE];
 		else
 			process->next_instruction.acb = 0;
-		process->cycles_before_execution = instruction.cycles;
+		process->cycles_before_execution = instruction.cycles - 1;
 	}
 }
 
