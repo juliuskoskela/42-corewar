@@ -34,8 +34,8 @@ void vm_instr_sti(
 	lhs = vm_get_val(a, p, vm_check_acb(acb, 1), &mem_i);
 
 	// arg 3
-	if (vm_check_acb(acb, 1) != REG_CODE
-		&& vm_check_acb(acb, 1) != DIR_CODE)
+	if (vm_check_acb(acb, 2) != REG_CODE
+		&& vm_check_acb(acb, 2) != DIR_CODE)
 		vm_error("Error arg 3 sti!\n");
 	rhs = vm_get_val(a, p, vm_check_acb(acb, 2), &mem_i);
 
