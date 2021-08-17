@@ -11,7 +11,7 @@ t_uint64 vm_get_val(
 	arg = 0;
 	if (acb == REG_CODE)
 	{
-		vm_reverse_bytes(&arg, vm_get_reg_addr(p, a->mem[*mem_i] - 1), REG_SIZE);
+		vm_reverse_bytes(&arg, vm_get_reg_addr(p, a->mem[*mem_i]), REG_SIZE);
 		*mem_i = (*mem_i + REG_ADDR_SIZE) % MEM_SIZE;
 	}
 	else if (acb == IND_CODE)

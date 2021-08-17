@@ -47,13 +47,6 @@ t_process	*init_processes(t_arena arena)
 	return (process_lst);
 }
 
-void	vm_init_battle(t_arena *arena)
-{
-	mzero(&arena->battle, sizeof(t_battle));
-	arena->battle.cycle_to_die = CYCLE_TO_DIE;
-	arena->battle.last_alive = arena->player_count;
-}
-
 /*
 ** Cycles are executed until a live check occurs. Checks occur every
 ** battle.cycle_to_die cycles.
@@ -63,22 +56,21 @@ void	vm_battle(t_arena arena)
 {
 	arena.processes = init_processes(arena);
 	vm_test_print_processes(arena.processes);
-	vm_init_battle(&arena);
 	vm_introduce_champs(arena);
 	while (arena.processes)
 	{
 		vm_execute_cycle(arena.processes, &arena);
-		while (++arena.battle.cycles_since_check < arena.battle.cycle_to_die)
+		while (++arena.cycles_since_check < arena.cycle_to_die)
 		{
-			if (arena.battle.cycles_executed == arena.dump_nbr_cycles)
+			if (arena.cycles_executed == arena.dump_nbr_cycles)
 			{
 				vm_print_arena(arena, arena.processes);
 				return ;
 			}
 			vm_execute_cycle(arena.processes, &arena);
 		}
-		vm_check_live(&arena.processes, &arena.battle);
+		vm_check_live(&arena.processes, &arena);
 	}
-	print("Player %d (%s) won\n", arena.battle.last_alive, \
-	arena.all_players[arena.battle.last_alive - 1].prog_name);
+	print("Player %d (%s) won\n", arena.last_alive, \
+	arena.all_players[arena.last_alive - 1].prog_name);
 }

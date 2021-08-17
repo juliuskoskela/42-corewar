@@ -68,5 +68,5 @@ void	vm_execute_cycle(t_process *process, t_arena *arena)
 		vm_execute_process(process, arena);
 		process = process->next;
 	}
-	arena->battle.cycles_executed += 1;
+	arena->cycles_executed += 1;
 }

@@ -26,7 +26,7 @@ t_process *prev)
 **	be killed and removed from the list.
 
 **	cycle_to_die is decreased by CYCLE_DELTA if the number of lives performed
-**	in the last period was greater than or equal to 
+**	in the last period was greater than or equal to
 **	NBR_LIVE.
 
 **	If the value of cycle_to_die does not change after MAX_CHECKS checks,
@@ -35,7 +35,7 @@ t_process *prev)
 **	After each check, the number of lives stated will be reset to 0.
 */
 
-void	vm_check_live(t_process **head, t_battle *battle)
+void	vm_check_live(t_process **head, t_arena *arena)
 {
 	t_process	*current;
 	t_process	*prev;
@@ -45,7 +45,7 @@ void	vm_check_live(t_process **head, t_battle *battle)
 	while (current)
 	{
 		if (current->last_live <= \
-			battle->cycles_executed - battle->cycle_to_die)
+			arena->cycles_executed - arena->cycle_to_die)
 			current = vm_delete_process(head, current, prev);
 		else
 		{
@@ -53,12 +53,12 @@ void	vm_check_live(t_process **head, t_battle *battle)
 			current = current->next;
 		}
 	}
-	battle->checks_performed += 1;
-	if (battle->lives_since_check >= NBR_LIVE || \
-		battle->checks_performed >= MAX_CHECKS)
+	arena->checks_performed += 1;
+	if (arena->lives_since_check >= NBR_LIVE || \
+		arena->checks_performed >= MAX_CHECKS)
 	{
-		battle->cycle_to_die -= CYCLE_DELTA;
-		battle->checks_performed = 0;
+		arena->cycle_to_die -= CYCLE_DELTA;
+		arena->checks_performed = 0;
 	}
-	battle->lives_since_check = 0;
+	arena->lives_since_check = 0;
 }

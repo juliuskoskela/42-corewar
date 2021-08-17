@@ -35,7 +35,7 @@ typedef struct s_process
 	t_int32				last_live;
 	t_int32				cycles_before_execution;
 	// Program counter.
-	// t_byte				*pc;
+	// t_byte			*pc;
 	t_size				pc;
 
 	// Zero flag, Along with a carry flag, a sign flag and an overflow flag,
@@ -48,9 +48,18 @@ typedef struct s_process
 	struct s_process	*next;
 }	t_process;
 
-typedef struct s_battle
+typedef struct s_arena
 {
-	//the player who was last reported to be alive
+	t_header	all_players[MAX_PLAYERS];
+	t_size		player_count;
+	t_byte		mem[MEM_SIZE];
+	t_size		offset;
+	// if -dump flag is missing, this will be 0.
+
+	t_process	*processes;
+	t_int32		dump_nbr_cycles;
+
+		//the player who was last reported to be alive
 	t_int32	last_alive;
 	//number of cycles executed since starting the program.
 	t_int32	cycles_executed;
@@ -63,18 +72,6 @@ typedef struct s_battle
 	// every cycle_to_die cycles, each process will be checked for a live.
 	t_int32	cycle_to_die;
 	t_int32	cycles_since_check;
-}	t_battle;
-
-typedef struct s_arena
-{
-	t_header	all_players[MAX_PLAYERS];
-	t_size		player_count;
-	t_byte		mem[MEM_SIZE];
-	t_size		offset;
-	// if -dump flag is missing, this will be 0.
-	t_battle	battle;
-	t_process	*processes;
-	t_int32		dump_nbr_cycles;
 }	t_arena;
 
 typedef void (*t_instr)(t_arena *, t_process *);
@@ -99,7 +96,7 @@ void *vm_reverse_bytes(
 
 void vm_check_live(
 		t_process **processes,
-		t_battle *battle);
+		t_arena *arena);
 
 void vm_execute_cycle(
 		t_process *processes,

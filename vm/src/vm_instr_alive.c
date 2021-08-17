@@ -16,7 +16,7 @@ void vm_instr_alive(
 		cur = cur->next;
 	if (!cur)
 		vm_error("Process with id not found!\n");
-	cur->last_live = a->battle.cycles_executed;
+	cur->last_live = a->cycles_executed;
 	print("A process shows that player %d (%s) is alive\n", (int)cur->id, cur->header.prog_name);
 	p->pc = mem_i;
 }
