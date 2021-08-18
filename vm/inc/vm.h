@@ -60,7 +60,7 @@ typedef struct s_arena
 	t_int32		dump_nbr_cycles;
 
 		//the player who was last reported to be alive
-	t_int32	last_alive;
+	t_int32	last_player_alive;
 	//number of cycles executed since starting the program.
 	t_int32	cycles_executed;
 	// number of lives reported within current cycle_to_die period.

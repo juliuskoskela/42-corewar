@@ -50,6 +50,6 @@ void	vm_battle(t_arena arena)
 		}
 		vm_check_live(&arena.processes, &arena);
 	}
-	print("Player %d (%s) won\n", arena.last_alive, \
-	arena.all_players[arena.last_alive - 1].prog_name);
+	print("Player %d (%s) won\n", arena.last_player_alive, \
+	arena.all_players[arena.last_player_alive - 1].prog_name);
 }
