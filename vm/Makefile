@@ -40,6 +40,8 @@ SRC_BASE	=	vm_main.c \
 				vm_get_mem_addr.c \
 				vm_get_reg_addr.c \
 				vm_instr_ld.c \
+				vm_instr_fork.c \
+				vm_instr_lfork.c
 
 SRC			=	$(addprefix $(SRC_DIR), $(SRC_BASE))
 OBJ			=	$(addprefix $(OBJ_DIR), $(SRC_BASE:.c=.o))
