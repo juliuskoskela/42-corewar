@@ -16,7 +16,7 @@
 */
 
 #define REG_SIZE				4
-#define DIR_SIZE				2
+#define DIR_SIZE				REG_SIZE
 #define IND_SIZE				2
 
 
