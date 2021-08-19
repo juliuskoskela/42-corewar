@@ -2,7 +2,8 @@
 #include "argparser_internal.h"
 #include <stdlib.h>
 
-int	_argparser_parse_default_opt(int key, char *arg, t_argparser_state *state)
+int	_argparser_parse_default_option(int key, char *arg,
+t_argparser_state *state)
 {
 	if (key == 1)
 	{

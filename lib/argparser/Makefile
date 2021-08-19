@@ -5,10 +5,13 @@ INC_DIR		=	include/
 OBJ_DIR		=	obj/
 DEP_DIR		=	.deps/
 
+LIB_CORE_DIR	=	../core/
+LIB_CORE	=	$(LIB_CORE_DIR)libcore.a
+
 CC			=	gcc
 CFLAGS 		=	-g -Wall -Wextra -Werror -fPIC \
 				-Wunreachable-code -Wconversion -Wpedantic -Wtype-limits
-CPPFLAGS	=	-I $(INC_DIR)
+CPPFLAGS	=	-I $(INC_DIR) -I $(LIB_CORE_DIR)inc
 DEPFLAGS	=	-MT $@ -MMD -MP -MF $(DEP_DIR)$*.d
 COMPILE.c	=	$(CC) $(DEPFLAGS) $(CFLAGS) $(CPPFLAGS) -c
 
@@ -19,10 +22,10 @@ SRC_BASE	=	argparser_parse.c \
 				_argparser_print_usage.c \
 				_argparser_get_option.c \
 				_argparser_get_arg.c \
-				_argparser_get_default_opt.c \
-				_argparser_get_long_opt.c \
-				_argparser_get_short_opt.c \
-				_argparser_parse_default_opt.c
+				_argparser_parse_default_option.c \
+				_argparser_parse_argument.c \
+				_argparser_parse_option.c \
+				_argparser_error.c
 
 SRC			=	$(addprefix $(SRC_DIR), $(SRC_BASE))
 OBJ			=	$(addprefix $(OBJ_DIR), $(SRC_BASE:.c=.o))
@@ -31,8 +34,8 @@ OBJ			=	$(addprefix $(OBJ_DIR), $(SRC_BASE:.c=.o))
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
-				@ar -rcs $(NAME) $(OBJ)
+$(NAME): $(OBJ) $(LIB_CORE)
+				ar -rcs $(NAME) $(OBJ)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(DEP_DIR)%.d | $(OBJ_DIR) $(DEP_DIR)
 				@$(COMPILE.c) $< -o $@
@@ -43,6 +46,9 @@ $(OBJ_DIR):
 
 $(DEP_DIR):
 				@mkdir -p $@
+
+$(LIB_CORE):
+				@$(MAKE) -C $(LIB_CORE_DIR)
 
 DEPFILES = $(addprefix $(DEP_DIR), $(SRC_BASE:.c=.d))
 $(DEPFILES):

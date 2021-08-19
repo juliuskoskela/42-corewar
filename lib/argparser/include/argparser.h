@@ -14,7 +14,6 @@
 /* Currently unsupported parser flags
 # define ARGP_NO_ARGS 				4U
 # define ARGP_IN_ORDER				8U
-# define ARGP_NO_HELP 				16U
 */
 
 # define ARGP_ERR_UNKNOWN			(-1)
@@ -42,7 +41,7 @@ typedef struct s_argparser_option
 	const char						*name;
 	int								key;
 	const char						*arg;
-	int								flags;
+	unsigned int					flags;
 	const char						*doc;
 }	t_argparser_option;
 
