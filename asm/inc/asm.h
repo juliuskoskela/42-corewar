@@ -105,7 +105,8 @@ typedef struct s_output_data
 {
 	t_symbol_list			symbols;
 	t_header				header;
-	int8_t					program[CHAMP_MAX_SIZE + 1];
+	int8_t					*program;
+	uint32_t				program_capacity;
 }	t_output_data;
 
 typedef struct s_input_args
