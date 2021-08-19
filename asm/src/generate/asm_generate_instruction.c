@@ -2,7 +2,7 @@
 #include "ast.h"
 #include "generate.h"
 
-static void	asm_write_argument_coding_byte(int8_t *program, uint32_t *lc,
+static void	asm_write_argument_coding_byte(t_output_data *data, uint32_t *lc,
 t_astnode *parameter_list, int verbose)
 {
 	t_astnode	*parameter;
@@ -29,10 +29,10 @@ t_astnode *parameter_list, int verbose)
 	}
 	if (verbose)
 		asm_print_output_info("\n=> write argument coding byte", NULL, acb);
-	asm_write_bytes(program, lc, &acb, 1);
+	asm_write_bytes(data, lc, &acb, 1);
 }
 
-static void	asm_resolve_label_forward_refs(int8_t *program,
+static void	asm_resolve_label_forward_refs(t_output_data *data,
 t_symbol_list *label, int verbose)
 {
 	t_refnode	*ref_node;
@@ -46,7 +46,7 @@ t_symbol_list *label, int verbose)
 		if (verbose)
 			asm_print_output_info("resolve forward reference for label",
 				label->symbol, value);
-		asm_write_bytes(program, &ref_node->ref_location, &value,
+		asm_write_bytes(data, &ref_node->ref_location, &value,
 			ref_node->size);
 		next = ref_node->next;
 		free(ref_node);
@@ -66,7 +66,7 @@ t_symbol_list **labels, int verbose)
 			asm_print_output_info("save address for label",
 				label->symbol, (int32_t)lc);
 		label->node->num_value = (int32_t)lc;
-		asm_resolve_label_forward_refs(data->program, label, verbose);
+		asm_resolve_label_forward_refs(data, label, verbose);
 		asm_symbol_list_delete(labels, (*labels)->symbol);
 	}
 }
@@ -86,9 +86,9 @@ t_symbol_list **labels, t_astnode *node, int verbose)
 	asm_get_instruction(&instruction, node->value);
 	if (verbose)
 		asm_print_output_info("write opcode", NULL, instruction.opcode);
-	asm_write_bytes(data->program, lc, &instruction.opcode, 1);
+	asm_write_bytes(data, lc, &instruction.opcode, 1);
 	if (instruction.has_argument_coding_byte)
-		asm_write_argument_coding_byte(data->program, lc, node->right_child, verbose);
+		asm_write_argument_coding_byte(data, lc, node->right_child, verbose);
 	else if (verbose)
 		print("no argument coding byte\n");
 	asm_write_arguments(data, lc, current_op_lc, node->right_child, verbose);
