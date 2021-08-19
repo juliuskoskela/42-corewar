@@ -1,0 +1,46 @@
+Symbol table after first pass through AST:
+label 'l2', value 0
+label 'live', value 0
+
+
+Generate instruction sti 0 : 0
+save address for label l2 0 : 0
+write opcode 11 : 0xb
+arguments: REGISTER DIRECT DIRECT 
+=> write argument coding byte 104 : 0x68
+write register 1 : 0x1
+add forward reference for label live 0 : 0
+write direct LABEL 0 : 0
+write direct INTEGER 1 : 0x1
+
+Generate instruction and 11 : 0xb
+write opcode 6 : 0x6
+arguments: REGISTER DIRECT REGISTER 
+=> write argument coding byte 100 : 0x64
+write register 1 : 0x1
+write direct INTEGER 0 : 0
+write register 1 : 0x1
+
+Generate instruction live 19 : 0x13
+save address for label live 19 : 0x13
+resolve forward reference for label live 19 : 0x13
+write opcode 1 : 0x1
+no argument coding byte
+write direct INTEGER 1 : 0x1
+
+Generate instruction zjmp 24 : 0x18
+write opcode 9 : 0x9
+no argument coding byte
+write direct LABEL -5 : 0xfffffffb
+
+
+Symbol table after second pass through AST:
+label 'l2', value 0
+label 'live', value 0x13
+
+Writing output to vm_champs/champs/examples/zork.cor
+write magic 15369203 : 0xea83f3
+write prog_name '"zork"'
+write prog_size 29 : 0x1d
+write comment '"I'M ALIIIIVE"'
+write program of size 29

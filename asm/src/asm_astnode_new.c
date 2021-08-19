@@ -2,7 +2,7 @@
 #include "asm.h"
 #include <stdlib.h>
 
-t_astnode	*astnode_new(t_astnode_type type, char *value, t_token token)
+t_astnode	*asm_astnode_new(t_astnode_type type, char *value, t_token token)
 {
 	t_astnode	*node;
 
