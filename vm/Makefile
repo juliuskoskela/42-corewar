@@ -14,7 +14,7 @@ DEP_DIR		=	.deps/
 CC			=	gcc
 CFLAGS 		=	-g -Wall -Wextra -Werror -fPIC -fsanitize=address
 DFLAGS		=	-Wunreachable-code -Wconversion -Wpedantic -Wtype-limits
-CPPFLAGS	=	-I $(INC_DIR)
+CPPFLAGS	=	-I $(INC_DIR) -I ../lib/core/inc
 DEPFLAGS	=	-MT $@ -MMD -MP -MF $(DEP_DIR)$*.d
 LDLIBS		=	../lib/core/libcore.a
 COMPILE.c	=	$(CC) $(DEPFLAGS) $(CFLAGS) $(CPPFLAGS) -c
@@ -49,11 +49,11 @@ OBJ			=	$(addprefix $(OBJ_DIR), $(SRC_BASE:.c=.o))
 all:
 				@$(MAKE) -j $(NAME)
 
-$(NAME): $(OBJ)
+$(NAME): $(OBJ) $(LDLIBS)
 				@$(CC) $(CFLAGS) -o $@ $(OBJ) $(CPPFLAGS) $(LDLIBS)
 				@echo "\\n\033[32;1mCOREWAR VIRTUAL MACHINE COMPILED\033[0m \\n"
 
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c $(DEP_DIR)%.d | $(OBJ_DIR) $(DEP_DIR) $(LDLIBS)
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c $(DEP_DIR)%.d | $(OBJ_DIR) $(DEP_DIR)
 				@$(COMPILE.c) $< -o $@
 				@echo $@
 
@@ -63,17 +63,19 @@ $(OBJ_DIR):
 $(DEP_DIR):
 				@mkdir -p $@
 
-DEPFILES = $(addprefix $(DEP_DIR), $(SRC_BASE:.c=.d))
-$(DEPFILES):
-
 $(LDLIBS):
 	make -C ../lib/core/
 
+DEPFILES = $(addprefix $(DEP_DIR), $(SRC_BASE:.c=.d))
+$(DEPFILES):
+
 clean:
 				@rm -rf $(OBJ_DIR) $(DEP_DIR)
+				@make clean -C ../lib/core
 
 fclean: clean
 				@rm -rf $(NAME);
+				@make fclean -C ../lib/core
 
 re: fclean all
 

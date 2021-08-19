@@ -173,9 +173,11 @@ $(LIB_CORE):
 
 clean:
 				@rm -rf $(OBJ_DIR) $(DEP_DIR)
+				@make clean -C $(LIB_CORE_DIR)
 
 fclean: clean
 				@rm -rf $(NAME) $(NAME).dSYM
+				@make fclean -C $(LIB_CORE_DIR)
 
 re: fclean all
 
