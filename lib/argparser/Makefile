@@ -9,7 +9,7 @@ LIB_CORE_DIR	=	../core/
 LIB_CORE	=	$(LIB_CORE_DIR)libcore.a
 
 CC			=	gcc
-CFLAGS 		=	-g -Wall -Wextra -Werror -fPIC \
+CFLAGS 		=	-g -Wall -Wextra -Werror -fPIC -fsanitize=address\
 				-Wunreachable-code -Wconversion -Wpedantic -Wtype-limits
 CPPFLAGS	=	-I $(INC_DIR) -I $(LIB_CORE_DIR)inc
 DEPFLAGS	=	-MT $@ -MMD -MP -MF $(DEP_DIR)$*.d
