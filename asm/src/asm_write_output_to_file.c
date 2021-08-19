@@ -56,7 +56,7 @@ static char	*asm_get_output_path(char *path)
 	return (cor_file);
 }
 
-void	asm_write_output_to_file(char *path, t_output_data data, int verbose)
+void	asm_write_output_to_file(char *path, t_output_data data)
 {
 	char	*cor_file;
 	int		fd;
@@ -67,7 +67,7 @@ void	asm_write_output_to_file(char *path, t_output_data data, int verbose)
 		asm_exit_error("Error on writing output to .cor file");
 	print("Writing output to %s\n", cor_file);
 	free(cor_file);
-	asm_write_header_to_file(fd, data.header, verbose);
-	asm_write_program_to_file(fd, data.program, data.header, verbose);
+	asm_write_header_to_file(fd, data.header, data.verbose);
+	asm_write_program_to_file(fd, data.program, data.header, data.verbose);
 	close(fd);
 }

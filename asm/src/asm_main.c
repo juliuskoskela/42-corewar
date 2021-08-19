@@ -19,11 +19,11 @@ int	main(int argc, char **argv)
 		asm_exit_error(NULL);
 	if (arguments.print_ast_dot)
 		asm_write_ast_dot_to_file(arguments.input_path, tree);
-	asm_init_output_data(&data);
+	asm_init_output_data(&data, arguments.verbose);
 	if (!asm_validate_ast(&data, tree, arguments.verbose))
 		asm_exit_error(NULL);
-	asm_generate_output(&data, tree, arguments.verbose);
-	asm_write_output_to_file(arguments.input_path, data, arguments.verbose);
+	asm_generate_output(&data, tree);
+	asm_write_output_to_file(arguments.input_path, data);
 	if (arguments.print_hex_dump)
 		asm_print_output_hexdump(data);
 	asm_astnode_free(tree);

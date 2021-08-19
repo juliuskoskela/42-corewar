@@ -104,6 +104,7 @@ typedef struct s_symbol_list
 typedef struct s_output_data
 {
 	t_symbol_list			symbols;
+	int						verbose;
 	t_header				header;
 	int8_t					*program;
 	uint32_t				program_capacity;
@@ -132,13 +133,11 @@ int					asm_validate_ast(t_output_data *data,
 						t_astnode *tree,
 						int verbose);
 
-void				asm_init_output_data(t_output_data *data);
+void				asm_init_output_data(t_output_data *data, int verbose);
 int					asm_generate_output(t_output_data *data,
-						t_astnode *tree,
-						int verbose);
+						t_astnode *tree);
 void				asm_write_output_to_file(char *path,
-						t_output_data data,
-						int verbose);
+						t_output_data data);
 void				asm_print_output_hexdump(t_output_data data);
 
 t_symbol_list		*asm_symbol_list_new(t_astnode *node, char *symbol);

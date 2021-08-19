@@ -28,7 +28,7 @@ uint32_t ref_location, uint32_t op_location, size_t size)
 }
 
 static void	asm_write_direct(t_output_data *data, uint32_t *lc,
-uint32_t curr_op_lc, t_astnode *parameter, int verbose)
+uint32_t curr_op_lc, t_astnode *parameter)
 {
 	t_symbol_list	*label;
 
@@ -45,20 +45,20 @@ uint32_t curr_op_lc, t_astnode *parameter, int verbose)
 		}
 		else
 		{
-			if (verbose)
+			if (data->verbose)
 				asm_print_output_info("add forward reference for label",
 					label->symbol, parameter->num_value);
 			asm_add_forward_ref_to_label(label, *lc, curr_op_lc, DIR_VAL_SIZE);
 		}
 	}
-	if (verbose)
+	if (data->verbose)
 		asm_print_output_info("write direct", g_astnode_types[parameter->type],
 			parameter->num_value);
 	asm_write_bytes(data, lc, &parameter->num_value, DIR_VAL_SIZE);
 }
 
 static void	asm_write_indirect(t_output_data *data, uint32_t *lc,
-uint32_t curr_op_lc, t_astnode *parameter, int verbose)
+uint32_t curr_op_lc, t_astnode *parameter)
 {
 	t_symbol_list	*label;
 
@@ -75,20 +75,20 @@ uint32_t curr_op_lc, t_astnode *parameter, int verbose)
 		}
 		else
 		{
-			if (verbose)
+			if (data->verbose)
 				asm_print_output_info("add forward reference for label",
 					label->symbol, parameter->num_value);
 			asm_add_forward_ref_to_label(label, *lc, curr_op_lc, IND_ADDR_SIZE);
 		}
 	}
-	if (verbose)
+	if (data->verbose)
 		asm_print_output_info("write indirect",
 			g_astnode_types[parameter->type], parameter->num_value);
 	asm_write_bytes(data, lc, &parameter->num_value, IND_ADDR_SIZE);
 }
 
 static void	asm_write_register(t_output_data *data, uint32_t *lc,
-t_astnode *parameter, int verbose)
+t_astnode *parameter)
 {
 	char	*value;
 
@@ -100,13 +100,13 @@ t_astnode *parameter, int verbose)
 		asm_generate_error(parameter, "Invalid register");
 	if (parameter->num_value < 1 || parameter->num_value > REG_NUMBER)
 		asm_generate_error(parameter, "Invalid register");
-	if (verbose)
+	if (data->verbose)
 		asm_print_output_info("write register", NULL, parameter->num_value);
 	asm_write_bytes(data, lc, &parameter->num_value, REG_ADDR_SIZE);
 }
 
 void	asm_write_arguments(t_output_data *data, uint32_t *lc,
-uint32_t curr_op_lc, t_astnode *parameter_list, int verbose)
+uint32_t curr_op_lc, t_astnode *parameter_list)
 {
 	t_astnode	*parameter;
 
@@ -115,15 +115,15 @@ uint32_t curr_op_lc, t_astnode *parameter_list, int verbose)
 		parameter = parameter_list->left_child;
 		if (parameter->type == REGISTER)
 		{
-			asm_write_register(data, lc, parameter, verbose);
+			asm_write_register(data, lc, parameter);
 		}
 		else if (parameter->type == INDIRECT)
 		{
-			asm_write_indirect(data, lc, curr_op_lc, parameter->right_child, verbose);
+			asm_write_indirect(data, lc, curr_op_lc, parameter->right_child);
 		}
 		else
 		{
-			asm_write_direct(data, lc, curr_op_lc, parameter->right_child, verbose);
+			asm_write_direct(data, lc, curr_op_lc, parameter->right_child);
 		}
 		parameter_list = parameter_list->right_child;
 	}
