@@ -15,13 +15,16 @@ DEP_DIR		=	.deps/
 LIB_CORE_DIR	=	../lib/core/
 LIB_CORE	=	$(LIB_CORE_DIR)libcore.a
 
+LIB_ARGPARSER_DIR	=	../lib/argparser/
+LIB_ARGPARSER	=	$(LIB_CORE_DIR)libargparser.a
+
 CC			=	gcc
 CFLAGS 		=	-g -Wall -Wextra -Werror -fPIC -fsanitize=address
 DFLAGS		=	-Wunreachable-code -Wpedantic -Wtype-limits #-Wconversion
-CPPFLAGS	=	-I $(INC_DIR) -I ../inc/ -I $(LIB_CORE_DIR)inc
+CPPFLAGS	=	-I $(INC_DIR) -I ../inc/ -I $(LIB_CORE_DIR)inc -I $(LIB_ARGPARSER_DIR)include
 DEPFLAGS	=	-MT $@ -MMD -MP -MF $(DEP_DIR)$*.d
-LDLIBS		=	-L $(LIB_CORE_DIR)
-LDFLAGS		=	-l core
+LDLIBS		=	-L $(LIB_CORE_DIR) -L $(LIB_ARGPARSER_DIR)
+LDFLAGS		=	-l core -l argparser
 COMPILE.c	=	$(CC) $(DEPFLAGS) $(CFLAGS) $(DFLAGS) $(CPPFLAGS) -c
 
 SRC_LEXER	=	$(addprefix lexer/,\
@@ -92,6 +95,7 @@ SRC_GENERATE	=	$(addprefix generate/,\
 
 SRC_OTHER	=	asm_main.c \
 				asm_read_input.c \
+				asm_parse_arguments.c \
 				asm_init_token.c \
 				asm_init_output_data.c \
 				asm_write_output_to_file.c \
@@ -110,35 +114,35 @@ ALL_SRC		=	$(SRC_LEXER) \
 				$(SRC_GENERATE) \
 				$(SRC_OTHER)
 
-SRC_BASE	=	asm_main.c \
-				asm_read_input.c \
-				asm_init_lexer.c \
-				asm_lexer_advance.c \
-				asm_lexer_peek.c \
-				asm_init_token.c \
-				asm_init_empty_token.c \
-				asm_get_next_token.c \
-				asm_peek_next_token.c \
-				asm_init_parser.c \
-				asm_parse.c \
-				asm_validate.c \
-				asm_init_output_data.c \
-				asm_generate_output.c \
-				asm_write_output_to_file.c \
-				asm_print_output_hexdump.c \
-				asm_symbol_list_new.c \
-				asm_symbol_list_lookup.c \
-				asm_symbol_list_define.c \
-				asm_symbol_list_delete.c \
-				asm_symbol_list_free.c \
-				asm_print_symbol_list.c \
-				asm_write_ast_dot_to_file.c \
-				asm_print_ast_dot.c \
-				asm_get_instruction.c \
-				asm_get_numeric_value.c \
-				asm_exit_error.c \
-				asm_astnode_new.c \
-				asm_astnode_free.c
+# SRC_BASE	=	asm_main.c \
+# 				asm_read_input.c \
+# 				asm_init_lexer.c \
+# 				asm_lexer_advance.c \
+# 				asm_lexer_peek.c \
+# 				asm_init_token.c \
+# 				asm_init_empty_token.c \
+# 				asm_get_next_token.c \
+# 				asm_peek_next_token.c \
+# 				asm_init_parser.c \
+# 				asm_parse.c \
+# 				asm_validate.c \
+# 				asm_init_output_data.c \
+# 				asm_generate_output.c \
+# 				asm_write_output_to_file.c \
+# 				asm_print_output_hexdump.c \
+# 				asm_symbol_list_new.c \
+# 				asm_symbol_list_lookup.c \
+# 				asm_symbol_list_define.c \
+# 				asm_symbol_list_delete.c \
+# 				asm_symbol_list_free.c \
+# 				asm_print_symbol_list.c \
+# 				asm_write_ast_dot_to_file.c \
+# 				asm_print_ast_dot.c \
+# 				asm_get_instruction.c \
+# 				asm_get_numeric_value.c \
+# 				asm_exit_error.c \
+# 				asm_astnode_new.c \
+# 				asm_astnode_free.c
 
 SRC			=	$(addprefix $(SRC_DIR), $(ALL_SRC))
 OBJ			=	$(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRC))
@@ -147,7 +151,7 @@ OBJ			=	$(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRC))
 
 all: $(NAME)
 
-$(NAME): $(OBJ) $(LIB_CORE)
+$(NAME): $(OBJ) $(LIB_CORE) $(LIB_ARGPARSER)
 				$(CC) $(CFLAGS) $(DFLAGS) -o $@ $(OBJ) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS)
 				@echo "\\n\033[32;1mASSEMBLER COMPILED\033[0m \\n"
 
@@ -168,16 +172,21 @@ $(OBJ_DIR):
 $(LIB_CORE):
 				@$(MAKE) -C $(LIB_CORE_DIR)
 
+$(LIB_ARGPARSER):
+				@$(MAKE) -C $(LIB_ARGPARSER_DIR)
+
 # DEPFILES = $(addprefix $(DEP_DIR), $(SRC_BASE:.c=.d))
 # $(DEPFILES):
 
 clean:
 				@rm -rf $(OBJ_DIR) $(DEP_DIR)
 				@make clean -C $(LIB_CORE_DIR)
+				@make clean -C $(LIB_ARGPARSER_DIR)
 
 fclean: clean
 				@rm -rf $(NAME) $(NAME).dSYM
 				@make fclean -C $(LIB_CORE_DIR)
+				@make fclean -C $(LIB_ARGPARSER_DIR)
 
 re: fclean all
 

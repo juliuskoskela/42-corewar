@@ -16,8 +16,6 @@
 # include <string.h>
 # include <stdint.h>
 
-# define ASM_PRINT_DEBUG 1
-
 # define COMMENT_CHAR		'#'
 # define COMMENT_SEMICOLON	';'
 # define LABEL_CHAR			':'
@@ -115,9 +113,11 @@ typedef struct s_input_args
 	char	*input_path;
 	int		print_ast_dot;
 	int		print_hex_dump;
+	int		verbose;
 }	t_input_args;
 
 char				*asm_read_input(const char *filepath);
+t_input_args		asm_parse_arguments(int argc, char **argv);
 
 void				asm_init_lexer(t_lexer *lexer, const char *input);
 t_token				asm_init_token(t_token_type type, char *value,
@@ -127,12 +127,17 @@ t_token_type		asm_peek_next_token(t_lexer *lexer);
 void				asm_init_parser(t_parser *parser, t_lexer *lexer);
 int					asm_parse(t_astnode **tree, char *input);
 
-int					asm_validate_ast(t_output_data *data, t_astnode *tree);
+int					asm_validate_ast(t_output_data *data,
+						t_astnode *tree,
+						int verbose);
 
 void				asm_init_output_data(t_output_data *data);
 int					asm_generate_output(t_output_data *data,
-						t_astnode *tree);
-void				asm_write_output_to_file(char *path, t_output_data data);
+						t_astnode *tree,
+						int verbose);
+void				asm_write_output_to_file(char *path,
+						t_output_data data,
+						int verbose);
 void				asm_print_output_hexdump(t_output_data data);
 
 t_symbol_list		*asm_symbol_list_new(t_astnode *node, char *symbol);

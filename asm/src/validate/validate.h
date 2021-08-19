@@ -1,8 +1,6 @@
 #ifndef VALIDATE_H
 # define VALIDATE_H
 
-int	asm_validate_ast(t_output_data *data, t_astnode *tree);
-
 int	asm_semantic_error(t_astnode *node, char *msg);
 int	asm_visit_parameter(t_astnode *node, uint32_t param_nbr, t_op instruction);
 int	asm_visit_parameter_list(t_astnode *node, uint32_t param_nbr,
