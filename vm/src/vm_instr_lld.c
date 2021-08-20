@@ -1,11 +1,10 @@
 #include "vm.h"
 
-// ld T_DIR | T_IND src, T_REG dst
+// lld T_DIR | T_IND src, T_REG dst
 // Contains ACB
-// If the first argument is T_IND, it represents the memory addr % IDX_MOD.
 // Loads src in the register dst. src's value affects zf.
 
-void vm_instr_ld(
+void vm_instr_lld(
 		t_arena *a,
 		t_process *p)
 {
@@ -24,8 +23,6 @@ void vm_instr_ld(
 		&& vm_check_acb(acb, 0) != IND_CODE)
 		vm_error("Error arg 1 sti!\n");
 	mem_addr = vm_get_val(a, p, vm_check_acb(acb, 0), &mem_i);
-	if (vm_check_acb(acb, 0) == IND_CODE)
-		mem_addr = mem_addr % IDX_MOD;
 	src = vm_get_mem_addr(a, mem_addr);
 
 	// arg 2
