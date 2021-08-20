@@ -18,5 +18,5 @@ void	vm_instr_lfork(
 	vm_create_process(*a, a->processes, p->id);
 	mcpy(a->processes, p, sizeof(t_process));
 	a->processes->pc = (p->pc + offset) % MEM_SIZE;
-	p->pc =+ DIR_VAL_SIZE;
+	p->pc =+ DIR_VAL_SIZE % MEM_SIZE;
 }
