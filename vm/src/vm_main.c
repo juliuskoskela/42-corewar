@@ -1,5 +1,11 @@
 #include "vm.h"
 
+void	vm_init_arena(t_arena *arena)
+{
+	mzero(arena, sizeof(t_arena));
+	arena->cycle_to_die = CYCLE_TO_DIE;
+}
+
 int	main(int argc, char **argv)
 {
 	t_arena	arena;
@@ -9,8 +15,7 @@ int	main(int argc, char **argv)
 		print("usage: vm [player_count][.cor]\n");
 		return (0);
 	}
-	mzero(&arena, sizeof(t_arena));
-	arena.cycle_to_die = CYCLE_TO_DIE;
+	vm_init_arena(&arena);
 	vm_save_input(&arena, argc, argv);
 	vm_battle(arena);
 	return (0);
