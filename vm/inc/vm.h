@@ -132,7 +132,7 @@ void vm_print_arena(
 		t_arena arena,
 		t_process *process_list);
 
-void vm_instr_alive(
+void vm_instr_live(
 		t_arena *a,
 		t_process *p);
 
@@ -143,7 +143,6 @@ void vm_instr_ld(
 void vm_instr_st(
 		t_arena *a,
 		t_process *p);
-
 
 void vm_instr_zjmp(
 		t_arena *a,
@@ -201,7 +200,7 @@ t_uint64 vm_get_val(
 
 static const t_instr g_instr_funcs[] =
 {
-	vm_instr_alive,
+	vm_instr_live,
 	vm_instr_ld,
 	vm_instr_st,
 	vm_instr_null,

@@ -5,26 +5,25 @@
 // is done by modifying a->last_player_alive variable.
 // Updates the value of last_live in the current process.
 
-void vm_instr_alive(
+void vm_instr_live(
 		t_arena *a,
 		t_process *p)
 {
-//	t_process	*cur;
 	t_size		mem_i;
 	t_uint64	id;
 
+	if ((a->verbosity & VM_VERBOSE_OPS) != 0)
+		print("\t%s\n", "live id");
 	mem_i = p->pc;
 	mem_i = (mem_i + 1) % MEM_SIZE;
 	id = vm_get_val(a, p, T_DIR, &mem_i);
-//	cur = a->processes;
-//	while (cur && cur->id != id)
-//		cur = cur->next;
-//	if (!cur)
-//		vm_error("Process with id not found!\n");
+	if ((a->verbosity & VM_VERBOSE_OPS) != 0)
+		print("\tlive %d\n", (int)id);
 	p->last_live = a->cycles_executed;
 	p->pc = mem_i;
 	if (id <= 0 || id > a->player_count)
 		return ;
 	a->last_player_alive = id;
-	print("A process shows that player %d (%s) is alive\n", id, a->all_players[id - 1].prog_name);
+	print("A process shows that player %d (%s) is alive\n",
+		id, a->all_players[id - 1].prog_name);
 }
