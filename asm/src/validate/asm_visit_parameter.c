@@ -15,6 +15,6 @@ int	asm_visit_parameter(t_astnode *node, uint32_t param_nbr, t_op instruction)
 	else
 		allowed_param_types = instruction.param_types.param3;
 	if ((type & allowed_param_types) == 0)
-		return (asm_semantic_error(node->right_child, "Invalid argument type"));
+		return (asm_semantic_error(node, "Invalid argument"));
 	return (1);
 }
