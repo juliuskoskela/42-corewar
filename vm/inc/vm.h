@@ -135,7 +135,36 @@ void vm_instr_st(
 		t_arena *a,
 		t_process *p);
 
+
+void vm_instr_zjmp(
+		t_arena *a,
+		t_process *p);
+
+void vm_instr_ldi(	
+		t_arena *a,
+		t_process *p);
+
 void vm_instr_sti(
+		t_arena *a,
+		t_process *p);
+
+void	vm_instr_fork(
+		t_arena *a,
+		t_process *p);
+
+void vm_instr_lld(
+		t_arena *a,
+		t_process *p);
+
+void vm_instr_lldi(	
+		t_arena *a,
+		t_process *p);
+
+void vm_instr_lfork(	
+		t_arena *a,
+		t_process *p);
+
+void vm_instr_aff(	
 		t_arena *a,
 		t_process *p);
 
@@ -164,20 +193,20 @@ t_uint64 vm_get_val(
 static const t_instr g_instr_funcs[] =
 {
 	vm_instr_alive,
-	vm_instr_null,
+	vm_instr_ld,
 	vm_instr_st,
 	vm_instr_null,
 	vm_instr_null,
 	vm_instr_null,
 	vm_instr_null,
-	vm_instr_null,
-	vm_instr_null,
-	vm_instr_null,
+	vm_instr_zjmp,
+	vm_instr_ldi,
 	vm_instr_sti,
-	vm_instr_null,
-	vm_instr_null,
-	vm_instr_null,
-	vm_instr_null,
+	vm_instr_fork,
+	vm_instr_lld,
+	vm_instr_lldi,
+	vm_instr_lfork,
+	vm_instr_aff
 };
 
 #endif
