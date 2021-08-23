@@ -199,6 +199,7 @@ static const t_instr g_instr_funcs[] =
 	vm_instr_null,
 	vm_instr_null,
 	vm_instr_null,
+	vm_instr_null,
 	vm_instr_zjmp,
 	vm_instr_ldi,
 	vm_instr_sti,

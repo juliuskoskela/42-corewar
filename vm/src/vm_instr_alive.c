@@ -1,6 +1,7 @@
 #include "vm.h"
 
-// Reports the player_number of first argument to be alive. This
+// If the argument is the id of one of the players, this
+// instruction reports the player_number of first argument to be alive. This
 // is done by modifying a->last_player_alive variable.
 // Updates the value of last_live in the current process.
 
@@ -21,7 +22,9 @@ void vm_instr_alive(
 //	if (!cur)
 //		vm_error("Process with id not found!\n");
 	p->last_live = a->cycles_executed;
+	p->pc = mem_i;
+	if (id <= 0 || id > a->player_count)
+		return ;
 	a->last_player_alive = id;
 	print("A process shows that player %d (%s) is alive\n", id, a->all_players[id - 1].prog_name);
-	p->pc = mem_i;
 }
