@@ -23,7 +23,7 @@ void	vm_print_arena(t_arena arena, t_process *process_list)
 		else
 			print("%02x", arena.mem[i]);
 		i++;
-		if (i % 64 == 0 && i != 0)
+		if (i % VM_PRINT_ARENA_WIDTH == 0 && i != 0)
 			print("\n");
 		else
 			print(" ");

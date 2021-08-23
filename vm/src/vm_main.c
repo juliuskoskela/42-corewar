@@ -12,7 +12,6 @@ int	main(int argc, char **argv)
 	mzero(&arena, sizeof(t_arena));
 	arena.cycle_to_die = CYCLE_TO_DIE;
 	vm_save_input(&arena, argc, argv);
-	// vm_test_print_arena(arena);
 	vm_battle(arena);
 	return (0);
 }

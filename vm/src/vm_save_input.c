@@ -14,7 +14,7 @@ static t_uint32	vm_count_players(t_uint32 argc, char **argv)
 	player_count = 0;
 	while (++i < argc)
 	{
-		if (s_cmp(argv[i], "-n") && s_cmp(argv[i], "-dump"))
+		if (s_cmp(argv[i], "-n") && s_cmp(argv[i], "-dump") && s_cmp(argv[i], "-v"))
 			player_count++;
 		else
 			i++;
@@ -48,6 +48,13 @@ static void	vm_validate_input(t_arena *arena, t_uint32 argc, char **argv)
 				vm_error("All champions must be given unique numbers\n");
 			vm_create_player(arena, &set_nbr, argv[++i]);
 		}
+		else if (!s_cmp(argv[i], "-v"))
+		{
+			set_nbr = s_toi(argv[++i]);
+			if (set_nbr < 0 || (set_nbr == 0 && argv[i][0] != '0'))
+				vm_error("Invalid value after -v flag\n");
+			arena->verbosity = set_nbr;
+		}
 		else if (!s_cmp(argv[i], "-dump"))
 		{
 			arena->dump_nbr_cycles = s_toi(argv[++i]);
@@ -76,7 +83,7 @@ void	vm_save_input(t_arena *arena, t_uint32 argc, char **argv)
 	arena->offset = MEM_SIZE / arena->player_count;
 	while (i < argc)
 	{
-		if (!s_cmp(argv[i], "-n"))
+		if (!s_cmp(argv[i], "-n") || !s_cmp(argv[i], "-v"))
 			i += 3;
 		else if (!s_cmp(argv[i], "-dump"))
 			i += 2;

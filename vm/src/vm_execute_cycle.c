@@ -3,10 +3,10 @@
 void	vm_execute_instruction(t_op instruction, t_process *process,
 t_arena *arena)
 {
-	print("player %d: with opcode %d at pc %d, execute %s\n",
+	print("P %d:\tat pc %d opcode %d => execute %s\n",
 		(int)process->id,
-		(int)arena->mem[process->pc],
 		(int)process->pc,
+		(int)arena->mem[process->pc],
 		instruction.mnemonic);
 	g_instr_funcs[instruction.opcode - 1](arena, process);
 }
@@ -63,6 +63,8 @@ void	vm_execute_process(t_process *process, t_arena *arena)
 
 void	vm_execute_cycle(t_process *process, t_arena *arena)
 {
+	if ((arena->verbosity & VM_VERBOSE_CYCLES) != 0)
+		print("Cycle\t%d\n", arena->cycles_executed);
 	while (process)
 	{
 		vm_execute_process(process, arena);
