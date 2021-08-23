@@ -1,6 +1,6 @@
 #include "vm.h"
 
-// aff T_DIR
+// zjmp T_DIR
 // If zf is true, jump T_DIR bytes in memory.
 
 void	vm_instr_zjmp(
@@ -9,6 +9,8 @@ void	vm_instr_zjmp(
 {
 	t_size	jump;
 
+	if ((a->verbosity & VM_VERBOSE_OPS) != 0)
+		print("\t%s\n", "zjmp offset");
 	if (!p->zf)
 		jump = DIR_VAL_SIZE + 1;
 	else
@@ -16,5 +18,7 @@ void	vm_instr_zjmp(
 		jump = (p->pc + 1) % MEM_SIZE;
 		jump = vm_get_val(a, p, DIR_CODE, &jump) % IDX_MOD;
 	}
+	if ((a->verbosity & VM_VERBOSE_OPS) != 0)
+		print("\tmove pc to pc + %d\n", (int)jump);
 	p->pc = (p->pc + jump) % MEM_SIZE;
 }

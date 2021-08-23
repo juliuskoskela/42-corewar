@@ -14,6 +14,9 @@ void vm_instr_ld(
 	t_mem_addr	src;
 	t_reg_addr	dst;
 	t_uint64	mem_addr;
+
+	if ((a->verbosity & VM_VERBOSE_OPS) != 0)
+		print("\t%s\n", "ld src, dst");
 	// acb
 	mem_i = (p->pc + 1) % MEM_SIZE;
 	acb = a->mem[mem_i];

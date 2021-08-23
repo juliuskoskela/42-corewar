@@ -4,6 +4,7 @@ void	vm_introduce_champs(t_arena arena)
 {
 	t_size	i;
 
+	print("Introducing contestants...\n");
 	i = 0;
 	while (i < arena.player_count)
 	{

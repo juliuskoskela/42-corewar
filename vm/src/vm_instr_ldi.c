@@ -13,6 +13,9 @@ void vm_instr_ldi(
 	t_uint8		acb;
 	t_reg_addr	dst;
 
+	if ((a->verbosity & VM_VERBOSE_OPS) != 0)
+		print("\t%s\n", "ldi lhs, rhs, dst");
+
 	mem_i = (p->pc + 1) % MEM_SIZE;
 	acb = a->mem[mem_i];
 
