@@ -25,7 +25,7 @@ void vm_instr_ld(
 	// arg 1
 	if (vm_check_acb(acb, 0) != DIR_CODE
 		&& vm_check_acb(acb, 0) != IND_CODE)
-		vm_error("Error arg 1 sti!\n");
+		vm_error("Error arg 1 ld!\n");
 	mem_addr = vm_get_val(a, p, vm_check_acb(acb, 0), &mem_i);
 	if (vm_check_acb(acb, 0) == IND_CODE)
 		mem_addr = mem_addr % IDX_MOD;
@@ -33,8 +33,9 @@ void vm_instr_ld(
 
 	// arg 2
 	if (vm_check_acb(acb, 1) != REG_CODE)
-		vm_error("Error arg 2 sti!\n");
+		vm_error("Error arg 2 ld!\n");
 	dst = vm_get_reg_addr(p, a->mem[mem_i]);
+	mem_i = (mem_i + 1) % MEM_SIZE;
 
 	// store load to register
 	print("mem addr = %d\n", mem_addr);
