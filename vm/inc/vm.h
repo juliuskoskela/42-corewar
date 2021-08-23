@@ -18,6 +18,14 @@
 # define NBR_LIVE				21
 # define MAX_CHECKS				10
 
+# define VM_VERBOSE_LIVES		1
+# define VM_VERBOSE_CYCLES		2
+# define VM_VERBOSE_OPS			4
+# define VM_VERBOSE_DEATHS		8
+# define VM_VERBOSE_PC			16
+
+# define VM_PRINT_ARENA_WIDTH	32
+
 typedef t_byte* t_mem_addr;
 typedef t_uint64* t_reg_addr;
 
@@ -54,24 +62,25 @@ typedef struct s_arena
 	t_size		player_count;
 	t_byte		mem[MEM_SIZE];
 	t_size		offset;
-	// if -dump flag is missing, this will be 0.
 
 	t_process	*processes;
+	// if -dump flag is missing, this will be 0.
 	t_int32		dump_nbr_cycles;
-
-		//the player who was last reported to be alive
-	t_int32	last_player_alive;
-	//number of cycles executed since starting the program.
-	t_int32	cycles_executed;
+	// if -v flag is missing, this will be 0
+	t_int32		verbosity;
+	// the player who was last reported to be alive
+	t_int32		last_player_alive;
+	// number of cycles executed since starting the program.
+	t_int32		cycles_executed;
 	// number of lives reported within current cycle_to_die period.
-	t_int32	lives_since_check;
+	t_int32		lives_since_check;
 	// number of checks with lives_since_check < NBR_LIVE. if this reaches
 	// MAX_CHECKS, cycle_to_die is decreased by CYCLE_DELTA and
 	// checks_performed is set to 0.
-	t_int32	checks_performed;
+	t_int32		checks_performed;
 	// every cycle_to_die cycles, each process will be checked for a live.
-	t_int32	cycle_to_die;
-	t_int32	cycles_since_check;
+	t_int32		cycle_to_die;
+	t_int32		cycles_since_check;
 }	t_arena;
 
 typedef void (*t_instr)(t_arena *, t_process *);
