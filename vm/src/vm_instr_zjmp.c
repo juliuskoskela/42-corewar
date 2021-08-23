@@ -12,6 +12,9 @@ void	vm_instr_zjmp(
 	if (!p->zf)
 		jump = DIR_VAL_SIZE + 1;
 	else
-		jump = vm_get_val(a, p, DIR_CODE, (p->pc + 1) % MEM_SIZE) % IDX_MOD;
+	{
+		jump = (p->pc + 1) % MEM_SIZE;
+		jump = vm_get_val(a, p, DIR_CODE, &jump) % IDX_MOD;
+	}
 	p->pc = (p->pc + jump) % MEM_SIZE;
 }

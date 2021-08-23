@@ -42,6 +42,8 @@ SRC_BASE	=	vm_main.c \
 				vm_instr_ld.c \
 				vm_instr_ldi.c \
 				vm_instr_fork.c \
+				vm_instr_lld.c \
+				vm_instr_zjmp.c \
 				vm_instr_lldi.c \
 				vm_instr_lfork.c \
 				vm_instr_aff.c \
