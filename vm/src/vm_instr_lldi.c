@@ -13,9 +13,10 @@ void vm_instr_lldi(
 	t_uint8		acb;
 	t_reg_addr	dst;
 
+	if ((a->verbosity & VM_VERBOSE_OPS) != 0)
+		print("\t%s\n", "lldi lhs, rhs, dst");
 	mem_i = (p->pc + 1) % MEM_SIZE;
 	acb = a->mem[mem_i];
-
 	if (vm_check_acb(acb, 0) != REG_CODE &&
 		vm_check_acb(acb, 0) != DIR_CODE &&
 		vm_check_acb(acb, 0) != IND_CODE)
@@ -30,6 +31,6 @@ void vm_instr_lldi(
 
 	if (vm_check_acb(acb, 2) != REG_CODE)
 		vm_error("Error arg 3 ldi\n");
-	dst = vm_get_reg_addr(p, a->mem[mem_i] - 1);
+	dst = vm_get_reg_addr(p, a->mem[mem_i]);
 	*dst = (lhs + rhs) % MEM_SIZE;
 }
