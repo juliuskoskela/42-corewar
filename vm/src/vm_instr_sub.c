@@ -1,6 +1,6 @@
 #include "vm.h"
 
-void vm_instr_add(
+void vm_instr_sub(
 		t_arena *a,
 		t_process *p)
 {
@@ -30,7 +30,7 @@ void vm_instr_add(
 		vm_error("Error arg 3 add!\n");
 	dst = vm_get_reg_addr(p, a->mem[mem_i]);
 
-	*dst = lhs + rhs;
+	*dst = lhs - rhs;
 	if (*dst == 0)
 		p->zf = 1;
 	else
