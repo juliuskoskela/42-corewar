@@ -4,8 +4,6 @@
 #include <stdlib.h>
 #include "core.h"
 
-#define BUF_SIZE 100
-
 static int	result_resize(char **result, size_t old_size, size_t new_size)
 {
 	char	*new_result;
@@ -48,6 +46,15 @@ static int	result_append(char **result, char *buf, size_t len)
 	return (1);
 }
 
+void	asm_check_filepath_suffix(const char *filepath)
+{
+	const char	*suffix;
+
+	suffix = s_rchr(filepath, '.');
+	if (suffix == NULL || s_cmp(suffix, ".s") != 0)
+		asm_exit_error("Invalid file format, expected a .s file");
+}
+
 char	*asm_read_input(const char *filepath)
 {
 	char	*result;
@@ -55,6 +62,7 @@ char	*asm_read_input(const char *filepath)
 	int		fd;
 	ssize_t	ret;
 
+	asm_check_filepath_suffix(filepath);
 	fd = open(filepath, O_RDONLY);
 	if (fd < 0)
 		return (NULL);

@@ -15,13 +15,11 @@ int	main(int argc, char **argv)
 	if (input == NULL)
 		asm_exit_error("Error on reading input");
 	tree = NULL;
-	if (!asm_parse(&tree, input))
-		asm_exit_error(NULL);
+	asm_parse(&tree, input);
 	if (arguments.print_ast_dot)
 		asm_write_ast_dot_to_file(arguments.input_path, tree);
-	asm_init_output_data(&data, arguments.verbose);
-	if (!asm_validate_ast(&data, tree, arguments.verbose))
-		asm_exit_error(NULL);
+	asm_init_output_data(&data);
+	asm_validate_ast(&data, tree);
 	asm_generate_output(&data, tree);
 	asm_write_output_to_file(arguments.input_path, data);
 	if (arguments.print_hex_dump)

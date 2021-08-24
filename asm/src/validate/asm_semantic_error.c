@@ -3,12 +3,12 @@
 #include "core.h"
 #include "validate.h"
 
-int	asm_semantic_error(t_astnode *node, char *msg)
+void	asm_semantic_error(t_astnode *node, char *msg)
 {
-	print_fd(2, "Semantic error at [%u, %u]: %s %s\n",
+	print_fd(2, "Semantic error at [%u, %u]: %s '%s'\n",
 		node->token.line_no,
 		node->token.col,
 		msg,
 		node->value);
-	return (0);
+	exit(1);
 }

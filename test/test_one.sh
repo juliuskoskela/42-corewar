@@ -1,9 +1,12 @@
 #!/bin/bash
 
-## Paths to  executables
+## Paths to executables
 
 user_asm="../bin/asm"
 user_corewar="../bin/corewar"
+
+## Verbosity level for vm: from 0 to 31
+vm_verbosity="31"
 
 ## Path to the player .cor file is taken as the first command line argument
 
@@ -34,6 +37,7 @@ $user_asm $player_s >$outdir/user_asm_output 2>&1
 
 user_asm_exit=$?
 if [ $user_asm_exit == 0 ]; then
+	echo "move $player_cor to $outdir"
 	mv $player_cor $outdir
 else
 	echo "$user_asm exited with $user_asm_exit"
@@ -55,7 +59,9 @@ echo "Running VM for $cycles_to_run cycles"
 
 user_player_cor="$outdir/$player.cor"
 
-$user_corewar $user_player_cor -dump $cycles_to_run >$outdir/user_corewar_output 2>&1
+# Assumes that flags -dump and -v have been implemented
+
+$user_corewar $user_player_cor -dump $cycles_to_run -v $vm_verbosity >$outdir/user_corewar_output 2>&1
 
 user_corewar_exit=$?
 if [ $user_corewar_exit != 0 ]; then

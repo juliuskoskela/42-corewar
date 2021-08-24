@@ -44,6 +44,7 @@ void	vm_battle(t_arena arena)
 			if (arena.cycles_executed == arena.dump_nbr_cycles)
 			{
 				vm_print_arena(arena, arena.processes);
+				vm_free_processes(&arena.processes);
 				return ;
 			}
 			vm_execute_cycle(arena.processes, &arena);

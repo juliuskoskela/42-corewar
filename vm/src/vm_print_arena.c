@@ -18,12 +18,14 @@ void	vm_print_arena(t_arena arena, t_process *process_list)
 	i = 0;
 	while (i < MEM_SIZE)
 	{
+		if (i % VM_PRINT_ARENA_WIDTH == 0)
+			print("%#06x : ", i);
 		if (vm_is_process_pc(i, process_list))
 			print("\x1b[31m%02x\x1b[0m", arena.mem[i]);
 		else
 			print("%02x", arena.mem[i]);
 		i++;
-		if (i % 64 == 0 && i != 0)
+		if (i % VM_PRINT_ARENA_WIDTH == 0 && i != 0)
 			print("\n");
 		else
 			print(" ");

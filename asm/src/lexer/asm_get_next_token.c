@@ -51,7 +51,7 @@ t_token	asm_get_next_token(t_lexer *lexer)
 		else if (is_alpha(lexer->current_char))
 			return (asm_get_id_token(lexer));
 		else
-			return (asm_get_error_token(lexer));
+			asm_lexer_error(lexer, "Unrecognized token");
 	}
 	return (asm_get_eof_token(lexer));
 }
