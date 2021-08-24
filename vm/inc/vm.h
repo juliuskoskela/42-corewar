@@ -136,6 +136,26 @@ void vm_instr_live(
 		t_arena *a,
 		t_process *p);
 
+void vm_instr_add(
+		t_arena *a,
+		t_process *p);
+
+void vm_instr_sub(
+		t_arena *a,
+		t_process *p);
+
+void vm_instr_and(
+		t_arena *a,
+		t_process *p);
+
+void vm_instr_or(
+		t_arena *a,
+		t_process *p);
+
+void vm_instr_xor(
+		t_arena *a,
+		t_process *p);
+
 void vm_instr_ld(
 		t_arena *a,
 		t_process *p);
@@ -148,7 +168,7 @@ void vm_instr_zjmp(
 		t_arena *a,
 		t_process *p);
 
-void vm_instr_ldi(	
+void vm_instr_ldi(
 		t_arena *a,
 		t_process *p);
 
@@ -156,7 +176,7 @@ void vm_instr_sti(
 		t_arena *a,
 		t_process *p);
 
-void	vm_instr_fork(
+void vm_instr_fork(
 		t_arena *a,
 		t_process *p);
 
@@ -164,15 +184,15 @@ void vm_instr_lld(
 		t_arena *a,
 		t_process *p);
 
-void vm_instr_lldi(	
+void vm_instr_lldi(
 		t_arena *a,
 		t_process *p);
 
-void vm_instr_lfork(	
+void vm_instr_lfork(
 		t_arena *a,
 		t_process *p);
 
-void vm_instr_aff(	
+void vm_instr_aff(
 		t_arena *a,
 		t_process *p);
 
