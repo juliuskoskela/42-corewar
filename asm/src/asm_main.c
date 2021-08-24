@@ -26,6 +26,7 @@ int	main(int argc, char **argv)
 		asm_print_output_hexdump(data);
 	asm_astnode_free(tree);
 	asm_symbol_list_free(data.symbols);
+	free(data.program);
 	free(input);
 	return (0);
 }
