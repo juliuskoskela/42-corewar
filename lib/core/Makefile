@@ -65,7 +65,6 @@ clean:
 			@make clean $(MFLAGS) $(STRING)
 			@make clean $(MFLAGS) $(CHECKS)
 			@make clean $(MFLAGS) $(SYSTEM)
-			@echo "\\n\033[32;1mCORE DEACTIVATED \033[0m \\n"
 
 fclean:		clean
 			@$(RM) $(NAME)
@@ -83,6 +82,7 @@ fclean:		clean
 			@make fclean $(MFLAGS) $(STRING)
 			@make fclean $(MFLAGS) $(CHECKS)
 			@make fclean $(MFLAGS) $(SYSTEM)
+			@echo "\\n\033[32;1mCORE DEACTIVATED \033[0m \\n"
 
 re:			fclean all
 
