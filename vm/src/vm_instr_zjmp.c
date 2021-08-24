@@ -20,5 +20,7 @@ void	vm_instr_zjmp(
 	}
 	if ((a->verbosity & VM_VERBOSE_OPS) != 0)
 		print("\tmove pc to pc + %d\n", (int)jump);
+	if ((a->verbosity & VM_VERBOSE_PC) != 0)
+		print("\tPC: %d => %d\n", (int)p->pc, (p->pc + jump) % MEM_SIZE);
 	p->pc = (p->pc + jump) % MEM_SIZE;
 }

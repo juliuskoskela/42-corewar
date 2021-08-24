@@ -20,10 +20,13 @@ void vm_instr_live(
 	if ((a->verbosity & VM_VERBOSE_OPS) != 0)
 		print("\tlive %d\n", (int)id);
 	p->last_live = a->cycles_executed;
+	if (id > 0 && id < a->player_count)
+	{
+		a->last_player_alive = id;
+		print("A process shows that player %d (%s) is alive\n",
+			id, a->all_players[id - 1].prog_name);
+	}
+	if ((a->verbosity & VM_VERBOSE_PC) != 0)
+		print("\tPC: %d => %d\n", (int)p->pc, (int)mem_i);
 	p->pc = mem_i;
-	if (id <= 0 || id > a->player_count)
-		return ;
-	a->last_player_alive = id;
-	print("A process shows that player %d (%s) is alive\n",
-		id, a->all_players[id - 1].prog_name);
 }

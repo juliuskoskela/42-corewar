@@ -33,4 +33,7 @@ void vm_instr_lldi(
 		vm_error("Error arg 3 ldi\n");
 	dst = vm_get_reg_addr(p, a->mem[mem_i]);
 	*dst = (lhs + rhs) % MEM_SIZE;
+	if ((a->verbosity & VM_VERBOSE_PC) != 0)
+		print("\tPC: %d => %d\n", (int)p->pc, (int)mem_i);
+	p->pc = mem_i;
 }

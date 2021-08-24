@@ -45,5 +45,7 @@ void vm_instr_sti(
 	print("\tstore %d to %d + %d = %d (+ pc)\n", *src, (int)lhs, (int)rhs, (int)(lhs + rhs));
 	dst = vm_get_mem_addr(a, p->pc + lhs + rhs);
 	vm_reverse_bytes(dst, src, REG_SIZE);
+	if ((a->verbosity & VM_VERBOSE_PC) != 0)
+		print("\tPC: %d => %d\n", (int)p->pc, (int)mem_i);
 	p->pc = mem_i;
 }

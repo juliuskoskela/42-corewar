@@ -40,5 +40,7 @@ void vm_instr_ld(
 	// store load to register
 	print("mem addr = %d\n", mem_addr);
 	vm_reverse_bytes(dst, src, 2);
+	if ((a->verbosity & VM_VERBOSE_PC) != 0)
+		print("\tPC: %d => %d\n", (int)p->pc, (int)mem_i);
 	p->pc = mem_i;
 }

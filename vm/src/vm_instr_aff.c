@@ -25,5 +25,7 @@ void	vm_instr_aff(
 		print("\taff %c\n", out);
 	print("%c", out);
 	mem_i += REG_ADDR_SIZE % MEM_SIZE;
+	if ((a->verbosity & VM_VERBOSE_PC) != 0)
+		print("\tPC: %d => %d\n", (int)p->pc, (int)mem_i);
 	p->pc = mem_i;
 }

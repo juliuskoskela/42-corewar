@@ -23,7 +23,7 @@ void vm_instr_ldi(
 		vm_check_acb(acb, 0) != DIR_CODE &&
 		vm_check_acb(acb, 0) != IND_CODE)
 			vm_error("Error arg 1 ldi\n");
-	mem_i = (p->pc + 1) % MEM_SIZE;
+	mem_i = (mem_i + 1) % MEM_SIZE;
 	lhs = vm_get_val(a, p, vm_check_acb(acb, 1), &mem_i);
 
 	if (vm_check_acb(acb, 1) != REG_CODE
@@ -35,4 +35,7 @@ void vm_instr_ldi(
 		vm_error("Error arg 3 ldi\n");
 	dst = vm_get_reg_addr(p, a->mem[mem_i] - 1);
 	*dst = (lhs + rhs) % IDX_MOD;
+	if ((a->verbosity & VM_VERBOSE_PC) != 0)
+		print("\tPC: %d => %d\n", (int)p->pc, (int)mem_i);
+	p->pc = mem_i;
 }
