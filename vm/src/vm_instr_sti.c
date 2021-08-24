@@ -12,8 +12,8 @@ void vm_instr_sti(
 	t_uint8		acb;
 	t_mem_addr	dst;
 	t_reg_addr	src;
-	t_uint64	lhs;
-	t_uint64	rhs;
+	t_int64		lhs;
+	t_int64		rhs;
 
 	if ((a->verbosity & VM_VERBOSE_OPS) != 0)
 		print("\t%s\n", "sti src, lhs, rhs");
@@ -42,7 +42,11 @@ void vm_instr_sti(
 	rhs = vm_get_val(a, p, vm_check_acb(acb, 2), &mem_i);
 
 	// store at index
-	print("\tstore %d to %d + %d = %d (+ pc)\n", *src, (int)lhs, (int)rhs, (int)(lhs + rhs));
+	if ((a->verbosity & VM_VERBOSE_OPS) != 0)
+	{
+		print("\tstore %d to %d + %d = %d (+ pc)\n",
+			*src, (int)lhs, (int)rhs, (int)(lhs + rhs));
+	}
 	dst = vm_get_mem_addr(a, p->pc + lhs + rhs);
 	vm_reverse_bytes(dst, src, REG_SIZE);
 	if ((a->verbosity & VM_VERBOSE_PC) != 0)

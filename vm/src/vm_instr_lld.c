@@ -12,7 +12,7 @@ void vm_instr_lld(
 	t_uint8		acb;
 	t_mem_addr	src;
 	t_reg_addr	dst;
-	t_uint64	mem_addr;
+	t_int64		mem_addr;
 
 	if ((a->verbosity & VM_VERBOSE_OPS) != 0)
 		print("\t%s\n", "lld src, dst");
@@ -38,4 +38,5 @@ void vm_instr_lld(
 	vm_reverse_bytes(dst, src, 2);
 	if ((a->verbosity & VM_VERBOSE_PC) != 0)
 		print("\tPC: %d => %d\n", (int)p->pc, (int)mem_i);
-	p->pc = mem_i;}
+	p->pc = mem_i;
+}

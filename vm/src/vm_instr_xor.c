@@ -1,14 +1,14 @@
 #include "vm.h"
 
-void vm_instr_or(
+void vm_instr_xor(
 		t_arena *a,
 		t_process *p)
 {
 	t_size		mem_i;
 	t_uint8		acb;
 	t_reg_addr	dst;
-	t_uint64	lhs;
-	t_uint64	rhs;
+	t_int64		lhs;
+	t_int64		rhs;
 
 	// acb
 	mem_i = (p->pc + 1) % MEM_SIZE;

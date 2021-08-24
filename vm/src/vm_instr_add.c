@@ -7,9 +7,11 @@ void vm_instr_add(
 	t_size		mem_i;
 	t_uint8		acb;
 	t_reg_addr	dst;
-	t_uint64	lhs;
-	t_uint64	rhs;
+	t_int64		lhs;
+	t_int64		rhs;
 
+	if ((a->verbosity & VM_VERBOSE_OPS) != 0)
+		print("\t%s\n", "add lhs, rhs, dst");
 	// acb
 	mem_i = (p->pc + 1) % MEM_SIZE;
 	acb = a->mem[mem_i];
@@ -30,6 +32,11 @@ void vm_instr_add(
 		vm_error("Error arg 3 add!\n");
 	dst = vm_get_reg_addr(p, a->mem[mem_i]);
 
+	if ((a->verbosity & VM_VERBOSE_OPS) != 0)
+	{
+		print("\tadd %d + %d = %d to %d\n",
+			(int)lhs, (int)rhs, (int)(lhs + rhs), a->mem[mem_i]);
+	}
 	*dst = lhs + rhs;
 	if (*dst == 0)
 		p->zf = 1;

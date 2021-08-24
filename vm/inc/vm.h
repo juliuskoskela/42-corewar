@@ -218,20 +218,20 @@ t_int64 vm_get_val(
 		t_uint8 acb,
 		t_size *mem_i);
 
-// void	vm_advance_pc(
-// 		t_size *pc,
-// 		int size);
+void	vm_advance_pc(
+		t_size *pc,
+		int size);
 
 static const t_instr g_instr_funcs[] =
 {
 	vm_instr_live,
 	vm_instr_ld,
 	vm_instr_st,
-	vm_instr_null,
-	vm_instr_null,
-	vm_instr_null,
-	vm_instr_null,
-	vm_instr_null,
+	vm_instr_add,
+	vm_instr_sub,
+	vm_instr_and,
+	vm_instr_or,
+	vm_instr_xor,
 	vm_instr_zjmp,
 	vm_instr_ldi,
 	vm_instr_sti,

@@ -31,7 +31,7 @@ static t_uint32	vm_count_players(t_uint32 argc, char **argv)
 static void	vm_validate_input(t_arena *arena, t_uint32 argc, char **argv)
 {
 	t_uint32	i;
-	t_uint32	set_nbr;
+	t_int32		set_nbr;
 
 	i = 0;
 	while (++i < argc)
@@ -74,7 +74,7 @@ static void	vm_validate_input(t_arena *arena, t_uint32 argc, char **argv)
 void	vm_save_input(t_arena *arena, t_uint32 argc, char **argv)
 {
 	t_uint32	i;
-	t_uint32	player_number;
+	t_int32		player_number;
 
 	i = 1;
 	player_number = 1;

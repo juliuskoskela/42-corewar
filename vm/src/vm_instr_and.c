@@ -7,8 +7,8 @@ void vm_instr_and(
 	t_size		mem_i;
 	t_uint8		acb;
 	t_reg_addr	dst;
-	t_uint64	lhs;
-	t_uint64	rhs;
+	t_int64		lhs;
+	t_int64		rhs;
 
 	// acb
 	mem_i = (p->pc + 1) % MEM_SIZE;

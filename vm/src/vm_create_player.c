@@ -44,7 +44,7 @@ static void	vm_read_program(t_arena *arena, t_uint32 player_number, int fd)
 		vm_error("Invalid amount of bytes in program\n");
 }
 
-void	vm_create_player(t_arena *arena, t_uint32 *player_number, char *name)
+void	vm_create_player(t_arena *arena, t_int32 *player_number, char *name)
 {
 	t_header	player;
 	int			fd;

@@ -10,7 +10,7 @@ void	vm_instr_lfork(
 		t_process *p)
 {
 	t_size		mem_i;
-	t_uint64	offset;
+	t_int64		offset;
 
 	if ((a->verbosity & VM_VERBOSE_OPS) != 0)
 		print("\t%s\n", "lfork offset");

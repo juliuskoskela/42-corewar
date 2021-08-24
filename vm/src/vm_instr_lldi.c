@@ -7,8 +7,8 @@ void vm_instr_lldi(
 		t_arena *a,
 		t_process *p)
 {
-	t_uint64	rhs;
-	t_uint64	lhs;
+	t_int64		rhs;
+	t_int64		lhs;
 	t_size		mem_i;
 	t_uint8		acb;
 	t_reg_addr	dst;
