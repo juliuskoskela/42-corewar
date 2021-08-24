@@ -18,7 +18,7 @@ int	main(int argc, char **argv)
 	asm_parse(&tree, input);
 	if (arguments.print_ast_dot)
 		asm_write_ast_dot_to_file(arguments.input_path, tree);
-	asm_init_output_data(&data);
+	asm_init_output_data(&data, arguments.verbose);
 	asm_validate_ast(&data, tree);
 	asm_generate_output(&data, tree);
 	asm_write_output_to_file(arguments.input_path, data);

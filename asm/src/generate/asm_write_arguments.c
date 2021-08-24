@@ -46,7 +46,7 @@ uint32_t curr_op_lc, t_astnode *parameter)
 			if (data->verbose)
 				asm_print_output_info("add forward reference for label",
 					label->symbol, parameter->num_value);
-			asm_add_forward_reference_to_label(label, *lc,
+			asm_add_forward_ref_to_label(label, *lc,
 				curr_op_lc, DIR_VAL_SIZE);
 		}
 	}
@@ -75,7 +75,7 @@ uint32_t curr_op_lc, t_astnode *parameter)
 			if (data->verbose)
 				asm_print_output_info("add forward reference for label",
 					label->symbol, parameter->num_value);
-			asm_add_forward_reference_to_label(label, *lc,
+			asm_add_forward_ref_to_label(label, *lc,
 				curr_op_lc, IND_ADDR_SIZE);
 		}
 	}
