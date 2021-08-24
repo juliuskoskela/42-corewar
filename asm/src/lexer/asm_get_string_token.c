@@ -17,11 +17,7 @@ t_token	asm_get_string_token(t_lexer *lexer)
 		asm_lexer_advance(lexer);
 	}
 	if (lexer->current_char != '"')
-	{
-		token.type = ERROR_TOKEN;
-		asm_print_lexer_error(lexer, "Missing terminating '\"' character");
-		return (token);
-	}
+		asm_lexer_error(lexer, "Missing terminating '\"' character");
 	asm_lexer_advance(lexer);
 	token.value = s_ndup(token_start, token_len);
 	if (token.value == NULL)

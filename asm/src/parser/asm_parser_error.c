@@ -1,7 +1,7 @@
 #include "asm.h"
 #include "core.h"
 
-int	asm_parser_error(t_parser *parser, t_token_type expected_type)
+void	asm_parser_error(t_parser *parser, t_token_type expected_type)
 {
 	print_fd(2, "Syntax error at [%u, %u]: token '%s' of type %s\
  does not match expected type %s\n",
@@ -11,5 +11,5 @@ int	asm_parser_error(t_parser *parser, t_token_type expected_type)
 		g_token_types[parser->current_token.type],
 		g_token_types[expected_type]);
 	parser->error_occurred = 1;
-	return (0);
+	exit(1);
 }
