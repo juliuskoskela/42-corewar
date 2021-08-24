@@ -14,27 +14,6 @@ t_process	*vm_free_processes(t_process **lst)
 	return (NULL);
 }
 
-/*
-** Adds a t_process element to the end of the list.
-*/
-
-t_process	*create_process(t_arena arena, t_process *process_lst, \
-int player_id)
-{
-	t_process	*new_process;
-
-	new_process = minit(sizeof(t_process));
-	if (!new_process)
-		vm_error("Malloc failed in create_process\n");
-	new_process->id = player_id;
-	new_process->registers[0] = player_id;
-	new_process->pc = (player_id - 1) * arena.offset;
-//	new_process->pc = &arena.mem[MEM_SIZE / arena.player_count * player_id];
-	new_process->cycles_before_execution = -1;
-	new_process->next = process_lst;
-	return (new_process);
-}
-
 t_process	*init_processes(t_arena arena)
 {
 	t_size		player_id;
@@ -43,15 +22,8 @@ t_process	*init_processes(t_arena arena)
 	process_lst = NULL;
 	player_id = 0;
 	while (++player_id <= arena.player_count)
-		process_lst = create_process(arena, process_lst, player_id);
+		process_lst = vm_create_process(arena, process_lst, player_id);
 	return (process_lst);
-}
-
-void	vm_init_battle(t_arena *arena)
-{
-	mzero(&arena->battle, sizeof(t_battle));
-	arena->battle.cycle_to_die = CYCLE_TO_DIE;
-	arena->battle.last_alive = arena->player_count;
 }
 
 /*
@@ -63,22 +35,22 @@ void	vm_battle(t_arena arena)
 {
 	arena.processes = init_processes(arena);
 	vm_test_print_processes(arena.processes);
-	vm_init_battle(&arena);
 	vm_introduce_champs(arena);
 	while (arena.processes)
 	{
 		vm_execute_cycle(arena.processes, &arena);
-		while (++arena.battle.cycles_since_check < arena.battle.cycle_to_die)
+		while (++arena.cycles_since_check < arena.cycle_to_die)
 		{
-			if (arena.battle.cycles_executed == arena.dump_nbr_cycles)
+			if (arena.cycles_executed == arena.dump_nbr_cycles)
 			{
 				vm_print_arena(arena, arena.processes);
+				vm_free_processes(&arena.processes);
 				return ;
 			}
 			vm_execute_cycle(arena.processes, &arena);
 		}
-		vm_check_live(&arena.processes, &arena.battle);
+		vm_check_live(&arena.processes, &arena);
 	}
-	print("Player %d (%s) won\n", arena.battle.last_alive, \
-	arena.all_players[arena.battle.last_alive - 1].prog_name);
+	print("Player %d (%s) won\n", arena.last_player_alive, \
+	arena.all_players[arena.last_player_alive - 1].prog_name);
 }

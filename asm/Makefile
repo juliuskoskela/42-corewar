@@ -36,7 +36,7 @@ SRC_LEXER	=	$(addprefix lexer/,\
 				asm_lexer_advance.c \
 				asm_lexer_peek.c \
 				asm_peek_next_token.c \
-				asm_print_lexer_error.c \
+				asm_lexer_error.c \
 			)
 
 SRC_PARSER	=	$(addprefix parser/,\
@@ -67,8 +67,8 @@ SRC_SYMBOL_LIST	=	$(addprefix symbol_list/,\
 				)
 
 SRC_VALIDATE	=	$(addprefix validate/,\
+					asm_validate_ast.c \
 					asm_semantic_error.c \
-					asm_validate.c \
 					asm_visit_directive.c \
 					asm_visit_instruction.c \
 					asm_visit_label.c \
@@ -173,9 +173,11 @@ $(LIB_CORE):
 
 clean:
 				@rm -rf $(OBJ_DIR) $(DEP_DIR)
+				@make clean -C $(LIB_CORE_DIR)
 
 fclean: clean
 				@rm -rf $(NAME) $(NAME).dSYM
+				@make fclean -C $(LIB_CORE_DIR)
 
 re: fclean all
 

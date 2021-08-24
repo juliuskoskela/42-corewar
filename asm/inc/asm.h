@@ -17,6 +17,7 @@
 # include <stdint.h>
 
 # define ASM_PRINT_DEBUG 1
+# define BUF_SIZE 100
 
 # define COMMENT_CHAR		'#'
 # define COMMENT_SEMICOLON	';'
@@ -125,9 +126,9 @@ t_token				asm_init_token(t_token_type type, char *value,
 t_token				asm_get_next_token(t_lexer *lexer);
 t_token_type		asm_peek_next_token(t_lexer *lexer);
 void				asm_init_parser(t_parser *parser, t_lexer *lexer);
-int					asm_parse(t_astnode **tree, char *input);
+void				asm_parse(t_astnode **tree, char *input);
 
-int					asm_validate_ast(t_output_data *data, t_astnode *tree);
+void				asm_validate_ast(t_output_data *data, t_astnode *tree);
 
 void				asm_init_output_data(t_output_data *data);
 int					asm_generate_output(t_output_data *data,

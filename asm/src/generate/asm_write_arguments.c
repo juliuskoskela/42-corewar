@@ -40,15 +40,14 @@ uint32_t curr_op_lc, t_astnode *parameter)
 		if (label == NULL)
 			asm_generate_error(parameter, "Undefined label");
 		if (label->node->num_value != 0)
-		{
 			parameter->num_value = label->node->num_value - (int32_t)curr_op_lc;
-		}
 		else
 		{
 			if (ASM_PRINT_DEBUG)
 				asm_print_output_info("add forward reference for label",
 					label->symbol, parameter->num_value);
-			asm_add_forward_reference_to_label(label, *lc, curr_op_lc, DIR_VAL_SIZE);
+			asm_add_forward_reference_to_label(label, *lc,
+				curr_op_lc, DIR_VAL_SIZE);
 		}
 	}
 	if (ASM_PRINT_DEBUG)
@@ -70,15 +69,14 @@ uint32_t curr_op_lc, t_astnode *parameter)
 		if (label == NULL)
 			asm_generate_error(parameter, "Undefined label");
 		if (label->node->num_value != 0)
-		{
 			parameter->num_value = label->node->num_value - (int32_t)curr_op_lc;
-		}
 		else
 		{
 			if (ASM_PRINT_DEBUG)
 				asm_print_output_info("add forward reference for label",
 					label->symbol, parameter->num_value);
-			asm_add_forward_reference_to_label(label, *lc, curr_op_lc, IND_ADDR_SIZE);
+			asm_add_forward_reference_to_label(label, *lc,
+				curr_op_lc, IND_ADDR_SIZE);
 		}
 	}
 	if (ASM_PRINT_DEBUG)

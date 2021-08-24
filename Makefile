@@ -15,18 +15,18 @@ all: vm asm
 .PHONY: vm asm clean fclean re
 
 vm:
-	make -C $(VM)
+	$(MAKE) -C $(VM)
 
 asm:
-	make -C $(ASM)
+	$(MAKE) -C $(ASM)
 
 clean:
-	make clean -C $(VM)
-	make clean -C $(ASM)
+	$(MAKE) clean -C $(VM)
+	$(MAKE) clean -C $(ASM)
 
 fclean:
-	make fclean -C $(VM)
-	make fclean -C $(ASM)
+	$(MAKE) fclean -C $(VM)
+	$(MAKE) fclean -C $(ASM)
 	rm -rf bin
 
 re: fclean all

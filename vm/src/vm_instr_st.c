@@ -9,6 +9,8 @@ void vm_instr_st(
 	t_byte		*dst;
 	t_byte		*src;
 
+	if ((a->verbosity & VM_VERBOSE_OPS) != 0)
+		print("\t%s\n", "st src, dst");
 	dst = NULL;
 	mem_i = p->pc;
 	mem_i = (mem_i + 1) % MEM_SIZE;
@@ -24,6 +26,11 @@ void vm_instr_st(
 		dst = (t_byte *)&a->mem[a->mem[mem_i] + p->pc];
 	else
 		vm_error("Error st arg2!\n");
+	if ((a->verbosity & VM_VERBOSE_OPS) != 0)
+		print("\tstore %d to dst\n", *src);
 	vm_reverse_bytes(dst, src, REG_SIZE);
-	p->pc = (mem_i + 1) % MEM_SIZE;
+	mem_i = (mem_i + 1) % MEM_SIZE;
+	if ((a->verbosity & VM_VERBOSE_PC) != 0)
+		print("\tPC: %d => %d\n", (int)p->pc, (int)mem_i);
+	p->pc = mem_i;
 }

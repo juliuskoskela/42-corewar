@@ -2,7 +2,8 @@
 #include "ast.h"
 #include "validate.h"
 
-int	asm_visit_parameter(t_astnode *node, uint32_t param_nbr, t_op instruction)
+void	asm_visit_parameter(t_astnode *node, uint32_t param_nbr,
+t_op instruction)
 {
 	uint8_t	type;
 	uint8_t	allowed_param_types;
@@ -15,6 +16,5 @@ int	asm_visit_parameter(t_astnode *node, uint32_t param_nbr, t_op instruction)
 	else
 		allowed_param_types = instruction.param_types.param3;
 	if ((type & allowed_param_types) == 0)
-		return (asm_semantic_error(node->right_child, "Invalid argument type"));
-	return (1);
+		asm_semantic_error(node, "Invalid argument");
 }
