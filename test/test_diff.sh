@@ -84,6 +84,7 @@ echo "Running VM for $cycles_to_run cycles"
 
 subject_player_cor="$outdir_subject/$player.cor"
 
+echo "with subject vm..."
 $subject_corewar $subject_player_cor -d $cycles_to_run -v $vm_verbosity >$outdir_subject/subject_corewar_output 2>&1
 
 subject_corewar_exit=$?
@@ -95,6 +96,7 @@ fi
 
 user_player_cor="$outdir_user/$player.cor"
 
+echo "with user vm..."
 $user_corewar $user_player_cor -dump $cycles_to_run -v $vm_verbosity >$outdir_user/user_corewar_output 2>&1
 
 user_corewar_exit=$?
