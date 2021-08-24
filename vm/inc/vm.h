@@ -95,7 +95,7 @@ void vm_save_input(
 
 void vm_create_player(
 		t_arena *arena,
-		t_uint32 *player_number,
+		t_int32 *player_number,
 		char *name);
 
 t_process	*vm_create_process(
@@ -192,11 +192,15 @@ t_mem_addr vm_get_mem_addr(
 		t_arena *a,
 		t_size i);
 
-t_uint64 vm_get_val(
+t_int64 vm_get_val(
 		t_arena *a,
 		t_process *p,
 		t_uint8 acb,
 		t_size *mem_i);
+
+// void	vm_advance_pc(
+// 		t_size *pc,
+// 		int size);
 
 static const t_instr g_instr_funcs[] =
 {
