@@ -3,7 +3,7 @@
 #include "generate.h"
 #include <stdlib.h>
 
-static void	asm_add_forward_reference_to_label(t_symbol_list *label,
+static void	asm_add_forward_ref_to_label(t_symbol_list *label,
 uint32_t ref_location, uint32_t op_location, size_t size)
 {
 	t_refnode	*new_node;
@@ -43,17 +43,17 @@ uint32_t curr_op_lc, t_astnode *parameter)
 			parameter->num_value = label->node->num_value - (int32_t)curr_op_lc;
 		else
 		{
-			if (ASM_PRINT_DEBUG)
+			if (data->verbose)
 				asm_print_output_info("add forward reference for label",
 					label->symbol, parameter->num_value);
-			asm_add_forward_reference_to_label(label, *lc,
+			asm_add_forward_ref_to_label(label, *lc,
 				curr_op_lc, DIR_VAL_SIZE);
 		}
 	}
-	if (ASM_PRINT_DEBUG)
+	if (data->verbose)
 		asm_print_output_info("write direct", g_astnode_types[parameter->type],
 			parameter->num_value);
-	asm_write_bytes(data->program, lc, &parameter->num_value, DIR_VAL_SIZE);
+	asm_write_bytes(data, lc, &parameter->num_value, DIR_VAL_SIZE);
 }
 
 static void	asm_write_indirect(t_output_data *data, uint32_t *lc,
@@ -72,20 +72,20 @@ uint32_t curr_op_lc, t_astnode *parameter)
 			parameter->num_value = label->node->num_value - (int32_t)curr_op_lc;
 		else
 		{
-			if (ASM_PRINT_DEBUG)
+			if (data->verbose)
 				asm_print_output_info("add forward reference for label",
 					label->symbol, parameter->num_value);
-			asm_add_forward_reference_to_label(label, *lc,
+			asm_add_forward_ref_to_label(label, *lc,
 				curr_op_lc, IND_ADDR_SIZE);
 		}
 	}
-	if (ASM_PRINT_DEBUG)
+	if (data->verbose)
 		asm_print_output_info("write indirect",
 			g_astnode_types[parameter->type], parameter->num_value);
-	asm_write_bytes(data->program, lc, &parameter->num_value, IND_ADDR_SIZE);
+	asm_write_bytes(data, lc, &parameter->num_value, IND_ADDR_SIZE);
 }
 
-static void	asm_write_register(int8_t *program, uint32_t *lc,
+static void	asm_write_register(t_output_data *data, uint32_t *lc,
 t_astnode *parameter)
 {
 	char	*value;
@@ -98,9 +98,9 @@ t_astnode *parameter)
 		asm_generate_error(parameter, "Invalid register");
 	if (parameter->num_value < 1 || parameter->num_value > REG_NUMBER)
 		asm_generate_error(parameter, "Invalid register");
-	if (ASM_PRINT_DEBUG)
+	if (data->verbose)
 		asm_print_output_info("write register", NULL, parameter->num_value);
-	asm_write_bytes(program, lc, &parameter->num_value, REG_ADDR_SIZE);
+	asm_write_bytes(data, lc, &parameter->num_value, REG_ADDR_SIZE);
 }
 
 void	asm_write_arguments(t_output_data *data, uint32_t *lc,
@@ -113,7 +113,7 @@ uint32_t curr_op_lc, t_astnode *parameter_list)
 		parameter = parameter_list->left_child;
 		if (parameter->type == REGISTER)
 		{
-			asm_write_register(data->program, lc, parameter);
+			asm_write_register(data, lc, parameter);
 		}
 		else if (parameter->type == INDIRECT)
 		{

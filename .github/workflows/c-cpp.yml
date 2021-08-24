@@ -30,7 +30,7 @@ jobs:
     - name: asm_test_zork
       run: |
         cd asm
-        ./asm test/zork.s
+        ./asm test/asm_test_valid_files/zork.s
     - name: vm_make
       run: |
         cd vm
