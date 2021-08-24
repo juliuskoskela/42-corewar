@@ -10,4 +10,3 @@ t_token	asm_init_token(t_token_type type, char *value, size_t row, size_t col)
 	token.col = col;
 	return (token);
 }
-

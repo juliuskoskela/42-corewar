@@ -9,13 +9,11 @@ RUN apt-get update && apt-get -y install \
 RUN apt-get update && apt-get -y install \
 	git \
 	vim
-#	valgrind \
 
 ARG user="ubuntu-user"
 
 # Create a new user to run as (by default, container is run as root)
 RUN groupadd -r ${user} && adduser --ingroup ${user} ${user}
-USER ${user}
 
 # Install zsh and oh-my-zsh (comment out if you're fine with the regular shell)
 #RUN apt-get install -y \
@@ -37,6 +35,9 @@ WORKDIR /home/${user}/code
 
 # 2) Copy contents of current working directory to /code
 COPY . .
+RUN chown -R ${user}:${user} .
+
+USER ${user}
 
 # Default command to run on starting the container: start shell
 CMD /bin/bash

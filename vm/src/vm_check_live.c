@@ -46,7 +46,11 @@ void	vm_check_live(t_process **head, t_arena *arena)
 	{
 		if (current->last_live <= \
 			arena->cycles_executed - arena->cycle_to_die)
+		{
+			if ((arena->verbosity & VM_VERBOSE_DEATHS) != 0)
+				print("Killing process %d\n", (int)current->id);
 			current = vm_delete_process(head, current, prev);
+		}
 		else
 		{
 			prev = current;

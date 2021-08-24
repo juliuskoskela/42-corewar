@@ -13,26 +13,13 @@
 
 # include "../lib/core/inc/core.h"
 
-# define IND_SIZE				2
-# define REG_SIZE				4
-# define DIR_SIZE				REG_SIZE
+# define REG_ADDR_SIZE			1
+# define IND_ADDR_SIZE			2
+# define DIR_VAL_SIZE			REG_SIZE
 
 # define REG_CODE				1
 # define DIR_CODE				2
 # define IND_CODE				3
-
-# define MAX_ARGS_NUMBER		4
-# define MAX_PLAYERS			4
-# define MEM_SIZE				(4*1024)
-# define IDX_MOD				(MEM_SIZE / 8)
-# define CHAMP_MAX_SIZE			(MEM_SIZE / 6)
-
-# define REG_NUMBER				16
-
-# define CYCLE_TO_DIE			1536
-# define CYCLE_DELTA			50
-# define NBR_LIVE				21
-# define MAX_CHECKS				10
 
 # define EMPTY					0U
 # define T_REG					1U
@@ -40,69 +27,26 @@
 # define T_IND					(1U << 2U)
 # define T_LAB					(1U << 3U)
 
+# define MAX_ARGS_NUMBER		4
+# define MAX_PLAYERS			4
+# define MEM_SIZE				(4*1024)
+# define IDX_MOD				(MEM_SIZE / 8)
+# define CHAMP_MAX_SIZE			(MEM_SIZE / 6)
+
+# define REG_SIZE				4
+# define REG_NUMBER				16
+
 # define PROG_NAME_LENGTH		(128)
 # define COMMENT_LENGTH			(2048)
 # define COREWAR_EXEC_MAGIC		0xea83f3
 
 typedef struct s_header
 {
-  t_uint32		magic;
-  t_uint32		prog_size;
-  char			prog_name[PROG_NAME_LENGTH + 1];
-  char			comment[COMMENT_LENGTH + 1];
+	t_uint32		magic;
+	char			prog_name[PROG_NAME_LENGTH + 1];
+	t_uint32		prog_size;
+	char			comment[COMMENT_LENGTH + 1];
 }	t_header;
-
-typedef struct s_player
-{
-
-	struct s_header	header;
-	// 32 bit identfier.
-	t_uint32	id;
-
-	// Program counter. Initialized at player id.
-	t_byte		*pc;
-	// not sure if id and number are the same.
-	t_uint32	number;
-	// Zero flag, Along with a carry flag, a sign flag and an overflow flag,
-	// the zero flag is used to check the result of an arithmetic operation,
-	// including bitwise logical instructions. Initalized at 0.
-	t_bool		zf;
-
-	// 32 bit registers 1 - 16
-	t_uint32	r1; // Initialized at player ID.
-	t_uint32	r2; // Rest initialized at 0.
-	t_uint32	r3;
-	t_uint32	r4;
-	t_uint32	r5;
-	t_uint32	r6;
-	t_uint32	r7;
-	t_uint32	r8;
-	t_uint32	r9;
-	t_uint32	r10;
-	t_uint32	r11;
-	t_uint32	r12;
-	t_uint32	r13;
-	t_uint32	r14;
-	t_uint32	r15;
-	t_uint32	r16;
-}	t_player;
-
-typedef struct s_instructions
-{
-	t_byte	*bytes;
-	t_size	size;
-}	t_instructions;
-
-
-typedef struct s_arena
-{
-	t_player	all_players[MAX_PLAYERS];
-	t_size		player_count;
-	t_byte		mem[MEM_SIZE];
-	t_size		offset;
-	// if -dump flag is missing, this will be 0.
-	t_size		dump_nbr_cycles;
-}	t_arena;
 
 typedef struct s_param_types
 {
@@ -125,7 +69,7 @@ typedef struct s_op
 
 # define OP_COUNT	16
 
-static const t_op	g_op_tab[17] =
+static const t_op	g_op_tab[] =
 {
 	{"live", 1, {T_DIR, EMPTY, EMPTY}, 1, 10, "alive", 0, 0},
 	{"ld", 2, {T_DIR | T_IND, T_REG, EMPTY}, 2, 5, "load", 1, 0},
@@ -145,5 +89,6 @@ static const t_op	g_op_tab[17] =
 	{"aff", 1, {T_REG, EMPTY, EMPTY}, 16, 2, "aff", 1, 0},
 	{0, 0, {0}, 0, 0, 0, 0, 0}
 };
+
 
 #endif

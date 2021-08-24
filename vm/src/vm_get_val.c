@@ -1,12 +1,12 @@
 #include "vm.h"
 
-t_uint64 vm_get_val(
+t_int64 vm_get_val(
 		t_arena *a,
 		t_process *p,
 		t_uint8 acb,
 		t_size *mem_i)
 {
-	t_uint64	arg;
+	t_int64	arg;
 
 	arg = 0;
 	if (acb == REG_CODE)

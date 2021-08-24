@@ -1,4 +1,5 @@
 #include "asm.h"
+#include "core.h"
 
 int	asm_get_instruction(t_op *dst, char *mnemonic)
 {
@@ -7,7 +8,7 @@ int	asm_get_instruction(t_op *dst, char *mnemonic)
 	i = 0;
 	while (i < OP_COUNT)
 	{
-		if (strcmp(mnemonic, g_op_tab[i].mnemonic) == 0)
+		if (s_cmp(mnemonic, g_op_tab[i].mnemonic) == 0)
 		{
 			*dst = g_op_tab[i];
 			return (1);
@@ -16,4 +17,3 @@ int	asm_get_instruction(t_op *dst, char *mnemonic)
 	}
 	return (0);
 }
-
