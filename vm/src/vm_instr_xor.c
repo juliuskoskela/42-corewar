@@ -1,5 +1,12 @@
 #include "vm.h"
 
+//note to self. If negative indirect value is used as an index in mem array
+// it might go out of segment.
+
+//and performs a "exclusive or" statement for the values ​of the first two
+// arguments T_REG | T_IND | T_DIR, T_REG | T_IND | T_DIR
+// and writes the result to the T_REG passed as the third argument
+
 void vm_instr_xor(
 		t_arena *a,
 		t_process *p)
@@ -14,23 +21,19 @@ void vm_instr_xor(
 	mem_i = (p->pc + 1) % MEM_SIZE;
 	acb = a->mem[mem_i];
 
-	// arg 1
-	if (vm_check_acb(acb, 1) != REG_CODE
-		|| vm_check_acb(acb, 1) != DIR_CODE
-		|| vm_check_acb(acb, 1) != IND_CODE)
-		vm_error("Error arg 1 add!\n");
-	lhs = vm_get_val(a, p, vm_check_acb(acb, 1), &mem_i);
+	// check arguments
+	if (!vm_check_acb(acb, 8))
+		print("invalid acb in xor\n");
+
+	lhs = vm_get_val(a, p, vm_get_arg_data(acb, 8, 1), &mem_i);
+
 
 	// arg 2
-	if (vm_check_acb(acb, 1) != REG_CODE
-		|| vm_check_acb(acb, 1) != DIR_CODE
-		|| vm_check_acb(acb, 1) != IND_CODE)
-		vm_error("Error arg 2 add!\n");
-	rhs = vm_get_val(a, p, vm_check_acb(acb, 2), &mem_i);
+
+	rhs = vm_get_val(a, p, vm_get_arg_data(acb, 8, 2), &mem_i);
 
 	// arg 3
-	if (vm_check_acb(acb, 2) != REG_CODE)
-		vm_error("Error arg 3 add!\n");
+
 	dst = vm_get_reg_addr(p, a->mem[mem_i]);
 
 	*dst = lhs ^ rhs;
@@ -41,3 +44,6 @@ void vm_instr_xor(
 	vm_reverse_bytes(dst, dst, REG_SIZE);
 	p->pc = mem_i + 1;
 }
+
+// get_argument_data
+// get_argument_value

@@ -34,6 +34,13 @@ typedef struct s_instruction
 	t_byte	acb;
 }	t_instruction;
 
+typedef struct s_argument
+{
+	t_int64 value;
+	t_int32	type;
+	t_size	size;
+}	t_argument;
+
 typedef struct s_process
 {
 	struct s_header		header;
@@ -212,6 +219,10 @@ void vm_instr_null(
 
 t_uint8	vm_check_acb(
 		t_uint8 acb,
+		t_size op);
+
+t_uint8	vm_get_arg_type(
+		t_uint8 acb,
 		t_size arg_i);
 
 t_reg_addr vm_get_reg_addr(
@@ -222,15 +233,25 @@ t_mem_addr vm_get_mem_addr(
 		t_arena *a,
 		t_size i);
 
-t_int64 vm_get_val(
-		t_arena *a,
-		t_process *p,
+t_argument	vm_get_arg_data(
 		t_uint8 acb,
+		t_uint8 opcode,
+		t_uint8 arg_i);
+
+t_int64 vm_get_val(
+	t_arena *a,
+		t_process *p,
+		t_argument arg,
 		t_size *mem_i);
 
 void	vm_advance_pc(
 		t_size *pc,
 		int size);
+
+t_uint8	vm_get_arg_size(
+		t_uint8 opcode,
+		t_uint8 arg_nbr,
+		t_uint8 acb);
 
 static const t_instr g_instr_funcs[] =
 {

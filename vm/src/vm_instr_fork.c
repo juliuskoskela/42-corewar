@@ -9,14 +9,17 @@ void	vm_instr_fork(
 		t_arena *a,
 		t_process *p)
 {
+	t_argument	arg;
 	t_size		mem_i;
 	t_int64		offset;
 
 	if ((a->verbosity & VM_VERBOSE_OPS) != 0)
 		print("\t%s\n", "fork offset");
+	arg.type = T_DIR;
+	arg.size = DIR_VAL_SIZE;
 	mem_i = p->pc;
 	mem_i = (mem_i + 1) % MEM_SIZE;
-	offset = vm_get_val(a, p, T_DIR, &mem_i);
+	offset = vm_get_val(a, p, arg, &mem_i);
 	if ((a->verbosity & VM_VERBOSE_OPS) != 0)
 		print("\t%s\n", "fork to pc + (%d %% IDX_MOD)\n", (int)offset);
 	vm_create_process(*a, a->processes, p->id);

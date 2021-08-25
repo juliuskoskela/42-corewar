@@ -4,13 +4,16 @@ void vm_instr_alive(
 		t_arena *a,
 		t_process *p)
 {
+	t_argument	arg;
 	t_process	*cur;
 	t_size		mem_i;
 	t_uint64	id;
 
 	mem_i = p->pc;
 	mem_i = (mem_i + 1) % MEM_SIZE;
-	id = vm_get_val(a, p, T_DIR, &mem_i);
+	arg.size = REG_SIZE;
+	arg.type = T_DIR;
+	id = vm_get_val(a, p, arg, 1);
 	cur = a->processes;
 	while (cur && cur->id != id)
 		cur = cur->next;
