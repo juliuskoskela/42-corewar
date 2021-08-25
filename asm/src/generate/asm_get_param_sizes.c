@@ -43,9 +43,9 @@ int *lhs_size, int *rhs_size)
 		lhs_type_size = REG_SIZE;
 	if (rhs->type == REGISTER)
 		rhs_type_size = REG_SIZE;
-	if (lhs_type_size < rhs_type_size)
+	if (lhs_type_size < rhs_type_size && lhs->type == DIRECT)
 		*lhs_size = rhs_type_size;
-	else if (rhs_type_size < lhs_type_size)
+	else if (rhs_type_size < lhs_type_size && rhs->type == DIRECT)
 		*rhs_size = lhs_type_size;
 }
 
