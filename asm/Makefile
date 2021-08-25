@@ -87,8 +87,11 @@ SRC_GENERATE	=	$(addprefix generate/,\
 					asm_generate_instruction.c \
 					asm_generate_output.c \
 					asm_generate_statement.c \
+					asm_get_param_sizes.c \
 					asm_get_numeric_value.c \
+					asm_get_label_value.c \
 					asm_print_output_info.c \
+					asm_write_argument_coding_byte.c \
 					asm_write_arguments.c \
 					asm_write_bytes.c \
 				)

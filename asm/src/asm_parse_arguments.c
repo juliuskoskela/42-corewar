@@ -4,7 +4,7 @@
 #include "core.h"
 #include "argparser.h"
 
-int	parse_opt(int key, char *arg, t_argparser_state *state)
+static int	parse_opt(int key, char *arg, t_argparser_state *state)
 {
 	t_input_args	*arguments;
 
