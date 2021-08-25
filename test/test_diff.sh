@@ -43,6 +43,7 @@ assemble_player() {
 	local output_filename=$3
 	local output_file=$output_dir/$output_filename
 
+	echo "$asm $player_s >$output_file 2>&1"
 	$asm $player_s >$output_file 2>&1
 	exit_status=$?
 	if [ $exit_status == 0 ]; then
@@ -59,7 +60,7 @@ assemble_player $subject_asm $outdir_subject subject_asm_output_$player
 
 echo
 echo "with user asm..."
-assemble_player $user_asm $outdir_user user_asm_output_$player
+assemble_player "$user_asm -v" $outdir_user user_asm_output_$player
 
 ## Run player on subject and user VMs
 
@@ -80,10 +81,9 @@ echo "Running VM for $cycles_to_run cycles"
 run_vm() {
 	local corewar=$1
 	local player_cor=$2
-	local output_dir=$3
-	local output_filename=$4
-	local output_file=$output_dir/$output_filename
+	local output_file=$3
 
+	echo "$corewar $player_cor -d $cycles_to_run -v $vm_verbosity >$output_file 2>&1"
 	$corewar $player_cor -d $cycles_to_run -v $vm_verbosity >$output_file 2>&1
 	exit_status=$?
 	if [ $exit_status != 0 ]; then
@@ -94,14 +94,18 @@ run_vm() {
 echo
 echo "with subject vm..."
 subject_player_cor="$outdir_subject/$player.cor"
-run_vm $subject_corewar $subject_player_cor $outdir_subject subject_corewar_output_$player
+subject_corewar_output_file="$outdir_subject/subject_corewar_output_$player"
+run_vm $subject_corewar $subject_player_cor $subject_corewar_output_file
 
 echo
 echo "with user vm..."
 user_player_cor="$outdir_user/$player.cor"
-run_vm $user_corewar $user_player_cor $outdir_user user_corewar_output_$player
+user_corewar_output_file="$outdir_user/user_corewar_output_$player"
+run_vm $user_corewar $user_player_cor $user_corewar_output_file
 
-## Done
+## Take diff
+
+diff $subject_corewar_output_file $user_corewar_output_file > $outdir/diff_corewar_output_$player
 
 echo
-echo "Test output written to $outdir_user and $outdir_subject"
+echo "Test output written to $outdir"
