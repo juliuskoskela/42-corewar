@@ -1,7 +1,6 @@
 #!/bin/bash
 
 ## Paths to executables
-
 user_asm="../bin/asm"
 user_corewar="../bin/corewar"
 
@@ -25,12 +24,13 @@ player=$(echo $player_s | rev | cut -d '/' -f 1 | rev | sed "s/\.s//")
 
 outdir="output_one_$player"
 
+echo
 echo "Creating output directory $outdir"
-
 mkdir -p $outdir
 
 ## Assemble player on user asm, redirect all output to files
 
+echo
 echo "Assembling player $player_s"
 
 $user_asm $player_s >$outdir/user_asm_output 2>&1
@@ -55,6 +55,7 @@ else
 	cycles_to_run=50
 fi
 
+echo
 echo "Running VM for $cycles_to_run cycles"
 
 user_player_cor="$outdir/$player.cor"
@@ -70,4 +71,5 @@ fi
 
 ## Done
 
+echo
 echo "Test output written to $outdir"
