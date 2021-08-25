@@ -33,6 +33,7 @@ SRC_BASE	=	vm_main.c \
 				vm_print_arena.c \
 				vm_get_mem_addr.c \
 				vm_get_reg_addr.c \
+				vm_get_arg_data.c \
 				vm_get_val.c \
 				vm_instr_null.c \
 				vm_instr_live.c \

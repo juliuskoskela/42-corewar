@@ -1,6 +1,7 @@
 #include "vm.h"
 
 // ld T_DIR | T_IND src, T_REG dst
+// if first argument is T_DIR, it is 4 bytes T_IND is 2 bytes.
 // Contains ACB
 // If the first argument is T_IND, it represents the memory addr % IDX_MOD.
 // Loads src in the register dst. src's value affects zf.
@@ -22,18 +23,16 @@ void vm_instr_ld(
 	acb = a->mem[mem_i];
 	mem_i = (mem_i + 1) % MEM_SIZE;
 
+	//check arguments
+	if (!vm_check_acb(acb, p->next_instruction.instruction.opcode))
+		print("acb does not match the arguments");
 	// arg 1
-	if (vm_check_acb(acb, 0) != DIR_CODE
-		&& vm_check_acb(acb, 0) != IND_CODE)
-		vm_error("Error arg 1 ld!\n");
-	mem_addr = vm_get_val(a, p, vm_check_acb(acb, 0), &mem_i);
-	if (vm_check_acb(acb, 0) == IND_CODE)
+	mem_addr = vm_get_val(a, p, vm_get_arg_data(acb, 2, 1), &mem_i);
+	if (vm_get_arg_type(acb, 0) == IND_CODE)
 		mem_addr = mem_addr % IDX_MOD;
 	src = vm_get_mem_addr(a, mem_addr);
 
 	// arg 2
-	if (vm_check_acb(acb, 1) != REG_CODE)
-		vm_error("Error arg 2 ld!\n");
 	dst = vm_get_reg_addr(p, a->mem[mem_i]);
 	mem_i = (mem_i + 1) % MEM_SIZE;
 
