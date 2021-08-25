@@ -35,7 +35,7 @@ uint32_t curr_op_lc, t_astnode *parameter, int size)
 	label = asm_symbol_list_lookup(&data->symbols, parameter->value);
 	if (label == NULL)
 		asm_generate_error(parameter, "Undefined label");
-	if (label->node->num_value != 0)
+	if (label->node->num_value != -1)
 		parameter->num_value = label->node->num_value - (int32_t)curr_op_lc;
 	else
 	{
