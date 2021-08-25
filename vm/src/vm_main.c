@@ -4,7 +4,6 @@ void	vm_init_arena(t_arena *arena)
 {
 	mzero(arena, sizeof(t_arena));
 	arena->cycle_to_die = CYCLE_TO_DIE;
-	arena->coloured_output = 0;
 }
 
 int	main(int argc, char **argv)

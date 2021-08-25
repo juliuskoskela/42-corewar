@@ -90,6 +90,7 @@ typedef struct s_input_args
 	int			next_player_nbr;
 	int			player_count;
 	int			verbosity;
+	int			coloured_output;
 	int			dump_nbr_cycles;
 }	t_input_args;
 

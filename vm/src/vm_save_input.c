@@ -1,4 +1,5 @@
 #include "vm.h"
+#include "argparser.h"
 
 // /*
 // ** Skips flags (-n and -dump) and their following argument.
@@ -43,7 +44,7 @@
 // 			set_nbr = s_toi(argv[++i]);
 // 			if (set_nbr <= 0 || set_nbr > MAX_PLAYERS)
 // 				vm_error("Invalid value after -n flag\n");
-// 			if (arena->all_players[set_nbr - 1].prog_size || \
+// 			if (arena->all_players[set_nbr - 1].prog_size || 
 // 			arena->all_players[set_nbr - 1].prog_name[0])
 // 				vm_error("All champions must be given unique nbrs\n");
 // 			vm_create_player(arena, &set_nbr, argv[++i]);
@@ -91,8 +92,6 @@
 // 			vm_create_player(arena, &player_nbr, argv[i++]);
 // 	}
 // }
-
-#include "argparser.h"
 
 static int	set_next_player_nbr(t_input_args *args)
 {
@@ -154,6 +153,8 @@ static int	parse_opt(int key, char *arg, t_argparser_state *state)
 	args = state->input;
 	if (key == 'd' || key == 'v' || key == 'n')
 		parse_numeric_option(key, arg, state);
+	else if (key == 'c')
+		args->coloured_output = 1;
 	else if (key == ARGP_KEY_ARG)
 	{
 		if (args->player_count == MAX_PLAYERS)
@@ -183,6 +184,7 @@ t_input_args	vm_parse_arguments(int argc, char **argv)
 		{"dump", 'd', "nbr_cycles", 0, "dump memory to standard output and exit\n\
 				after nbr_cycles (> 0)"},
 		{"verbosity", 'v', "level", 0, "verbosity level (set between 0 and 31)"},
+		{"coloured", 'c', 0, 0, "use colours in printing to standard output"},
 		{"nbr", 'n', "nbr", 0, "set the number (> 0) of the next player"},
 		{0}
 	};
