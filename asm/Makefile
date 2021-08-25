@@ -16,7 +16,7 @@ LIB_CORE_DIR	=	../lib/core/
 LIB_CORE	=	$(LIB_CORE_DIR)libcore.a
 
 LIB_ARGPARSER_DIR	=	../lib/argparser/
-LIB_ARGPARSER	=	$(LIB_CORE_DIR)libargparser.a
+LIB_ARGPARSER	=	$(LIB_ARGPARSER_DIR)libargparser.a
 
 CC			=	gcc
 CFLAGS 		=	-g -Wall -Wextra -Werror -fPIC -fsanitize=address
