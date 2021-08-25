@@ -55,11 +55,11 @@ assemble_player() {
 
 echo
 echo "with subject asm..."
-assemble_player $subject_asm $outdir_subject subject_asm_output
+assemble_player $subject_asm $outdir_subject subject_asm_output_$player
 
 echo
 echo "with user asm..."
-assemble_player $user_asm $outdir_user user_asm_output
+assemble_player $user_asm $outdir_user user_asm_output_$player
 
 ## Run player on subject and user VMs
 
@@ -94,12 +94,12 @@ run_vm() {
 echo
 echo "with subject vm..."
 subject_player_cor="$outdir_subject/$player.cor"
-run_vm $subject_corewar $subject_player_cor $outdir_subject subject_corewar_output
+run_vm $subject_corewar $subject_player_cor $outdir_subject subject_corewar_output_$player
 
 echo
 echo "with user vm..."
 user_player_cor="$outdir_user/$player.cor"
-run_vm $user_corewar $user_player_cor $outdir_user user_corewar_output
+run_vm $user_corewar $user_player_cor $outdir_user user_corewar_output_$player
 
 ## Done
 
