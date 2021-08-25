@@ -49,11 +49,11 @@ void	vm_create_player(t_arena *arena, t_int32 *player_number, char *name)
 	t_header	player;
 	int			fd;
 
+	if (*player_number > MAX_PLAYERS)
+		vm_error("player_number is not within MAX_PLAYERS\n");
 	if (arena->all_players[*player_number - 1].prog_size || \
 		arena->all_players[*player_number - 1].prog_name[0])
 		*player_number += 1;
-	if (*player_number > MAX_PLAYERS)
-		vm_error("player_number is not within MAX_PLAYERS\n");
 	mzero(&player, sizeof(t_header));
 	arena->all_players[*player_number - 1] = player;
 	if (s_cmp(".cor", s_rchr(name, '.')))

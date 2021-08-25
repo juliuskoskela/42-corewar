@@ -28,7 +28,6 @@
 
 typedef t_byte* t_mem_addr;
 typedef t_uint64* t_reg_addr;
-
 typedef struct s_instruction
 {
 	t_op	instruction;
@@ -68,6 +67,7 @@ typedef struct s_arena
 	t_int32		dump_nbr_cycles;
 	// if -v flag is missing, this will be 0
 	t_int32		verbosity;
+	t_int32		coloured_output;
 	// the player who was last reported to be alive
 	t_int32		last_player_alive;
 	// number of cycles executed since starting the program.
@@ -82,6 +82,16 @@ typedef struct s_arena
 	t_int32		cycle_to_die;
 	t_int32		cycles_since_check;
 }	t_arena;
+
+typedef struct s_input_args
+{
+	char		*player_paths[MAX_PLAYERS];
+	int			player_numbers[MAX_PLAYERS];
+	int			next_player_nbr;
+	int			player_count;
+	int			verbosity;
+	int			dump_nbr_cycles;
+}	t_input_args;
 
 typedef void (*t_instr)(t_arena *, t_process *);
 

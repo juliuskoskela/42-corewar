@@ -14,9 +14,9 @@ DEP_DIR		=	.deps/
 CC			=	gcc
 CFLAGS 		=	-g -Wall -Wextra -Werror -fPIC -fsanitize=address
 DFLAGS		=	-Wunreachable-code -Wconversion -Wpedantic -Wtype-limits
-CPPFLAGS	=	-I $(INC_DIR) -I ../lib/core/inc
+CPPFLAGS	=	-I $(INC_DIR) -I ../lib/core/inc -I ../lib/argparser/include
 DEPFLAGS	=	-MT $@ -MMD -MP -MF $(DEP_DIR)$*.d
-LDLIBS		=	../lib/core/libcore.a
+LDLIBS		=	../lib/core/libcore.a ../lib/argparser/libargparser.a
 COMPILE.c	=	$(CC) $(DEPFLAGS) $(CFLAGS) $(CPPFLAGS) -c
 
 SRC_BASE	=	vm_main.c \
@@ -76,6 +76,7 @@ $(DEP_DIR):
 
 $(LDLIBS):
 	make -C ../lib/core/
+	make -C ../lib/argparser/
 
 DEPFILES = $(addprefix $(DEP_DIR), $(SRC_BASE:.c=.d))
 $(DEPFILES):
@@ -83,10 +84,12 @@ $(DEPFILES):
 clean:
 				@rm -rf $(OBJ_DIR) $(DEP_DIR)
 				@make clean -C ../lib/core
+				@make clean -C ../lib/argparser
 
 fclean: clean
 				@rm -rf $(NAME);
 				@make fclean -C ../lib/core
+				@make fclean -C ../lib/argparser
 
 re: fclean all
 
