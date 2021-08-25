@@ -60,15 +60,15 @@ t_astnode *parameter_list)
 	asm_get_instruction(&instruction, instruction_node->value);
 	if (s_cmp(instruction.mnemonic, "live") == 0)
 		param_sizes[0] = 4;
-	else if (s_cmp(instruction.mnemonic, "sti") == 0)
-	{
-		lhs_param = parameter_list->right_child->left_child;
-		rhs_param = parameter_list->right_child->right_child->left_child;
-		asm_promote_param_size(lhs_param, rhs_param,
-			&param_sizes[1], &param_sizes[2]);
-	}
-	else if (s_cmp(instruction.mnemonic, "ldi") == 0
-			|| s_cmp(instruction.mnemonic, "lldi") == 0
+	// else if (s_cmp(instruction.mnemonic, "sti") == 0)
+	// {
+	// 	lhs_param = parameter_list->right_child->left_child;
+	// 	rhs_param = parameter_list->right_child->right_child->left_child;
+	// 	asm_promote_param_size(lhs_param, rhs_param,
+	// 		&param_sizes[1], &param_sizes[2]);
+	// }
+	else if (s_cmp(instruction.mnemonic, "lldi") == 0
+			// || s_cmp(instruction.mnemonic, "ldi") == 0
 			|| s_cmp(instruction.mnemonic, "and") == 0
 			|| s_cmp(instruction.mnemonic, "or") == 0
 			|| s_cmp(instruction.mnemonic, "ld") == 0
