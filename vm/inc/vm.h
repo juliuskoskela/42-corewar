@@ -24,7 +24,7 @@
 # define VM_VERBOSE_DEATHS		8
 # define VM_VERBOSE_PC			16
 
-# define VM_PRINT_ARENA_WIDTH	32
+# define VM_PRINT_ARENA_WIDTH	64
 
 typedef t_byte* t_mem_addr;
 typedef t_uint64* t_reg_addr;

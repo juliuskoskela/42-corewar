@@ -29,6 +29,7 @@ t_astnode *parameter_list)
 
 // lhs, rhs, dst
 // ldi, lldi, and, or, xor
+// ld?
 
 static void	asm_promote_param_size(t_astnode *lhs, t_astnode *rhs,
 int *lhs_size, int *rhs_size)
@@ -70,6 +71,7 @@ t_astnode *parameter_list)
 			|| s_cmp(instruction.mnemonic, "lldi") == 0
 			|| s_cmp(instruction.mnemonic, "and") == 0
 			|| s_cmp(instruction.mnemonic, "or") == 0
+			|| s_cmp(instruction.mnemonic, "ld") == 0
 			|| s_cmp(instruction.mnemonic, "xor") == 0)
 	{
 		lhs_param = parameter_list->left_child;
