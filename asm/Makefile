@@ -85,7 +85,7 @@ SRC_VALIDATE	=	$(addprefix validate/,\
 SRC_GENERATE	=	$(addprefix generate/,\
 					asm_generate_error.c \
 					asm_generate_instruction.c \
-					asm_generate_output.c \
+					asm_generate_bytecode_program.c \
 					asm_generate_statement.c \
 					asm_get_param_sizes.c \
 					asm_get_numeric_value.c \
@@ -94,6 +94,7 @@ SRC_GENERATE	=	$(addprefix generate/,\
 					asm_write_argument_coding_byte.c \
 					asm_write_arguments.c \
 					asm_write_bytes.c \
+					asm_resolve_label_address.c \
 				)
 
 SRC_OTHER	=	asm_main.c \
