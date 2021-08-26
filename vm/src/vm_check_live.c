@@ -45,7 +45,7 @@ void	vm_check_live(t_process **head, t_arena *arena)
 	while (current)
 	{
 		if (current->last_live <= \
-			arena->cycles_executed - arena->cycle_to_die)
+			arena->current_cycle - arena->cycle_to_die)
 		{
 			if ((arena->verbosity & VM_VERBOSE_DEATHS) != 0)
 				print("Killing process %d\n", (int)current->id);

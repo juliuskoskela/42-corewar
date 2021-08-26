@@ -22,7 +22,7 @@ void vm_instr_live(
 	id = vm_get_val(a, p, arg, &mem_i);
 	if ((a->verbosity & VM_VERBOSE_OPS) != 0)
 		print("\tlive %d\n", (int)id);
-	p->last_live = a->cycles_executed;
+	p->last_live = a->current_cycle;
 	if (id > 0 && id < a->player_count)
 	{
 		a->last_player_alive = id;
