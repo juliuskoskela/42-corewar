@@ -159,7 +159,7 @@ $(NAME): $(OBJ) $(LIB_CORE) $(LIB_ARGPARSER)
 				$(CC) $(CFLAGS) $(DFLAGS) -o $@ $(OBJ) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS)
 				@echo "\\n\033[32;1mASSEMBLER COMPILED\033[0m \\n"
 
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJ_DIR)
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c | obj
 				@$(CC) $(CFLAGS) $(DFLAGS) $(CPPFLAGS) -c $< -o $@
 				@echo $@
 
@@ -167,7 +167,7 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJ_DIR)
 # 				$(COMPILE.c) $< -o $@
 # 				@echo $@
 
-$(OBJ_DIR):
+obj:
 				mkdir -p $(addprefix $(OBJ_DIR), $(SRC_SUBDIRS))
 
 # $(DEP_DIR):
