@@ -134,7 +134,7 @@ void				asm_parse(t_astnode **tree, char *input);
 void				asm_validate_ast(t_output_data *data, t_astnode *tree);
 
 void				asm_init_output_data(t_output_data *data, int verbose);
-int					asm_generate_output(t_output_data *data,
+void				asm_generate_bytecode_program(t_output_data *data,
 						t_astnode *tree);
 void				asm_write_output_to_file(char *path,
 						t_output_data data);
