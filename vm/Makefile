@@ -11,12 +11,18 @@ INC_DIR		=	inc/
 OBJ_DIR		=	obj/
 DEP_DIR		=	.deps/
 
+LIB_CORE		= ../lib/core/libcore.a
+LIB_ARGPARSER	= ../lib/argparser/libargparser.a
+LIB_CORE_DIR		= ../lib/core/
+LIB_ARGPARSER_DIR	= ../lib/argparser/
+
 CC			=	gcc
 CFLAGS 		=	-g -Wall -Wextra -Werror -fPIC -fsanitize=address
 DFLAGS		=	-Wunreachable-code -Wconversion -Wpedantic -Wtype-limits
-CPPFLAGS	=	-I $(INC_DIR) -I ../lib/core/inc -I ../lib/argparser/include
+CPPFLAGS	=	-I $(INC_DIR) -I ../inc -I ../lib/core/inc -I ../lib/argparser/include
 DEPFLAGS	=	-MT $@ -MMD -MP -MF $(DEP_DIR)$*.d
-LDLIBS		=	../lib/core/libcore.a ../lib/argparser/libargparser.a
+LDFLAGS		=	-L $(LIB_CORE_DIR) -L $(LIB_ARGPARSER_DIR)
+LDLIBS		=	-l argparser -l core
 COMPILE.c	=	$(CC) $(DEPFLAGS) $(CFLAGS) $(CPPFLAGS) -c
 
 SRC_BASE	=	vm_main.c \
@@ -58,11 +64,12 @@ SRC_BASE	=	vm_main.c \
 SRC			=	$(addprefix $(SRC_DIR), $(SRC_BASE))
 OBJ			=	$(addprefix $(OBJ_DIR), $(SRC_BASE:.c=.o))
 
-all:
-				@$(MAKE) -j $(NAME)
+.PHONY: all fclean clean re
 
-$(NAME): $(OBJ) $(LDLIBS)
-				@$(CC) $(CFLAGS) -o $@ $(OBJ) $(CPPFLAGS) $(LDLIBS)
+all: $(NAME)
+
+$(NAME): $(OBJ) $(LIB_CORE) $(LIB_ARGPARSER)
+				@$(CC) $(CFLAGS) -o $@ $(OBJ) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS)
 				@echo "\\n\033[32;1mCOREWAR VIRTUAL MACHINE COMPILED\033[0m \\n"
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(DEP_DIR)%.d | $(OBJ_DIR) $(DEP_DIR)
@@ -75,9 +82,11 @@ $(OBJ_DIR):
 $(DEP_DIR):
 				@mkdir -p $@
 
-$(LDLIBS):
-	make -C ../lib/core/
-	make -C ../lib/argparser/
+$(LIB_CORE):
+	$(MAKE) -C ../lib/core/
+
+$(LIB_ARGPARSER):
+	$(MAKE) -C ../lib/argparser/
 
 DEPFILES = $(addprefix $(DEP_DIR), $(SRC_BASE:.c=.d))
 $(DEPFILES):
@@ -94,6 +103,5 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all fclean clean re
 
 include $(wildcard $(DEPFILES))

@@ -23,8 +23,8 @@ CFLAGS 		=	-g -Wall -Wextra -Werror -fPIC -fsanitize=address
 DFLAGS		=	-Wunreachable-code -Wpedantic -Wtype-limits #-Wconversion
 CPPFLAGS	=	-I $(INC_DIR) -I ../inc/ -I $(LIB_CORE_DIR)inc -I $(LIB_ARGPARSER_DIR)include
 DEPFLAGS	=	-MT $@ -MMD -MP -MF $(DEP_DIR)$*.d
-LDLIBS		=	-L $(LIB_CORE_DIR) -L $(LIB_ARGPARSER_DIR)
-LDFLAGS		=	-l core -l argparser
+LDFLAGS		=	-L $(LIB_CORE_DIR) -L $(LIB_ARGPARSER_DIR)
+LDLIBS		=	-l core -l argparser
 COMPILE.c	=	$(CC) $(DEPFLAGS) $(CFLAGS) $(DFLAGS) $(CPPFLAGS) -c
 
 SRC_LEXER	=	$(addprefix lexer/,\
