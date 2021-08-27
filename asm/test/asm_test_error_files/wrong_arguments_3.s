@@ -20,5 +20,5 @@ endwhile:
 ld	%0, r4			#;carry = 1
 
 live:
-live r1
+live r1	<=
 zjmp %:live

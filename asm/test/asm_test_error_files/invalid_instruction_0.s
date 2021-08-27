@@ -8,7 +8,7 @@ ld	%33, r6
 #While (r2 < 10)
 forks:
 add	r2, r3, r2		#;increment r2
-xorr	r2, %15, r4		#;if (r4) {carry = 0}
+xorr	r2, %15, r4		# <=
 live2:
 	live 	%4
 zjmp	%:endwhile		#;if (carry)
