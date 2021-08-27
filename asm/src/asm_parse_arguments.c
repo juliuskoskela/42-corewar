@@ -42,7 +42,8 @@ t_input_args	asm_parse_arguments(int argc, char **argv)
 				to standard output"},
 		{"dot", 'd', 0, 0, "write the intermediate AST/parse tree to path/to/player.dot\n\
 				from which an image can be generated with\n\
-				`dot -Tpng -o player_dot.png path/to/player.dot`"},
+				`dot -Tpng -o player_dot.png path/to/player.dot`\n\
+				(requires the Graphviz package)"},
 		{"verbose", 'v', 0, 0, "verbose mode"},
 		{0}
 	};
