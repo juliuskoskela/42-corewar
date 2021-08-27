@@ -34,7 +34,7 @@ t_process	*init_processes(t_arena arena)
 void	vm_battle(t_arena arena)
 {
 	arena.processes = init_processes(arena);
-	vm_test_print_processes(arena.processes);
+//	vm_test_print_processes(arena.processes);
 	vm_introduce_champs(arena);
 	while (arena.processes)
 	{
