@@ -25,15 +25,15 @@ Our assembler is currently made up of the following components:
        - register exists (now done during code generation)
        - literal values have correct size (not yet)
    - saves all label definitions to a symbol table
-4) Code generation (asm_generate_output)
+4) Code generation (asm_generate_bytecode_program)
    - traverses the abstract syntax tree and generates the bytecode representation
      - see bytecode format for instruction statements below
      - checks that label arguments are valid (defined somewhere)
      - converts all string values to numeric ones
      - resolves label arguments to the relative offsets
+5) Writing output
    - writes header contents and program to output file
-
-- at which point should string values of parameters be converted to the integer values?
+   - if executed with the -d / --dot option, writes the AST in dot syntax to a .dot file (if you have the [Graphviz](https://graphviz.org/) package installed, an image of the tree can be generated from the .dot file)
 
 If any errors are detected during the lexing, parsing or semantic analysis, nothing is written to the output file, and a meaninful error message should be displayed, showing the type and location of the error in the source file.
 
@@ -155,6 +155,3 @@ Breaking them down, row by row:
   - the mnemonic ``zjmp`` corresponds to opcode 9 => ``0x09``
   - takes one parameter, a direct, and no argument coding byte. ``%:live`` corresponds to ``0xff,0xfb`` which appears to be -5 (big endian int16), again the offset from current instruction's address to the instruction denoted by ``:live``.
 
-
-- questions:
-  - why do direct values sometimes take 2 bytes and sometimes 4 bytes?
