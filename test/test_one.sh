@@ -14,6 +14,7 @@ if [ $# -lt 1 ]; then
 	exit 0
 fi
 
+echo
 echo "Running tests with $1"
 
 player_s=$1
@@ -32,7 +33,9 @@ mkdir -p $outdir
 
 echo
 echo "Assembling player $player_s"
+echo
 
+echo "$user_asm $player_s >$outdir/user_asm_output 2>&1"
 $user_asm $player_s >$outdir/user_asm_output 2>&1
 
 user_asm_exit=$?
@@ -57,11 +60,12 @@ fi
 
 echo
 echo "Running VM for $cycles_to_run cycles"
-
+echo
 user_player_cor="$outdir/$player.cor"
 
 # Assumes that flags -dump and -v have been implemented
 
+echo "$user_corewar $user_player_cor -dump $cycles_to_run -v $vm_verbosity >$outdir/user_corewar_output 2>&1"
 $user_corewar $user_player_cor -dump $cycles_to_run -v $vm_verbosity >$outdir/user_corewar_output 2>&1
 
 user_corewar_exit=$?
@@ -73,3 +77,4 @@ fi
 
 echo
 echo "Test output written to $outdir"
+echo

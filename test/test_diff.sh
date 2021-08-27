@@ -16,6 +16,7 @@ if [ $# -lt 1 ]; then
 	exit 0
 fi
 
+echo
 echo "Running tests with $1"
 
 player_s=$1
@@ -109,3 +110,4 @@ diff $subject_corewar_output_file $user_corewar_output_file > $outdir/diff_corew
 
 echo
 echo "Test output written to $outdir"
+echo
