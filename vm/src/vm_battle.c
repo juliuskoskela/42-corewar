@@ -41,13 +41,13 @@ void	vm_battle(t_arena arena)
 		vm_execute_cycle(arena.processes, &arena);
 		while (++arena.cycles_since_check < arena.cycle_to_die)
 		{
-			if (arena.current_cycle == arena.dump_nbr_cycles)
+			vm_execute_cycle(arena.processes, &arena);
+			if (arena.current_cycle % arena.dump_nbr_cycles == 1)
 			{
 				vm_print_arena(arena, arena.processes);
 				vm_free_processes(&arena.processes);
 				return ;
 			}
-			vm_execute_cycle(arena.processes, &arena);
 		}
 		vm_check_live(&arena.processes, &arena);
 	}
