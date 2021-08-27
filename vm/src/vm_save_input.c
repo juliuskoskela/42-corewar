@@ -44,7 +44,7 @@
 // 			set_nbr = s_toi(argv[++i]);
 // 			if (set_nbr <= 0 || set_nbr > MAX_PLAYERS)
 // 				vm_error("Invalid value after -n flag\n");
-// 			if (arena->all_players[set_nbr - 1].prog_size || 
+// 			if (arena->all_players[set_nbr - 1].prog_size ||
 // 			arena->all_players[set_nbr - 1].prog_name[0])
 // 				vm_error("All champions must be given unique nbrs\n");
 // 			vm_create_player(arena, &set_nbr, argv[++i]);
