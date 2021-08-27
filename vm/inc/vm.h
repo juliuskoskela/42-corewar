@@ -72,6 +72,7 @@ typedef struct s_arena
 	t_process	*processes;
 	// if -dump flag is missing, this will be 0.
 	t_int32		dump_nbr_cycles;
+	t_int32		pause_nbr_cycles;
 	// if -v flag is missing, this will be 0
 	t_int32		verbosity;
 	t_int32		coloured_output;
@@ -97,6 +98,7 @@ typedef struct s_input_args
 	int			next_player_nbr;
 	int			player_count;
 	int			verbosity;
+	int			pause_nbr_cycles;
 	int			coloured_output;
 	int			dump_nbr_cycles;
 }	t_input_args;
@@ -135,6 +137,9 @@ void vm_execute_cycle(
 		t_arena *arena);
 
 void vm_introduce_champs(
+		t_arena arena);
+
+void	vm_pause_and_print_memory(
 		t_arena arena);
 
 void vm_test_print_arena(
