@@ -23,26 +23,26 @@ fork0:	live %66
 fork1:	live %66
 	fork %:numero2
 fork2:	live %66
-#	fork %:fork0
+	fork %:fork0
 
 master:	live %66
 	ld %0,r3
 	ld %16777216,r6
-#	ldi %:master,%0,r6
+	ldi %:master,%0,r6
 	ld %0,r5
 	zjmp %:ready
 
 numero1: live %66
 	ld %3,r3
 	ld %68436,r2
-#	ldi %:live,%-2,r6
+	ldi %:live,%-2,r6
 	ld %0,r5
 	zjmp %:ready
 
 numero2: live %66
 	ld %6,r3
 	ld %1409680135,r6
-#	ldi %:tampon,%1,r6
+	ldi %:tampon,%1,r6
 	ld %0,r5
 	zjmp %:ready
 

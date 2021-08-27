@@ -16,15 +16,15 @@ LIB_CORE_DIR	=	../lib/core/
 LIB_CORE	=	$(LIB_CORE_DIR)libcore.a
 
 LIB_ARGPARSER_DIR	=	../lib/argparser/
-LIB_ARGPARSER	=	$(LIB_CORE_DIR)libargparser.a
+LIB_ARGPARSER	=	$(LIB_ARGPARSER_DIR)libargparser.a
 
 CC			=	gcc
 CFLAGS 		=	-g -Wall -Wextra -Werror -fPIC -fsanitize=address
 DFLAGS		=	-Wunreachable-code -Wpedantic -Wtype-limits #-Wconversion
 CPPFLAGS	=	-I $(INC_DIR) -I ../inc/ -I $(LIB_CORE_DIR)inc -I $(LIB_ARGPARSER_DIR)include
 DEPFLAGS	=	-MT $@ -MMD -MP -MF $(DEP_DIR)$*.d
-LDLIBS		=	-L $(LIB_CORE_DIR) -L $(LIB_ARGPARSER_DIR)
-LDFLAGS		=	-l core -l argparser
+LDFLAGS		=	-L $(LIB_CORE_DIR) -L $(LIB_ARGPARSER_DIR)
+LDLIBS		=	-l core -l argparser
 COMPILE.c	=	$(CC) $(DEPFLAGS) $(CFLAGS) $(DFLAGS) $(CPPFLAGS) -c
 
 SRC_LEXER	=	$(addprefix lexer/,\
@@ -85,12 +85,16 @@ SRC_VALIDATE	=	$(addprefix validate/,\
 SRC_GENERATE	=	$(addprefix generate/,\
 					asm_generate_error.c \
 					asm_generate_instruction.c \
-					asm_generate_output.c \
+					asm_generate_bytecode_program.c \
 					asm_generate_statement.c \
+					asm_get_param_sizes.c \
 					asm_get_numeric_value.c \
+					asm_get_label_value.c \
 					asm_print_output_info.c \
+					asm_write_argument_coding_byte.c \
 					asm_write_arguments.c \
 					asm_write_bytes.c \
+					asm_resolve_label_address.c \
 				)
 
 SRC_OTHER	=	asm_main.c \
@@ -155,7 +159,7 @@ $(NAME): $(OBJ) $(LIB_CORE) $(LIB_ARGPARSER)
 				$(CC) $(CFLAGS) $(DFLAGS) -o $@ $(OBJ) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS)
 				@echo "\\n\033[32;1mASSEMBLER COMPILED\033[0m \\n"
 
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJ_DIR)
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c | obj
 				@$(CC) $(CFLAGS) $(DFLAGS) $(CPPFLAGS) -c $< -o $@
 				@echo $@
 
@@ -163,7 +167,7 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJ_DIR)
 # 				$(COMPILE.c) $< -o $@
 # 				@echo $@
 
-$(OBJ_DIR):
+obj:
 				mkdir -p $(addprefix $(OBJ_DIR), $(SRC_SUBDIRS))
 
 # $(DEP_DIR):

@@ -1,0 +1,180 @@
+Symbol table after first pass through AST:
+label 'gen', value 0xffffffff
+label 'ok', value 0xffffffff
+label 'no', value 0xffffffff
+label 'boucle2', value 0xffffffff
+label 'end', value 0xffffffff
+
+
+Generate instruction ld 0 : 0
+write opcode 2 : 0x2
+arguments: DIRECT REGISTER 
+=> write argument coding byte 144 : 0x90
+write direct INTEGER -2147483648 : 0x80000000
+write register 6 : 0x6
+
+Generate instruction ld 7 : 0x7
+write opcode 2 : 0x2
+arguments: DIRECT REGISTER 
+=> write argument coding byte 144 : 0x90
+write direct INTEGER 10 : 0xa
+write register 3 : 0x3
+
+Generate instruction ld 14 : 0xe
+write opcode 2 : 0x2
+arguments: DIRECT REGISTER 
+=> write argument coding byte 144 : 0x90
+write direct INTEGER 200 : 0xc8
+write register 4 : 0x4
+
+Generate instruction live 21 : 0x15
+save address for label gen 21 : 0x15
+write opcode 1 : 0x1
+no argument coding byte
+write direct INTEGER 1 : 0x1
+
+Generate instruction add 26 : 0x1a
+write opcode 4 : 0x4
+arguments: REGISTER REGISTER REGISTER 
+=> write argument coding byte 84 : 0x54
+write register 2 : 0x2
+write register 3 : 0x3
+write register 2 : 0x2
+
+Generate instruction sub 31 : 0x1f
+write opcode 5 : 0x5
+arguments: REGISTER REGISTER REGISTER 
+=> write argument coding byte 84 : 0x54
+write register 2 : 0x2
+write register 4 : 0x4
+write register 5 : 0x5
+
+Generate instruction and 36 : 0x24
+write opcode 6 : 0x6
+arguments: REGISTER REGISTER REGISTER 
+=> write argument coding byte 84 : 0x54
+write register 5 : 0x5
+write register 6 : 0x6
+write register 5 : 0x5
+
+Generate instruction zjmp 41 : 0x29
+write opcode 9 : 0x9
+no argument coding byte
+add forward reference for label ok 0 : 0
+write direct LABEL 0 : 0
+
+Generate instruction ld 44 : 0x2c
+write opcode 2 : 0x2
+arguments: DIRECT REGISTER 
+=> write argument coding byte 144 : 0x90
+write direct INTEGER 0 : 0
+write register 2 : 0x2
+
+Generate instruction live 51 : 0x33
+save address for label ok 51 : 0x33
+resolve forward reference for label ok 10 : 0xa
+write opcode 1 : 0x1
+no argument coding byte
+write direct INTEGER 1 : 0x1
+
+Generate instruction fork 56 : 0x38
+write opcode 12 : 0xc
+no argument coding byte
+add forward reference for label no 0 : 0
+write direct LABEL 0 : 0
+
+Generate instruction fork 59 : 0x3b
+write opcode 12 : 0xc
+no argument coding byte
+write direct LABEL -38 : 0xffffffda
+
+Generate instruction ld 62 : 0x3e
+write opcode 2 : 0x2
+arguments: DIRECT REGISTER 
+=> write argument coding byte 144 : 0x90
+write direct INTEGER 0 : 0
+write register 5 : 0x5
+
+Generate instruction zjmp 69 : 0x45
+write opcode 9 : 0x9
+no argument coding byte
+write direct LABEL -48 : 0xffffffd0
+
+Generate instruction live 72 : 0x48
+save address for label no 72 : 0x48
+resolve forward reference for label no 16 : 0x10
+write opcode 1 : 0x1
+no argument coding byte
+write direct INTEGER 1 : 0x1
+
+Generate instruction sti 77 : 0x4d
+write opcode 11 : 0xb
+arguments: REGISTER DIRECT REGISTER 
+=> write argument coding byte 100 : 0x64
+write register 8 : 0x8
+add forward reference for label end 0 : 0
+write direct LABEL 0 : 0
+write register 2 : 0x2
+
+Generate instruction add 83 : 0x53
+write opcode 4 : 0x4
+arguments: REGISTER REGISTER REGISTER 
+=> write argument coding byte 84 : 0x54
+write register 2 : 0x2
+write register 3 : 0x3
+write register 2 : 0x2
+
+Generate instruction sub 88 : 0x58
+write opcode 5 : 0x5
+arguments: REGISTER REGISTER REGISTER 
+=> write argument coding byte 84 : 0x54
+write register 4 : 0x4
+write register 2 : 0x2
+write register 5 : 0x5
+
+Generate instruction zjmp 93 : 0x5d
+write opcode 9 : 0x9
+no argument coding byte
+add forward reference for label boucle2 0 : 0
+write direct LABEL 0 : 0
+
+Generate instruction ld 96 : 0x60
+write opcode 2 : 0x2
+arguments: DIRECT REGISTER 
+=> write argument coding byte 144 : 0x90
+write direct INTEGER 0 : 0
+write register 5 : 0x5
+
+Generate instruction zjmp 103 : 0x67
+write opcode 9 : 0x9
+no argument coding byte
+write direct LABEL -31 : 0xffffffe1
+
+Generate instruction ld 106 : 0x6a
+save address for label boucle2 106 : 0x6a
+resolve forward reference for label boucle2 13 : 0xd
+write opcode 2 : 0x2
+arguments: DIRECT REGISTER 
+=> write argument coding byte 144 : 0x90
+write direct INTEGER 0 : 0
+write register 2 : 0x2
+
+Generate instruction zjmp 113 : 0x71
+write opcode 9 : 0x9
+no argument coding byte
+write direct LABEL -41 : 0xffffffd7
+
+
+Symbol table after second pass through AST:
+label 'gen', value 0x15
+label 'ok', value 0x33
+label 'no', value 0x48
+label 'boucle2', value 0x6a
+label 'end', value 0xffffffff
+
+Writing output to vm_champs/champs/tdc3.cor
+write magic 15369203 : 0xea83f3
+write prog_name 'dtonc v1.0pl3'
+write prog_size 116 : 0x74
+write comment 'ta mere elle fait du rodeo sur les kfar'
+write program of size 116

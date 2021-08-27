@@ -1,0 +1,717 @@
+Symbol table after first pass through AST:
+label 'entry', value 0xffffffff
+label 'ardeftgt', value 0xffffffff
+label 'ardefgeni', value 0xffffffff
+label 'ardefgen', value 0xffffffff
+label 'ardefinit', value 0xffffffff
+label 'ardefwrite', value 0xffffffff
+label 'ardefl1', value 0xffffffff
+label 'ardefchk', value 0xffffffff
+label 'ardefloop', value 0xffffffff
+label 'coregeni', value 0xffffffff
+label 'coregen', value 0xffffffff
+label 'coreinit', value 0xffffffff
+label 'corelive', value 0xffffffff
+label 'avdefgeni', value 0xffffffff
+label 'avdefgen', value 0xffffffff
+label 'avdefinit', value 0xffffffff
+label 'avdefwrite', value 0xffffffff
+label 'avdefl1', value 0xffffffff
+label 'avdefchk', value 0xffffffff
+label 'avdefloop', value 0xffffffff
+label 'torpgeni', value 0xffffffff
+label 'torpgen', value 0xffffffff
+label 'torpinit', value 0xffffffff
+label 'torpwrite', value 0xffffffff
+label 'torpl1', value 0xffffffff
+label 'torpchk', value 0xffffffff
+label 'torploop', value 0xffffffff
+label 'avdeftgt', value 0xffffffff
+
+
+Generate instruction fork 0 : 0
+save address for label entry 0 : 0
+write opcode 12 : 0xc
+no argument coding byte
+add forward reference for label coregeni 0 : 0
+write direct LABEL 0 : 0
+
+Generate instruction st 3 : 0x3
+write opcode 3 : 0x3
+arguments: REGISTER INDIRECT 
+=> write argument coding byte 112 : 0x70
+write register 1 : 0x1
+write indirect INTEGER 6 : 0x6
+
+Generate instruction live 8 : 0x8
+write opcode 1 : 0x1
+no argument coding byte
+write direct INTEGER 42 : 0x2a
+
+Generate instruction fork 13 : 0xd
+write opcode 12 : 0xc
+no argument coding byte
+add forward reference for label torpgeni 0 : 0
+write direct LABEL 0 : 0
+
+Generate instruction st 16 : 0x10
+write opcode 3 : 0x3
+arguments: REGISTER INDIRECT 
+=> write argument coding byte 112 : 0x70
+write register 1 : 0x1
+write indirect INTEGER 6 : 0x6
+
+Generate instruction live 21 : 0x15
+write opcode 1 : 0x1
+no argument coding byte
+write direct INTEGER 42 : 0x2a
+
+Generate instruction fork 26 : 0x1a
+write opcode 12 : 0xc
+no argument coding byte
+add forward reference for label avdefgeni 0 : 0
+write direct LABEL 0 : 0
+
+Generate instruction st 29 : 0x1d
+save address for label ardeftgt 29 : 0x1d
+save address for label ardefgeni 29 : 0x1d
+write opcode 3 : 0x3
+arguments: REGISTER INDIRECT 
+=> write argument coding byte 112 : 0x70
+write register 1 : 0x1
+write indirect INTEGER 6 : 0x6
+
+Generate instruction live 34 : 0x22
+save address for label ardefgen 34 : 0x22
+write opcode 1 : 0x1
+no argument coding byte
+write direct INTEGER 213904 : 0x34390
+
+Generate instruction fork 39 : 0x27
+write opcode 12 : 0xc
+no argument coding byte
+write direct LABEL -5 : 0xfffffffb
+
+Generate instruction sti 42 : 0x2a
+save address for label ardefinit 42 : 0x2a
+write opcode 11 : 0xb
+arguments: REGISTER DIRECT DIRECT 
+=> write argument coding byte 104 : 0x68
+write register 1 : 0x1
+add forward reference for label ardefl1 0 : 0
+write direct LABEL 0 : 0
+write direct INTEGER 1 : 0x1
+
+Generate instruction st 49 : 0x31
+write opcode 3 : 0x3
+arguments: REGISTER INDIRECT 
+=> write argument coding byte 112 : 0x70
+write register 1 : 0x1
+write indirect INTEGER 6 : 0x6
+
+Generate instruction live 54 : 0x36
+write opcode 1 : 0x1
+no argument coding byte
+write direct INTEGER 43123 : 0xa873
+
+Generate instruction sti 59 : 0x3b
+write opcode 11 : 0xb
+arguments: REGISTER DIRECT DIRECT 
+=> write argument coding byte 104 : 0x68
+write register 1 : 0x1
+add forward reference for label ardefchk 0 : 0
+write direct LABEL 0 : 0
+write direct INTEGER 1 : 0x1
+
+Generate instruction ld 66 : 0x42
+write opcode 2 : 0x2
+arguments: DIRECT REGISTER 
+=> write argument coding byte 144 : 0x90
+write direct INTEGER -6 : 0xfffffffa
+write register 2 : 0x2
+
+Generate instruction ld 73 : 0x49
+write opcode 2 : 0x2
+arguments: DIRECT REGISTER 
+=> write argument coding byte 144 : 0x90
+write direct INTEGER -6 : 0xfffffffa
+write register 3 : 0x3
+
+Generate instruction ld 80 : 0x50
+write opcode 2 : 0x2
+arguments: DIRECT REGISTER 
+=> write argument coding byte 144 : 0x90
+write direct INTEGER 150994953 : 0x9000009
+write register 4 : 0x4
+
+Generate instruction ld 87 : 0x57
+write opcode 2 : 0x2
+arguments: DIRECT REGISTER 
+=> write argument coding byte 144 : 0x90
+write direct INTEGER -186 : 0xffffff46
+write register 5 : 0x5
+
+Generate instruction live 94 : 0x5e
+save address for label ardefwrite 94 : 0x5e
+save address for label ardefl1 94 : 0x5e
+resolve forward reference for label ardefl1 52 : 0x34
+write opcode 1 : 0x1
+no argument coding byte
+write direct INTEGER 295423 : 0x481ff
+
+Generate instruction sti 99 : 0x63
+write opcode 11 : 0xb
+arguments: REGISTER DIRECT REGISTER 
+=> write argument coding byte 100 : 0x64
+write register 4 : 0x4
+write direct LABEL -70 : 0xffffffba
+write register 2 : 0x2
+
+Generate instruction add 105 : 0x69
+write opcode 4 : 0x4
+arguments: REGISTER REGISTER REGISTER 
+=> write argument coding byte 84 : 0x54
+write register 2 : 0x2
+write register 3 : 0x3
+write register 2 : 0x2
+
+Generate instruction sti 110 : 0x6e
+write opcode 11 : 0xb
+arguments: REGISTER DIRECT REGISTER 
+=> write argument coding byte 100 : 0x64
+write register 4 : 0x4
+write direct LABEL -81 : 0xffffffaf
+write register 2 : 0x2
+
+Generate instruction add 116 : 0x74
+write opcode 4 : 0x4
+arguments: REGISTER REGISTER REGISTER 
+=> write argument coding byte 84 : 0x54
+write register 2 : 0x2
+write register 3 : 0x3
+write register 2 : 0x2
+
+Generate instruction live 121 : 0x79
+save address for label ardefchk 121 : 0x79
+resolve forward reference for label ardefchk 62 : 0x3e
+write opcode 1 : 0x1
+no argument coding byte
+write direct INTEGER 3940641 : 0x3c2121
+
+Generate instruction xor 126 : 0x7e
+write opcode 8 : 0x8
+arguments: REGISTER REGISTER REGISTER 
+=> write argument coding byte 84 : 0x54
+write register 2 : 0x2
+write register 5 : 0x5
+write register 15 : 0xf
+
+Generate instruction zjmp 131 : 0x83
+write opcode 9 : 0x9
+no argument coding byte
+write direct LABEL -89 : 0xffffffa7
+
+Generate instruction ld 134 : 0x86
+save address for label ardefloop 134 : 0x86
+write opcode 2 : 0x2
+arguments: DIRECT REGISTER 
+=> write argument coding byte 144 : 0x90
+write direct INTEGER 0 : 0
+write register 16 : 0x10
+
+Generate instruction zjmp 141 : 0x8d
+write opcode 9 : 0x9
+no argument coding byte
+write direct LABEL -47 : 0xffffffd1
+
+Generate instruction st 144 : 0x90
+save address for label coregeni 144 : 0x90
+resolve forward reference for label coregeni 144 : 0x90
+write opcode 3 : 0x3
+arguments: REGISTER INDIRECT 
+=> write argument coding byte 112 : 0x70
+write register 1 : 0x1
+write indirect INTEGER 6 : 0x6
+
+Generate instruction live 149 : 0x95
+save address for label coregen 149 : 0x95
+write opcode 1 : 0x1
+no argument coding byte
+write direct INTEGER 123012 : 0x1e084
+
+Generate instruction fork 154 : 0x9a
+write opcode 12 : 0xc
+no argument coding byte
+write direct LABEL -5 : 0xfffffffb
+
+Generate instruction st 157 : 0x9d
+save address for label coreinit 157 : 0x9d
+write opcode 3 : 0x3
+arguments: REGISTER INDIRECT 
+=> write argument coding byte 112 : 0x70
+write register 1 : 0x1
+write indirect INTEGER 58 : 0x3a
+
+Generate instruction st 162 : 0xa2
+write opcode 3 : 0x3
+arguments: REGISTER INDIRECT 
+=> write argument coding byte 112 : 0x70
+write register 1 : 0x1
+write indirect INTEGER 58 : 0x3a
+
+Generate instruction st 167 : 0xa7
+write opcode 3 : 0x3
+arguments: REGISTER INDIRECT 
+=> write argument coding byte 112 : 0x70
+write register 1 : 0x1
+write indirect INTEGER 58 : 0x3a
+
+Generate instruction st 172 : 0xac
+write opcode 3 : 0x3
+arguments: REGISTER INDIRECT 
+=> write argument coding byte 112 : 0x70
+write register 1 : 0x1
+write indirect INTEGER 58 : 0x3a
+
+Generate instruction st 177 : 0xb1
+write opcode 3 : 0x3
+arguments: REGISTER INDIRECT 
+=> write argument coding byte 112 : 0x70
+write register 1 : 0x1
+write indirect INTEGER 58 : 0x3a
+
+Generate instruction st 182 : 0xb6
+write opcode 3 : 0x3
+arguments: REGISTER INDIRECT 
+=> write argument coding byte 112 : 0x70
+write register 1 : 0x1
+write indirect INTEGER 58 : 0x3a
+
+Generate instruction st 187 : 0xbb
+write opcode 3 : 0x3
+arguments: REGISTER INDIRECT 
+=> write argument coding byte 112 : 0x70
+write register 1 : 0x1
+write indirect INTEGER 58 : 0x3a
+
+Generate instruction st 192 : 0xc0
+write opcode 3 : 0x3
+arguments: REGISTER INDIRECT 
+=> write argument coding byte 112 : 0x70
+write register 1 : 0x1
+write indirect INTEGER 58 : 0x3a
+
+Generate instruction st 197 : 0xc5
+write opcode 3 : 0x3
+arguments: REGISTER INDIRECT 
+=> write argument coding byte 112 : 0x70
+write register 1 : 0x1
+write indirect INTEGER 58 : 0x3a
+
+Generate instruction st 202 : 0xca
+write opcode 3 : 0x3
+arguments: REGISTER INDIRECT 
+=> write argument coding byte 112 : 0x70
+write register 1 : 0x1
+write indirect INTEGER 58 : 0x3a
+
+Generate instruction ld 207 : 0xcf
+write opcode 2 : 0x2
+arguments: DIRECT REGISTER 
+=> write argument coding byte 144 : 0x90
+write direct INTEGER 0 : 0
+write register 16 : 0x10
+
+Generate instruction live 214 : 0xd6
+save address for label corelive 214 : 0xd6
+write opcode 1 : 0x1
+no argument coding byte
+write direct INTEGER 985341 : 0xf08fd
+
+Generate instruction live 219 : 0xdb
+write opcode 1 : 0x1
+no argument coding byte
+write direct INTEGER 985341 : 0xf08fd
+
+Generate instruction live 224 : 0xe0
+write opcode 1 : 0x1
+no argument coding byte
+write direct INTEGER 985341 : 0xf08fd
+
+Generate instruction live 229 : 0xe5
+write opcode 1 : 0x1
+no argument coding byte
+write direct INTEGER 985341 : 0xf08fd
+
+Generate instruction live 234 : 0xea
+write opcode 1 : 0x1
+no argument coding byte
+write direct INTEGER 985341 : 0xf08fd
+
+Generate instruction live 239 : 0xef
+write opcode 1 : 0x1
+no argument coding byte
+write direct INTEGER 985341 : 0xf08fd
+
+Generate instruction live 244 : 0xf4
+write opcode 1 : 0x1
+no argument coding byte
+write direct INTEGER 985341 : 0xf08fd
+
+Generate instruction live 249 : 0xf9
+write opcode 1 : 0x1
+no argument coding byte
+write direct INTEGER 985341 : 0xf08fd
+
+Generate instruction live 254 : 0xfe
+write opcode 1 : 0x1
+no argument coding byte
+write direct INTEGER 985341 : 0xf08fd
+
+Generate instruction live 259 : 0x103
+write opcode 1 : 0x1
+no argument coding byte
+write direct INTEGER 985341 : 0xf08fd
+
+Generate instruction zjmp 264 : 0x108
+write opcode 9 : 0x9
+no argument coding byte
+write direct LABEL -50 : 0xffffffce
+
+Generate instruction st 267 : 0x10b
+save address for label avdefgeni 267 : 0x10b
+resolve forward reference for label avdefgeni 241 : 0xf1
+write opcode 3 : 0x3
+arguments: REGISTER INDIRECT 
+=> write argument coding byte 112 : 0x70
+write register 1 : 0x1
+write indirect INTEGER 6 : 0x6
+
+Generate instruction live 272 : 0x110
+save address for label avdefgen 272 : 0x110
+write opcode 1 : 0x1
+no argument coding byte
+write direct INTEGER 213904 : 0x34390
+
+Generate instruction fork 277 : 0x115
+write opcode 12 : 0xc
+no argument coding byte
+write direct LABEL -5 : 0xfffffffb
+
+Generate instruction sti 280 : 0x118
+save address for label avdefinit 280 : 0x118
+write opcode 11 : 0xb
+arguments: REGISTER DIRECT DIRECT 
+=> write argument coding byte 104 : 0x68
+write register 1 : 0x1
+add forward reference for label avdefl1 0 : 0
+write direct LABEL 0 : 0
+write direct INTEGER 1 : 0x1
+
+Generate instruction st 287 : 0x11f
+write opcode 3 : 0x3
+arguments: REGISTER INDIRECT 
+=> write argument coding byte 112 : 0x70
+write register 1 : 0x1
+write indirect INTEGER 6 : 0x6
+
+Generate instruction live 292 : 0x124
+write opcode 1 : 0x1
+no argument coding byte
+write direct INTEGER 43123 : 0xa873
+
+Generate instruction sti 297 : 0x129
+write opcode 11 : 0xb
+arguments: REGISTER DIRECT DIRECT 
+=> write argument coding byte 104 : 0x68
+write register 1 : 0x1
+add forward reference for label avdefchk 0 : 0
+write direct LABEL 0 : 0
+write direct INTEGER 1 : 0x1
+
+Generate instruction ld 304 : 0x130
+write opcode 2 : 0x2
+arguments: DIRECT REGISTER 
+=> write argument coding byte 144 : 0x90
+write direct INTEGER 0 : 0
+write register 2 : 0x2
+
+Generate instruction ld 311 : 0x137
+write opcode 2 : 0x2
+arguments: DIRECT REGISTER 
+=> write argument coding byte 144 : 0x90
+write direct INTEGER 6 : 0x6
+write register 3 : 0x3
+
+Generate instruction ld 318 : 0x13e
+write opcode 2 : 0x2
+arguments: DIRECT REGISTER 
+=> write argument coding byte 144 : 0x90
+write direct INTEGER 150994953 : 0x9000009
+write register 4 : 0x4
+
+Generate instruction ld 325 : 0x145
+write opcode 2 : 0x2
+arguments: DIRECT REGISTER 
+=> write argument coding byte 144 : 0x90
+write direct INTEGER 180 : 0xb4
+write register 5 : 0x5
+
+Generate instruction live 332 : 0x14c
+save address for label avdefwrite 332 : 0x14c
+save address for label avdefl1 332 : 0x14c
+resolve forward reference for label avdefl1 52 : 0x34
+write opcode 1 : 0x1
+no argument coding byte
+write direct INTEGER 295423 : 0x481ff
+
+Generate instruction sti 337 : 0x151
+write opcode 11 : 0xb
+arguments: REGISTER DIRECT REGISTER 
+=> write argument coding byte 100 : 0x64
+write register 4 : 0x4
+add forward reference for label avdeftgt 0 : 0
+write direct LABEL 0 : 0
+write register 2 : 0x2
+
+Generate instruction add 343 : 0x157
+write opcode 4 : 0x4
+arguments: REGISTER REGISTER REGISTER 
+=> write argument coding byte 84 : 0x54
+write register 2 : 0x2
+write register 3 : 0x3
+write register 2 : 0x2
+
+Generate instruction sti 348 : 0x15c
+write opcode 11 : 0xb
+arguments: REGISTER DIRECT REGISTER 
+=> write argument coding byte 100 : 0x64
+write register 4 : 0x4
+add forward reference for label avdeftgt 0 : 0
+write direct LABEL 0 : 0
+write register 2 : 0x2
+
+Generate instruction add 354 : 0x162
+write opcode 4 : 0x4
+arguments: REGISTER REGISTER REGISTER 
+=> write argument coding byte 84 : 0x54
+write register 2 : 0x2
+write register 3 : 0x3
+write register 2 : 0x2
+
+Generate instruction live 359 : 0x167
+save address for label avdefchk 359 : 0x167
+resolve forward reference for label avdefchk 62 : 0x3e
+write opcode 1 : 0x1
+no argument coding byte
+write direct INTEGER 3940641 : 0x3c2121
+
+Generate instruction xor 364 : 0x16c
+write opcode 8 : 0x8
+arguments: REGISTER REGISTER REGISTER 
+=> write argument coding byte 84 : 0x54
+write register 2 : 0x2
+write register 5 : 0x5
+write register 15 : 0xf
+
+Generate instruction zjmp 369 : 0x171
+write opcode 9 : 0x9
+no argument coding byte
+write direct LABEL -89 : 0xffffffa7
+
+Generate instruction ld 372 : 0x174
+save address for label avdefloop 372 : 0x174
+write opcode 2 : 0x2
+arguments: DIRECT REGISTER 
+=> write argument coding byte 144 : 0x90
+write direct INTEGER 0 : 0
+write register 16 : 0x10
+
+Generate instruction zjmp 379 : 0x17b
+write opcode 9 : 0x9
+no argument coding byte
+write direct LABEL -47 : 0xffffffd1
+
+Generate instruction st 382 : 0x17e
+save address for label torpgeni 382 : 0x17e
+resolve forward reference for label torpgeni 369 : 0x171
+write opcode 3 : 0x3
+arguments: REGISTER INDIRECT 
+=> write argument coding byte 112 : 0x70
+write register 1 : 0x1
+write indirect INTEGER 6 : 0x6
+
+Generate instruction live 387 : 0x183
+save address for label torpgen 387 : 0x183
+write opcode 1 : 0x1
+no argument coding byte
+write direct INTEGER 96824 : 0x17a38
+
+Generate instruction fork 392 : 0x188
+write opcode 12 : 0xc
+no argument coding byte
+write direct LABEL -5 : 0xfffffffb
+
+Generate instruction ld 395 : 0x18b
+save address for label torpinit 395 : 0x18b
+write opcode 2 : 0x2
+arguments: DIRECT REGISTER 
+=> write argument coding byte 144 : 0x90
+write direct INTEGER 0 : 0
+write register 2 : 0x2
+
+Generate instruction ld 402 : 0x192
+write opcode 2 : 0x2
+arguments: DIRECT REGISTER 
+=> write argument coding byte 144 : 0x90
+write direct INTEGER 4 : 0x4
+write register 3 : 0x3
+
+Generate instruction ld 409 : 0x199
+write opcode 2 : 0x2
+arguments: DIRECT REGISTER 
+=> write argument coding byte 144 : 0x90
+write direct INTEGER 96 : 0x60
+write register 5 : 0x5
+
+Generate instruction sti 416 : 0x1a0
+write opcode 11 : 0xb
+arguments: REGISTER DIRECT DIRECT 
+=> write argument coding byte 104 : 0x68
+write register 1 : 0x1
+add forward reference for label torpchk 0 : 0
+write direct LABEL 0 : 0
+write direct INTEGER 1 : 0x1
+
+Generate instruction st 423 : 0x1a7
+write opcode 3 : 0x3
+arguments: REGISTER INDIRECT 
+=> write argument coding byte 112 : 0x70
+write register 1 : 0x1
+write indirect INTEGER 6 : 0x6
+
+Generate instruction live 428 : 0x1ac
+save address for label torpwrite 428 : 0x1ac
+save address for label torpl1 428 : 0x1ac
+write opcode 1 : 0x1
+no argument coding byte
+write direct INTEGER 8008135 : 0x7a31c7
+
+Generate instruction ldi 433 : 0x1b1
+write opcode 10 : 0xa
+arguments: DIRECT REGISTER REGISTER 
+=> write argument coding byte 148 : 0x94
+write direct LABEL -38 : 0xffffffda
+write register 2 : 0x2
+write register 4 : 0x4
+
+Generate instruction sti 439 : 0x1b7
+write opcode 11 : 0xb
+arguments: REGISTER DIRECT REGISTER 
+=> write argument coding byte 100 : 0x64
+write register 4 : 0x4
+write direct INTEGER 400 : 0x190
+write register 2 : 0x2
+
+Generate instruction add 445 : 0x1bd
+write opcode 4 : 0x4
+arguments: REGISTER REGISTER REGISTER 
+=> write argument coding byte 84 : 0x54
+write register 2 : 0x2
+write register 3 : 0x3
+write register 2 : 0x2
+
+Generate instruction ldi 450 : 0x1c2
+write opcode 10 : 0xa
+arguments: DIRECT REGISTER REGISTER 
+=> write argument coding byte 148 : 0x94
+write direct LABEL -55 : 0xffffffc9
+write register 2 : 0x2
+write register 4 : 0x4
+
+Generate instruction sti 456 : 0x1c8
+write opcode 11 : 0xb
+arguments: REGISTER DIRECT REGISTER 
+=> write argument coding byte 100 : 0x64
+write register 4 : 0x4
+write direct INTEGER 383 : 0x17f
+write register 2 : 0x2
+
+Generate instruction add 462 : 0x1ce
+write opcode 4 : 0x4
+arguments: REGISTER REGISTER REGISTER 
+=> write argument coding byte 84 : 0x54
+write register 2 : 0x2
+write register 3 : 0x3
+write register 2 : 0x2
+
+Generate instruction live 467 : 0x1d3
+save address for label torpchk 467 : 0x1d3
+resolve forward reference for label torpchk 51 : 0x33
+write opcode 1 : 0x1
+no argument coding byte
+write direct INTEGER 89523 : 0x15db3
+
+Generate instruction xor 472 : 0x1d8
+write opcode 8 : 0x8
+arguments: REGISTER REGISTER REGISTER 
+=> write argument coding byte 84 : 0x54
+write register 2 : 0x2
+write register 5 : 0x5
+write register 15 : 0xf
+
+Generate instruction zjmp 477 : 0x1dd
+write opcode 9 : 0x9
+no argument coding byte
+write direct INTEGER 362 : 0x16a
+
+Generate instruction ld 480 : 0x1e0
+save address for label torploop 480 : 0x1e0
+write opcode 2 : 0x2
+arguments: DIRECT REGISTER 
+=> write argument coding byte 144 : 0x90
+write direct INTEGER 0 : 0
+write register 15 : 0xf
+
+Generate instruction zjmp 487 : 0x1e7
+write opcode 9 : 0x9
+no argument coding byte
+write direct LABEL -59 : 0xffffffc5
+
+
+Symbol table after second pass through AST:
+label 'entry', value 0
+label 'ardeftgt', value 0x1d
+label 'ardefgeni', value 0x1d
+label 'ardefgen', value 0x22
+label 'ardefinit', value 0x2a
+label 'ardefwrite', value 0x5e
+label 'ardefl1', value 0x5e
+label 'ardefchk', value 0x79
+label 'ardefloop', value 0x86
+label 'coregeni', value 0x90
+label 'coregen', value 0x95
+label 'coreinit', value 0x9d
+label 'corelive', value 0xd6
+label 'avdefgeni', value 0x10b
+label 'avdefgen', value 0x110
+label 'avdefinit', value 0x118
+label 'avdefwrite', value 0x14c
+label 'avdefl1', value 0x14c
+label 'avdefchk', value 0x167
+label 'avdefloop', value 0x174
+label 'torpgeni', value 0x17e
+label 'torpgen', value 0x183
+label 'torpinit', value 0x18b
+label 'torpwrite', value 0x1ac
+label 'torpl1', value 0x1ac
+label 'torpchk', value 0x1d3
+label 'torploop', value 0x1e0
+label 'avdeftgt', value 0xffffffff
+
+Writing output to vm_champs/champs/examples/fluttershy.cor
+write magic 15369203 : 0xea83f3
+write prog_name 'fluttershy'
+write prog_size 490 : 0x1ea
+write comment 'oh, my, what a scary project'
+write program of size 490

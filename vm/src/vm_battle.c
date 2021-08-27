@@ -41,7 +41,7 @@ void	vm_battle(t_arena arena)
 		vm_execute_cycle(arena.processes, &arena);
 		while (++arena.cycles_since_check < arena.cycle_to_die)
 		{
-			if (arena.cycles_executed == arena.dump_nbr_cycles)
+			if (arena.current_cycle == arena.dump_nbr_cycles)
 			{
 				vm_print_arena(arena, arena.processes);
 				vm_free_processes(&arena.processes);

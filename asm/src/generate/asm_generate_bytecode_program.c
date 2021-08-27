@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include "core.h"
 
-static int	asm_generate_bytecode_program(t_output_data *data, t_astnode *tree)
+void	asm_generate_bytecode_program(t_output_data *data, t_astnode *tree)
 {
 	uint32_t		location_counter;
 	t_symbol_list	*defined_labels;
@@ -15,19 +15,14 @@ static int	asm_generate_bytecode_program(t_output_data *data, t_astnode *tree)
 	statement_list = tree->right_child;
 	while (statement_list != NULL)
 	{
-		if (!asm_generate_statement(data, &location_counter,
-				&defined_labels, statement_list->left_child))
-			return (0);
+		asm_generate_statement(data, &location_counter,
+			&defined_labels, statement_list->left_child);
 		statement_list = statement_list->right_child;
 	}
+	if (defined_labels != NULL)
+		asm_resolve_label_address(data, location_counter, &defined_labels);
 	data->header.prog_size = location_counter;
 	if (data->verbose)
 		asm_print_symbol_list(&data->symbols,
 			"\n\nSymbol table after second pass through AST:");
-	return (1);
-}
-
-int	asm_generate_output(t_output_data *data, t_astnode *tree)
-{
-	return (asm_generate_bytecode_program(data, tree));
 }
