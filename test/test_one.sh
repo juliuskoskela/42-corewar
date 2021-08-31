@@ -65,8 +65,8 @@ user_player_cor="$outdir/$player.cor"
 
 # Assumes that flags -dump and -v have been implemented
 
-echo "$user_corewar $user_player_cor -dump $cycles_to_run -v $vm_verbosity >$outdir/user_corewar_output 2>&1"
-$user_corewar $user_player_cor -dump $cycles_to_run -v $vm_verbosity >$outdir/user_corewar_output 2>&1
+echo "$user_corewar $user_player_cor --dump $cycles_to_run -v $vm_verbosity > $outdir/user_corewar_output 2>&1"
+$user_corewar $user_player_cor --dump $cycles_to_run -v $vm_verbosity > $outdir/user_corewar_output 2>&1
 
 user_corewar_exit=$?
 if [ $user_corewar_exit != 0 ]; then

@@ -1,13 +1,13 @@
 #!/bin/bash
 
 ## Paths to subject's and our executables
-subject_asm="./vm_champs/asm"
-subject_corewar="./vm_champs/corewar"
+subject_asm="./subject_reference/asm"
+subject_corewar="./subject_reference/corewar"
 user_asm="../bin/asm"
 user_corewar="../bin/corewar"
 
 ## Verbosity level for vm: from 0 to 31
-vm_verbosity="31"
+vm_verbosity="0"
 
 ## Path to the player .cor file is taken as the first command line argument
 
