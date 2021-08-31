@@ -58,11 +58,10 @@ t_astnode *parameter_list)
 	if (s_cmp(instruction.mnemonic, "live") == 0)
 		param_sizes[0] = 4;
 	else if (s_cmp(instruction.mnemonic, "lldi") == 0
-			// || s_cmp(instruction.mnemonic, "ldi") == 0
-			|| s_cmp(instruction.mnemonic, "and") == 0
-			|| s_cmp(instruction.mnemonic, "or") == 0
-			|| s_cmp(instruction.mnemonic, "xor") == 0
-			|| s_cmp(instruction.mnemonic, "ld") == 0)
+		|| s_cmp(instruction.mnemonic, "and") == 0
+		|| s_cmp(instruction.mnemonic, "or") == 0
+		|| s_cmp(instruction.mnemonic, "xor") == 0
+		|| s_cmp(instruction.mnemonic, "ld") == 0)
 	{
 		lhs_param = parameter_list->left_child;
 		rhs_param = parameter_list->right_child->left_child;
