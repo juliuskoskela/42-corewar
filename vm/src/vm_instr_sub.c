@@ -24,6 +24,12 @@ void vm_instr_sub(
 	// arg 3
 	dst = vm_get_reg_addr(p, a->mem[mem_i]);
 
+	if (!dst)
+	{
+		p->pc += 1;
+		return;
+	}
+
 	*dst = lhs - rhs;
 	if (*dst == 0)
 		p->zf = 1;
