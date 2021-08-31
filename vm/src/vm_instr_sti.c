@@ -23,7 +23,13 @@ void vm_instr_sti(
 
 	// arg 1
 	mem_i = (mem_i + 1) % MEM_SIZE;
+	// print("reg: %d\n", (t_byte)a->mem[mem_i]);
 	src = vm_get_reg_addr(p, a->mem[mem_i]);
+	if (!src)
+	{
+		vm_advance_pc(&p->pc, 1);
+		return ;
+	}
 	mem_i = (mem_i + 1) % MEM_SIZE;
 
 	// arg 2
@@ -35,7 +41,7 @@ void vm_instr_sti(
 	// store at index
 	if ((a->verbosity & VM_VERBOSE_OPS) != 0)
 	{
-		print("\tstore %d to %d + %d = %d (+ pc)\n",
+		print("\tstore %u to %d + %d = %d (+ pc)\n",
 			*src, (int)lhs, (int)rhs, (int)(lhs + rhs));
 	}
 	dst = vm_get_mem_addr(a, p->pc + lhs + rhs);
