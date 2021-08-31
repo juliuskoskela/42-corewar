@@ -23,7 +23,7 @@ void vm_instr_live(
 	if ((a->verbosity & VM_VERBOSE_OPS) != 0)
 		print("\tlive %d\n", (int)id);
 	p->last_live = a->current_cycle;
-	if (id > 0 && id < a->player_count)
+	if (id > 0 && id < a->player_count && (a->verbosity & VM_VERBOSE_LIVES))
 	{
 		a->last_player_alive = id;
 		print("A process shows that player %d (%s) is alive\n",

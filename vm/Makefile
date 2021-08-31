@@ -59,7 +59,8 @@ SRC_BASE	=	vm_main.c \
 				vm_instr_and.c \
 				vm_instr_or.c \
 				vm_instr_xor.c \
-				vm_advance_pc.c
+				vm_advance_pc.c \
+				vm_pause_and_print_memory.c
 
 SRC			=	$(addprefix $(SRC_DIR), $(SRC_BASE))
 OBJ			=	$(addprefix $(OBJ_DIR), $(SRC_BASE:.c=.o))

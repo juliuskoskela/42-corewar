@@ -22,11 +22,11 @@ t_uint8 vm_check_acb(
 
 	arg = g_op_tab[op - 1].param_types;
 	print("op %s", g_op_tab[op - 1].description);
-	if ((vm_get_arg_type(acb, 0) & arg.param1) == 0)
+	if ((vm_get_arg_type(acb, 0) & arg.param1) == 0 && arg.param1)
 		print("acb %d does not match arg1 %d\n", vm_get_arg_type(acb, 0), arg.param1);
-	if ((vm_get_arg_type(acb, 1) & arg.param2) == 0)
+	if ((vm_get_arg_type(acb, 1) & arg.param2) == 0 && arg.param2)
 		print("acb does not match arg2\n");
-	if ((vm_get_arg_type(acb, 2) != arg.param3) == 0)
+	if ((vm_get_arg_type(acb, 2) & arg.param3) == 0 && arg.param3)
 		print("acb does not match arg3\n");
 	return(1);
 }

@@ -142,6 +142,8 @@ static void	parse_numeric_option(int key, char *arg, t_argparser_state *state)
 		args->verbosity = nbr;
 	else if (key == 'n' && nbr > 0 && !player_nbr_is_assigned(args, nbr))
 		args->next_player_nbr = nbr;
+	else if (key == 's' && nbr > 0)
+		args->pause_nbr_cycles = nbr;
 	else
 		argparser_usage(state);
 }
@@ -151,7 +153,7 @@ static int	parse_opt(int key, char *arg, t_argparser_state *state)
 	t_input_args	*args;
 
 	args = state->input;
-	if (key == 'd' || key == 'v' || key == 'n')
+	if (key == 'd' || key == 'v' || key == 'n' || key == 's')
 		parse_numeric_option(key, arg, state);
 	else if (key == 'c')
 		args->coloured_output = 1;
@@ -183,6 +185,8 @@ t_input_args	vm_parse_arguments(int argc, char **argv)
 	static const t_argparser_option	options[] = {
 		{"dump", 'd', "nbr_cycles", 0, "dump memory to standard output and exit\n\
 				after nbr_cycles (> 0)"},
+		{"show", 's', "nbr_cycles", 0, "dump memory every N cycles and pause until\n\
+				a key is pressed"},
 		{"verbosity", 'v', "level", 0, "verbosity level (set between 0 and 31)"},
 		{"coloured", 'c', 0, 0, "use colours in printing to standard output"},
 		{"nbr", 'n', "nbr", 0, "set the number (> 0) of the next player"},
@@ -210,6 +214,7 @@ void	vm_save_input(t_arena *arena, t_uint32 argc, char **argv)
 	arena->offset = MEM_SIZE / arena->player_count;
 	arena->verbosity = args.verbosity;
 	arena->dump_nbr_cycles = args.dump_nbr_cycles;
+	arena->pause_nbr_cycles = args.pause_nbr_cycles;
 	i = 0;
 	while (i < args.player_count)
 	{
