@@ -113,6 +113,8 @@ void vm_save_input(
 		t_uint32 argc,
 		char **argv);
 
+t_input_args	vm_parse_arguments(int argc, char **argv);
+
 void vm_create_player(
 		t_arena *arena,
 		t_int32 *player_number,
