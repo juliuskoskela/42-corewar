@@ -18,5 +18,3 @@ live %-15
 # Store process ID from r1 to live's argument above; assumes sti works
 sti r1, %:live, %1
 live: live %5
-
-
