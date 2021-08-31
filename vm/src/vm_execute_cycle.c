@@ -3,10 +3,10 @@
 void	vm_execute_instruction(t_op instruction, t_process *process,
 t_arena *arena)
 {
-	print("P %d:\tat pc %d opcode %d => execute %s\n",
-		(int)process->id,
-		(int)process->pc,
-		(int)arena->mem[process->pc],
+	print("P %u:\tat pc %llu opcode %u => execute %s\n",
+		process->id,
+		process->pc,
+		arena->mem[process->pc],
 		instruction.mnemonic);
 	g_instr_funcs[instruction.opcode - 1](arena, process);
 }
@@ -46,7 +46,7 @@ void	vm_init_instruction_execution(t_process *process, t_arena *arena)
 void	vm_finish_instruction_execution(t_process *process, t_arena *arena)
 {
 	vm_execute_instruction(process->next_instruction.instruction, process, arena);
-	process->cycles_before_execution = - 2;
+	process->cycles_before_execution = (-1);
 }
 
 void	vm_execute_process(t_process *process, t_arena *arena)
@@ -68,5 +68,5 @@ void	vm_execute_cycle(t_process *process, t_arena *arena)
 		vm_execute_process(process, arena);
 		process = process->next;
 	}
-	arena->current_cycle += 1;
+	arena->current_cycle++;
 }
