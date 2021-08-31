@@ -34,18 +34,14 @@ void	vm_init_instruction_execution(t_process *process, t_arena *arena)
 		vm_advance_pc(&process->pc, 1);
 	else
 	{
-		process->next_instruction.instruction = instruction;
-		if (instruction.has_argument_coding_byte)
-			process->next_instruction.acb = arena->mem[(process->pc + 1) % MEM_SIZE];
-		else
-			process->next_instruction.acb = 0;
+		process->current_instruction = instruction;
 		process->cycles_before_execution = instruction.cycles - 2;
 	}
 }
 
 void	vm_finish_instruction_execution(t_process *process, t_arena *arena)
 {
-	vm_execute_instruction(process->next_instruction.instruction, process, arena);
+	vm_execute_instruction(process->current_instruction, process, arena);
 	process->cycles_before_execution = - 2;
 }
 

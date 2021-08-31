@@ -24,7 +24,7 @@ void vm_instr_ld(
 	mem_i = (mem_i + 1) % MEM_SIZE;
 
 	//check arguments
-	if (!vm_check_acb(acb, p->next_instruction.instruction.opcode))
+	if (!vm_check_acb(acb, p->current_instruction.opcode))
 		print("acb does not match the arguments");
 	// arg 1
 	mem_addr = vm_get_val(a, p, vm_get_arg_data(acb, 2, 1), &mem_i);

@@ -28,12 +28,6 @@
 
 typedef t_byte* t_mem_addr;
 typedef t_uint64* t_reg_addr;
-typedef struct s_instruction
-{
-	t_op	instruction;
-	t_byte	acb;
-}	t_instruction;
-
 typedef struct s_argument
 {
 	t_int64 value;
@@ -44,7 +38,7 @@ typedef struct s_argument
 typedef struct s_process
 {
 	struct s_header		header;
-	t_instruction		next_instruction;
+	t_op				current_instruction;
 	t_uint32			id;
 	t_int32				last_live;
 	t_int32				cycles_before_execution;
