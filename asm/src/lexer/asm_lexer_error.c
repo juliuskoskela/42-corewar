@@ -6,5 +6,5 @@ void	asm_lexer_error(t_lexer *lexer, const char *msg)
 		lexer->line_no,
 		lexer->col,
 		msg);
-	exit(0);
+	exit(1);
 }

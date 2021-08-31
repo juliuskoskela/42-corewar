@@ -17,19 +17,18 @@ void vm_instr_add(
 	acb = a->mem[mem_i];
 	mem_i = (mem_i + 1) % MEM_SIZE;
 
+
+	//check acb
+	if (!vm_check_acb(acb, 4))
+		print("invalid acb in add\n");
+
 	// arg 1
-	if (vm_check_acb(acb, 1) != REG_CODE)
-		vm_error("Error arg 1 add!\n");
-	lhs = vm_get_val(a, p, vm_check_acb(acb, 1), &mem_i);
+	lhs = vm_get_val(a, p, vm_get_arg_data(acb, 4, 1), &mem_i);
 
 	// arg 2
-	if (vm_check_acb(acb, 2) != REG_CODE)
-		vm_error("Error arg 2 add!\n");
-	rhs = vm_get_val(a, p, vm_check_acb(acb, 2), &mem_i);
+	rhs = vm_get_val(a, p, vm_get_arg_data(acb, 4, 2), &mem_i);
 
 	// arg 3
-	if (vm_check_acb(acb, 2) != REG_CODE)
-		vm_error("Error arg 3 add!\n");
 	dst = vm_get_reg_addr(p, a->mem[mem_i]);
 
 	if ((a->verbosity & VM_VERBOSE_OPS) != 0)

@@ -18,7 +18,7 @@ static void	argparser_help_print_options(const t_argparser_option *options)
 			col += print_fd(1, "     ");
 		col += print_fd(1, "--%s", options[i].name);
 		if (options[i].arg != NULL)
-			col += print_fd(1, "=%s", options[i].arg);
+			col += print_fd(1, " %s", options[i].arg);
 		while (col < 30)
 			col += print_fd(1, " ");
 		print_fd(1, "%s\n", options[i].doc);

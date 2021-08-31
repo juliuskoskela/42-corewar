@@ -7,17 +7,18 @@ void	vm_instr_zjmp(
 		t_arena *a,
 		t_process *p)
 {
-	t_size	jump;
+	t_argument	arg;
+	t_size		jump;
 
+	arg.size = DIR_VAL_SIZE;
+	arg.type = T_DIR;
+	jump = p->pc + 1;
 	if ((a->verbosity & VM_VERBOSE_OPS) != 0)
 		print("\t%s\n", "zjmp offset");
 	if (!p->zf)
-		jump = DIR_VAL_SIZE + 1;
+		jump = DIR_VAL_SIZE;
 	else
-	{
-		jump = (p->pc + 1) % MEM_SIZE;
-		jump = vm_get_val(a, p, DIR_CODE, &jump) % IDX_MOD;
-	}
+		jump = vm_get_val(a, p, arg, &jump) % IDX_MOD;
 	if ((a->verbosity & VM_VERBOSE_OPS) != 0)
 		print("\tmove pc to pc + %d\n", (int)jump);
 	if ((a->verbosity & VM_VERBOSE_PC) != 0)

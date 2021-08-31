@@ -1,7 +1,6 @@
 #!/bin/bash
 
 ## Paths to executables
-
 user_asm="../bin/asm"
 user_corewar="../bin/corewar"
 
@@ -15,6 +14,7 @@ if [ $# -lt 1 ]; then
 	exit 0
 fi
 
+echo
 echo "Running tests with $1"
 
 player_s=$1
@@ -25,14 +25,17 @@ player=$(echo $player_s | rev | cut -d '/' -f 1 | rev | sed "s/\.s//")
 
 outdir="output_one_$player"
 
+echo
 echo "Creating output directory $outdir"
-
 mkdir -p $outdir
 
 ## Assemble player on user asm, redirect all output to files
 
+echo
 echo "Assembling player $player_s"
+echo
 
+echo "$user_asm $player_s >$outdir/user_asm_output 2>&1"
 $user_asm $player_s >$outdir/user_asm_output 2>&1
 
 user_asm_exit=$?
@@ -55,12 +58,14 @@ else
 	cycles_to_run=50
 fi
 
+echo
 echo "Running VM for $cycles_to_run cycles"
-
+echo
 user_player_cor="$outdir/$player.cor"
 
 # Assumes that flags -dump and -v have been implemented
 
+echo "$user_corewar $user_player_cor -dump $cycles_to_run -v $vm_verbosity >$outdir/user_corewar_output 2>&1"
 $user_corewar $user_player_cor -dump $cycles_to_run -v $vm_verbosity >$outdir/user_corewar_output 2>&1
 
 user_corewar_exit=$?
@@ -70,4 +75,6 @@ fi
 
 ## Done
 
+echo
 echo "Test output written to $outdir"
+echo

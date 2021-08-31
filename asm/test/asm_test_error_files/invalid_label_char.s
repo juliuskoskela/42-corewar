@@ -1,7 +1,7 @@
 .name "stayin' alive"
 .comment "Ha, Ha, Ha, stayiiiiin' aliiiiiiiiiive"
 	
-sti	r1, %:livE, %1			#;change live by the right value
+sti	r1, %:livE, %1			# <=
 sti	r1, %:live2, %1			#;change live by the right value
 ld	%1, r3
 ld	%33, r6
@@ -19,6 +19,6 @@ zjmp	%:forks
 endwhile:
 ld	%0, r4			#;carry = 1
 
-livE:
+livE:	# <=
 live %4
 zjmp %:live

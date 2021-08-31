@@ -39,14 +39,14 @@ void	vm_init_instruction_execution(t_process *process, t_arena *arena)
 			process->next_instruction.acb = arena->mem[(process->pc + 1) % MEM_SIZE];
 		else
 			process->next_instruction.acb = 0;
-		process->cycles_before_execution = instruction.cycles - 1;
+		process->cycles_before_execution = instruction.cycles - 2;
 	}
 }
 
 void	vm_finish_instruction_execution(t_process *process, t_arena *arena)
 {
 	vm_execute_instruction(process->next_instruction.instruction, process, arena);
-	process->cycles_before_execution = -1;
+	process->cycles_before_execution = - 2;
 }
 
 void	vm_execute_process(t_process *process, t_arena *arena)
@@ -62,11 +62,11 @@ void	vm_execute_process(t_process *process, t_arena *arena)
 void	vm_execute_cycle(t_process *process, t_arena *arena)
 {
 	if ((arena->verbosity & VM_VERBOSE_CYCLES) != 0)
-		print("Cycle\t%d\n", arena->cycles_executed);
+		print("This is cycle\t%d\n", arena->current_cycle);
 	while (process)
 	{
 		vm_execute_process(process, arena);
 		process = process->next;
 	}
-	arena->cycles_executed += 1;
+	arena->current_cycle += 1;
 }

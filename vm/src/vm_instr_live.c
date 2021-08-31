@@ -9,6 +9,7 @@ void vm_instr_live(
 		t_arena *a,
 		t_process *p)
 {
+	t_argument	arg;
 	t_size		mem_i;
 	t_uint64	id;
 
@@ -16,11 +17,13 @@ void vm_instr_live(
 		print("\t%s\n", "live id");
 	mem_i = p->pc;
 	mem_i = (mem_i + 1) % MEM_SIZE;
-	id = vm_get_val(a, p, T_DIR, &mem_i);
+	arg.type = T_DIR;
+	arg.size = REG_SIZE;
+	id = vm_get_val(a, p, arg, &mem_i);
 	if ((a->verbosity & VM_VERBOSE_OPS) != 0)
 		print("\tlive %d\n", (int)id);
-	p->last_live = a->cycles_executed;
-	if (id > 0 && id < a->player_count)
+	p->last_live = a->current_cycle;
+	if (id > 0 && id < a->player_count && (a->verbosity & VM_VERBOSE_LIVES))
 	{
 		a->last_player_alive = id;
 		print("A process shows that player %d (%s) is alive\n",

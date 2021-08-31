@@ -11,18 +11,17 @@ A good answer on Stack Exchange summarizing the steps for writing a basic compil
 
 ## Tutorials
 
-### Let's make a Teeny Tiny Compiler by Austin Henley
-
-[link](https://web.eecs.utk.edu/~azh/blog/teenytinycompiler1.html)
-
 ### Let's Build a Compiler by Jack Crenshaw
 
 Old and praised, fifteen-part series written from 1988 to 1995: [link](https://compilers.iecc.com/crenshaw/)
 
 ### Let's Build a Simple Interpreter by Ruslan Spivak
 
-An interpreter for a subset of Pascal in Python, a 19-post series: [link](https://ruslanspivak.com/lsbasi-part1/)
+An interpreter for a subset of Pascal in Python, a comprehensive 19-post series: [link](https://ruslanspivak.com/lsbasi-part1/)
 
+### Let's make a Teeny Tiny Compiler by Austin Henley
+
+Kind of a short version of the above series; [link](https://web.eecs.utk.edu/~azh/blog/teenytinycompiler1.html)
 ### Crafting Interpreters by Bob Nystrom
 
 A compiler and an interpreter for the "Lox" language. An online book with two parts, first creating an implementation in Java and the second in C: [link](http://craftinginterpreters.com/)

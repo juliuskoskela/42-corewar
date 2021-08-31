@@ -68,8 +68,7 @@ static void	print_tree(int fd, t_astnode *node, int nbr)
 void	asm_print_ast_dot(int fd, t_astnode *root)
 {
 	print_fd(fd, "digraph astgraph {\
-          node [shape=circle, fontsize=12, fontname=\"Courier\",height=.1];\
-          ranksep=.3;\
+          node [margin=0.2, fontsize=12,height=.1];\
           edge [arrowsize=.5]\n");
 	print_tree(fd, root, 1);
 	print_fd(fd, "}\n");

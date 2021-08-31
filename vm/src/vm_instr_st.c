@@ -15,14 +15,14 @@ void vm_instr_st(
 	mem_i = p->pc;
 	mem_i = (mem_i + 1) % MEM_SIZE;
 	acb = a->mem[mem_i];
-	if (vm_check_acb(acb, 0) != REG_CODE)
+	if (vm_get_arg_type(acb, 0) != REG_CODE)
 		vm_error("Error st arg1!\n");
 	mem_i = (mem_i + 1) % MEM_SIZE;
 	src = (t_byte *)&p->registers[a->mem[mem_i]];
 	mem_i = (mem_i + 1) % MEM_SIZE;
-	if (vm_check_acb(acb, 1) == REG_CODE)
+	if (vm_get_arg_type(acb, 1) == REG_CODE)
 		dst = (t_byte *)&p->registers[a->mem[mem_i]];
-	else if (vm_check_acb(acb, 1) == IND_CODE)
+	else if (vm_get_arg_type(acb, 1) == IND_CODE)
 		dst = (t_byte *)&a->mem[a->mem[mem_i] + p->pc];
 	else
 		vm_error("Error st arg2!\n");

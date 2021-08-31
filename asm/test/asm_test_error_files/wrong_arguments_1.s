@@ -13,7 +13,7 @@ live2:
 	live 	%4
 zjmp	%:endwhile		#;if (carry)
 fork	%:forks
-ld	%0, %:live			#;carry = 1
+ld	%0, %:live			# <=
 zjmp	%:forks
 #EndWhile
 endwhile:
