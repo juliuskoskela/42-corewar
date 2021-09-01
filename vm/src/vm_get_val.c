@@ -16,7 +16,7 @@ t_int64	vm_get_val(
 	{
 		vm_reverse_bytes(&arg.value,
 		vm_get_mem_addr(a, a->mem[*mem_i]), IND_ADDR_SIZE);
-		*mem_i = (*mem_i + REG_ADDR_SIZE) % MEM_SIZE;
+		*mem_i = (*mem_i + IND_ADDR_SIZE) % MEM_SIZE;
 	}
 	else
 	{
