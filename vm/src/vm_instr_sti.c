@@ -30,7 +30,7 @@ void vm_instr_sti(
 	src = vm_get_reg_addr(p, a->mem[mem_i]);
 	if (!src)
 	{
-		vm_advance_pc(&p->pc, 1, a->verbosity);
+		vm_advance_pc(&p->pc, 1, a->mem, a->verbosity);
 		return ;
 	}
 	mem_i = (mem_i + 1) % MEM_SIZE;

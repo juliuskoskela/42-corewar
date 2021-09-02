@@ -9,5 +9,5 @@ t_reg_addr vm_get_reg_addr(
 		print("Reg %d out of bounds!\n", (int)i);
 		return (NULL);
 	}
-	return (&p->registers[i - 1]);
+	return (p->registers[i - 1]);
 }

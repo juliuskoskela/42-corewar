@@ -31,7 +31,7 @@ void	vm_init_instruction_execution(t_process *process, t_arena *arena)
 
 	instruction = vm_get_instruction(arena->mem[process->pc]);
 	if (instruction.mnemonic == 0)
-		vm_advance_pc(&process->pc, 1, 0);
+		vm_advance_pc(&process->pc, 1, arena->mem, 0);
 	else
 	{
 		process->current_instruction = instruction;

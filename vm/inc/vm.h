@@ -27,7 +27,7 @@
 # define VM_PRINT_ARENA_WIDTH	64
 
 typedef t_byte* t_mem_addr;
-typedef t_int64* t_reg_addr;
+typedef t_byte* t_reg_addr;
 typedef struct s_argument
 {
 	t_int64 value;
@@ -51,7 +51,7 @@ typedef struct s_process
 	t_bool				zf;
 
 	// 32 bit registers 1 - 16, r1 initialized at player ID and the rest at 0
-	t_int64				registers[REG_NUMBER];
+	t_byte				registers[REG_NUMBER][REG_SIZE];
 	struct s_process	*next;
 }	t_process;
 
@@ -118,7 +118,7 @@ void	vm_create_player(
 t_process	*vm_create_process(
 		t_arena arena,
 		t_process *process_lst,
-		t_uint64 player_id);
+		t_int32 player_id);
 
 void	*vm_reverse_bytes(
 		void *dst,
@@ -250,12 +250,15 @@ t_int64	vm_get_val(
 void	vm_advance_pc(
 		t_size *pc,
 		int size,
+		t_byte *mem,
 		int verbosity);
 
 t_uint8	vm_get_arg_size(
 		t_uint8 opcode,
 		t_uint8 arg_nbr,
 		t_uint8 acb);
+
+void	vm_print_bytes(void *memory, size_t len);
 
 static const t_instr g_instr_funcs[] =
 {

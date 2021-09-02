@@ -20,14 +20,14 @@ void	vm_instr_aff(
 	acb = a->mem[mem_i];
 	if (!vm_check_acb(acb, p->current_instruction.opcode))
 	{
-		vm_advance_pc(&p->pc, 1, a->verbosity);
+		vm_advance_pc(&p->pc, 1, a->mem, a->verbosity);
 		return ;
 	}
 	mem_i = (mem_i + 1) % MEM_SIZE;
 	reg = vm_get_reg_addr(p, mem_i);
 	if (reg == NULL)
 	{
-		vm_advance_pc(&p->pc, 1, a->verbosity);
+		vm_advance_pc(&p->pc, 1, a->mem, a->verbosity);
 		return ;
 	}
 	out = (char)*reg;
@@ -35,5 +35,5 @@ void	vm_instr_aff(
 		print("\t\taff %c\n", out);
 	print("Aff: %c\n", out);
 	mem_i = (mem_i + REG_ADDR_SIZE) % MEM_SIZE;
-	vm_advance_pc(&p->pc, mem_i - p->pc, a->verbosity);
+	vm_advance_pc(&p->pc, mem_i - p->pc, a->mem, a->verbosity);
 }
