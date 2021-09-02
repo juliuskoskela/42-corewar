@@ -36,5 +36,6 @@ t_argument	vm_get_arg_data(
 
 	arg.type = vm_get_arg_type(acb, arg_i);
 	arg.size = vm_get_arg_size(acb, opcode, arg_i);
+	arg.value = 0;
 	return (arg);
 }
