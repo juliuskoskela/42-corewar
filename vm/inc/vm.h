@@ -107,8 +107,8 @@ void	vm_save_input(
 		char **argv);
 
 t_input_args	vm_parse_arguments(
-	int argc,
-	char **argv);
+		int argc,
+		char **argv);
 
 void	vm_create_player(
 		t_arena *arena,
@@ -258,7 +258,12 @@ t_uint8	vm_get_arg_size(
 		t_uint8 arg_nbr,
 		t_uint8 acb);
 
-void	vm_print_bytes(void *memory, size_t len);
+void	vm_print_bytes(
+		void *memory,
+		size_t len);
+
+void	vm_print_process(
+		t_process *p);
 
 static const t_instr g_instr_funcs[] =
 {
