@@ -6,7 +6,7 @@
 // If the first argument is T_IND, it represents the memory addr % IDX_MOD.
 // Loads src in the register dst. src's value affects zf.
 
-void vm_instr_ld(
+void	vm_instr_ld(
 		t_arena *a,
 		t_process *p)
 {
@@ -26,8 +26,9 @@ void vm_instr_ld(
 	//check arguments
 	if (!vm_check_acb(acb, p->current_instruction.opcode))
 		print("acb does not match the arguments");
+
 	// arg 1
-	mem_addr = vm_get_val(a, p, vm_get_arg_data(acb, 2, 1), &mem_i);
+	mem_addr = vm_get_val(a, p, vm_get_arg_data(acb, p->current_instruction.opcode, 0), &mem_i);
 	if (vm_get_arg_type(acb, 0) == IND_CODE)
 		mem_addr = mem_addr % IDX_MOD;
 	src = vm_get_mem_addr(a, mem_addr);
@@ -37,9 +38,11 @@ void vm_instr_ld(
 	mem_i = (mem_i + 1) % MEM_SIZE;
 
 	// store load to register
-	print("mem addr = %d\n", mem_addr);
-	vm_reverse_bytes(dst, src, 2);
+	vm_reverse_bytes(dst, src, REG_SIZE);
 	if ((a->verbosity & VM_VERBOSE_PC) != 0)
+	{
+		vm_print_process(p);
 		print("\tPC: %d => %d\n", (int)p->pc, (int)mem_i);
+	}
 	p->pc = mem_i;
 }
