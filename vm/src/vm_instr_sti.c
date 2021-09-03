@@ -20,6 +20,9 @@ void vm_instr_sti(
 	// acb
 	mem_i = (p->pc + 1) % MEM_SIZE;
 	acb = a->mem[mem_i];
+	//check acb
+	if (!vm_check_acb(acb, 11))
+		print("invalid acb in sti\n");
 
 	// arg 1
 	mem_i = (mem_i + 1) % MEM_SIZE;
@@ -27,7 +30,7 @@ void vm_instr_sti(
 	src = vm_get_reg_addr(p, a->mem[mem_i]);
 	if (!src)
 	{
-		vm_advance_pc(&p->pc, 1);
+		vm_advance_pc(&p->pc, 1, a->mem, a->verbosity);
 		return ;
 	}
 	mem_i = (mem_i + 1) % MEM_SIZE;

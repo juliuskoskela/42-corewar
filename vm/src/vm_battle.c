@@ -41,7 +41,6 @@ void	vm_battle(t_arena arena)
 		vm_execute_cycle(arena.processes, &arena);
 		while (++arena.cycles_since_check < arena.cycle_to_die)
 		{
-			vm_execute_cycle(arena.processes, &arena);
 			if (arena.dump_nbr_cycles && 
 			arena.current_cycle > arena.dump_nbr_cycles)
 			{
@@ -49,6 +48,7 @@ void	vm_battle(t_arena arena)
 				vm_free_processes(&arena.processes);
 				return ;
 			}
+			vm_execute_cycle(arena.processes, &arena);
 			if (arena.pause_nbr_cycles
 				&& arena.current_cycle + 1 % arena.pause_nbr_cycles)
 				vm_pause_and_print_memory(arena);

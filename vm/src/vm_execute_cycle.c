@@ -31,11 +31,11 @@ void	vm_init_instruction_execution(t_process *process, t_arena *arena)
 
 	instruction = vm_get_instruction(arena->mem[process->pc]);
 	if (instruction.mnemonic == 0)
-		vm_advance_pc(&process->pc, 1);
+		vm_advance_pc(&process->pc, 1, arena->mem, 0);
 	else
 	{
 		process->current_instruction = instruction;
-		process->cycles_before_execution = instruction.cycles - 2;
+		process->cycles_before_execution = instruction.cycles;
 	}
 }
 
@@ -47,12 +47,12 @@ void	vm_finish_instruction_execution(t_process *process, t_arena *arena)
 
 void	vm_execute_process(t_process *process, t_arena *arena)
 {
+	if (process->cycles_before_execution == -1)
+		vm_init_instruction_execution(process, arena);
 	if (process->cycles_before_execution > 0)
 		process->cycles_before_execution--;
-	else if (process->cycles_before_execution == 0)
+	if (process->cycles_before_execution == 0)
 		vm_finish_instruction_execution(process, arena);
-	else
-		vm_init_instruction_execution(process, arena);
 }
 
 void	vm_execute_cycle(t_process *process, t_arena *arena)

@@ -22,7 +22,7 @@ t_uint8	vm_get_arg_size(
 	else if (vm_get_arg_type(acb, arg_nbr) == DIR_CODE)
 		return (DIR_VAL_SIZE);
 	else if (vm_get_arg_type(acb, arg_nbr) == IND_CODE)
-		return (IND_CODE);
+		return (IND_ADDR_SIZE);
 	else
 		return (REG_SIZE);
 }

@@ -7,7 +7,7 @@ user_asm="../bin/asm"
 user_corewar="../bin/corewar"
 
 ## Verbosity level for vm: from 0 to 31
-vm_verbosity="0"
+vm_verbosity="31"
 
 ## Path to the player .cor file is taken as the first command line argument
 
@@ -84,7 +84,7 @@ run_vm() {
 	local player_cor=$2
 	local output_file=$3
 
-	echo "$corewar $player_cor -d $cycles_to_run -v $vm_verbosity >$output_file 2>&1"
+	echo "$corewar -d $cycles_to_run -v $vm_verbosity $player_cor >$output_file 2>&1"
 	$corewar $player_cor -d $cycles_to_run -v $vm_verbosity >$output_file 2>&1
 	exit_status=$?
 	if [ $exit_status != 0 ]; then
@@ -96,7 +96,7 @@ echo
 echo "with subject vm..."
 subject_player_cor="$outdir_subject/$player.cor"
 subject_corewar_output_file="$outdir_subject/subject_corewar_output_$player"
-run_vm $subject_corewar $subject_player_cor $subject_corewar_output_file
+run_vm $subject_corewar "-a $subject_player_cor" $subject_corewar_output_file
 
 echo
 echo "with user vm..."

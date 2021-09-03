@@ -27,7 +27,7 @@
 # define VM_PRINT_ARENA_WIDTH	64
 
 typedef t_byte* t_mem_addr;
-typedef t_uint64* t_reg_addr;
+typedef t_byte* t_reg_addr;
 typedef struct s_argument
 {
 	t_int64 value;
@@ -43,7 +43,6 @@ typedef struct s_process
 	t_int32				last_live;
 	t_int32				cycles_before_execution;
 	// Program counter.
-	// t_byte			*pc;
 	t_size				pc;
 
 	// Zero flag, Along with a carry flag, a sign flag and an overflow flag,
@@ -52,7 +51,7 @@ typedef struct s_process
 	t_bool				zf;
 
 	// 32 bit registers 1 - 16, r1 initialized at player ID and the rest at 0
-	t_uint64			registers[16];
+	t_byte				registers[REG_NUMBER][REG_SIZE];
 	struct s_process	*next;
 }	t_process;
 
@@ -99,17 +98,19 @@ typedef struct s_input_args
 
 typedef void (*t_instr)(t_arena *, t_process *);
 
-void vm_error(
+void	vm_error(
 		const char *message);
 
-void vm_save_input(
+void	vm_save_input(
 		t_arena *arena,
 		t_uint32 argc,
 		char **argv);
 
-t_input_args	vm_parse_arguments(int argc, char **argv);
+t_input_args	vm_parse_arguments(
+	int argc,
+	char **argv);
 
-void vm_create_player(
+void	vm_create_player(
 		t_arena *arena,
 		t_int32 *player_number,
 		char *name);
@@ -117,105 +118,105 @@ void vm_create_player(
 t_process	*vm_create_process(
 		t_arena arena,
 		t_process *process_lst,
-		t_uint64 player_id);
+		t_int32 player_id);
 
-void *vm_reverse_bytes(
+void	*vm_reverse_bytes(
 		void *dst,
 		void *src,
 		t_size size);
 
-void vm_check_live(
+void	vm_check_live(
 		t_process **processes,
 		t_arena *arena);
 
-void vm_execute_cycle(
+void	vm_execute_cycle(
 		t_process *processes,
 		t_arena *arena);
 
-void vm_introduce_champs(
+void	vm_introduce_champs(
 		t_arena arena);
 
 void	vm_pause_and_print_memory(
 		t_arena arena);
 
-void vm_test_print_arena(
+void	vm_test_print_arena(
 		t_arena arena);
 
-void vm_test_print_processes(
+void	vm_test_print_processes(
 		t_process *lst);
 
-void vm_battle(
+void	vm_battle(
 		t_arena arena);
 
-void vm_print_arena(
+void	vm_print_arena(
 		t_arena arena,
 		t_process *process_list);
 
-void vm_instr_live(
+void	vm_instr_live(
 		t_arena *a,
 		t_process *p);
 
-void vm_instr_add(
+void	vm_instr_add(
 		t_arena *a,
 		t_process *p);
 
-void vm_instr_sub(
+void	vm_instr_sub(
 		t_arena *a,
 		t_process *p);
 
-void vm_instr_and(
+void	vm_instr_and(
 		t_arena *a,
 		t_process *p);
 
-void vm_instr_or(
+void	vm_instr_or(
 		t_arena *a,
 		t_process *p);
 
-void vm_instr_xor(
+void	vm_instr_xor(
 		t_arena *a,
 		t_process *p);
 
-void vm_instr_ld(
+void	vm_instr_ld(
 		t_arena *a,
 		t_process *p);
 
-void vm_instr_st(
+void	vm_instr_st(
 		t_arena *a,
 		t_process *p);
 
-void vm_instr_zjmp(
+void	vm_instr_zjmp(
 		t_arena *a,
 		t_process *p);
 
-void vm_instr_ldi(
+void	vm_instr_ldi(
 		t_arena *a,
 		t_process *p);
 
-void vm_instr_sti(
+void	vm_instr_sti(
 		t_arena *a,
 		t_process *p);
 
-void vm_instr_fork(
+void	vm_instr_fork(
 		t_arena *a,
 		t_process *p);
 
-void vm_instr_lld(
+void	vm_instr_lld(
 		t_arena *a,
 		t_process *p);
 
-void vm_instr_lldi(
+void	vm_instr_lldi(
 		t_arena *a,
 		t_process *p);
 
-void vm_instr_lfork(
+void	vm_instr_lfork(
 		t_arena *a,
 		t_process *p);
 
-void vm_instr_aff(
+void	vm_instr_aff(
 		t_arena *a,
 		t_process *p);
 
-void vm_instr_null(
+void	vm_instr_null(
 		t_arena *a,
 		t_process *p);
 
@@ -227,11 +228,11 @@ t_uint8	vm_get_arg_type(
 		t_uint8 acb,
 		t_size arg_i);
 
-t_reg_addr vm_get_reg_addr(
+t_reg_addr	vm_get_reg_addr(
 		t_process *p,
 		t_size i);
 
-t_mem_addr vm_get_mem_addr(
+t_mem_addr	vm_get_mem_addr(
 		t_arena *a,
 		t_size i);
 
@@ -240,7 +241,7 @@ t_argument	vm_get_arg_data(
 		t_uint8 opcode,
 		t_uint8 arg_i);
 
-t_int64 vm_get_val(
+t_int64	vm_get_val(
 	t_arena *a,
 		t_process *p,
 		t_argument arg,
@@ -248,12 +249,16 @@ t_int64 vm_get_val(
 
 void	vm_advance_pc(
 		t_size *pc,
-		int size);
+		int size,
+		t_byte *mem,
+		int verbosity);
 
 t_uint8	vm_get_arg_size(
 		t_uint8 opcode,
 		t_uint8 arg_nbr,
 		t_uint8 acb);
+
+void	vm_print_bytes(void *memory, size_t len);
 
 static const t_instr g_instr_funcs[] =
 {
