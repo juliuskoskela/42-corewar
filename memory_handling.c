@@ -432,7 +432,7 @@ void	vm_read_instr(t_buff *b, t_process *p)
 	// Read opcode.
 	vm_arg_read(vm_arg_new(&instr->opcode, META, FALSE), b);
 	mem_deref((t_byte *)&opcode, &instr->opcode.bytes);
-	print("%sreading process: %s%llu\n", GRN, NRM, p->id);
+	print("%sreading: %s%llu\n", GRN, NRM, p->id);
 
 	// Validate opcode
 	if (opcode > OP_COUNT)
@@ -485,7 +485,6 @@ void	vm_read_instr(t_buff *b, t_process *p)
 	}
 	p->current_instruction = instr;
 	print("%sread complete: %s", GRN, NRM);
-	// print("%s[opcode] %s[acb] %s[arg1] %s[arg2] %s[arg3]%s\n\n", BLU, YEL, CYN, MAG, RED, NRM);
 	vm_print_instr(p->current_instruction);
 	p->cycles_before_execution = op.cycles;
 	print("\n%scycles to execution: %s%lu\n", GRN, NRM, p->cycles_before_execution);
@@ -564,6 +563,8 @@ void	test_ld()
 	// Print secret number.
 	print("secret number in register 3 is:\n\n");
 	mem_print(&p->registers[2], GRN);
+	buff_free(&buffer);
+	free(p);
 }
 
 int main(int argc, char **argv)
