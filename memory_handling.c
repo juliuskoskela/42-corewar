@@ -276,11 +276,11 @@ void	vm_instr_null(t_arena *a, t_process *p)
 char	*vm_type_name(t_byte type)
 {
 	if (type == REG_CODE)
-		return ("reg");
+		return ("t_reg");
 	else if (type == IND_CODE)
-		return ("ind");
+		return ("t_ind");
 	else if (type == DIR_CODE)
-		return ("dir");
+		return ("t_dir");
 	else
 		return ("NULL");
 }
@@ -318,14 +318,13 @@ static void	vm_print_execution(t_arena *arena, t_process *p)
 
 	print("[%#08llu][%#08llu][%#08llu] ", arena->current_cycle, p->id, p->pc);
 	print("%sexec%s ", GRN, NRM);
-	print("%s ( ", p->current_instruction->op->mnemonic);
+	print("%s ", p->current_instruction->op->mnemonic);
 	i = 0;
 	while (i < p->current_instruction->op->param_count)
 	{
 		vm_instr_print_arg(&p->current_instruction->args[i]);
 		i++;
 	}
-	print(")\n");
 }
 
 void	vm_instr_ld(t_arena *arena, t_process *p)
@@ -347,6 +346,9 @@ void	vm_instr_ld(t_arena *arena, t_process *p)
 		buff_read((t_byte *)&p->registers[reg_addr - 1], &arena->buffer, IND_SIZE);
 	}
 	vm_print_execution(arena, p);
+	print(" => ");
+	reg_print(&p->registers[reg_addr - 1], NRM);
+	print("\n");
 	return ;
 }
 
@@ -450,7 +452,7 @@ t_bool	vm_check_acb(t_op *op, t_acb acb)
 
 static void	vm_read_instr_print(t_arena *arena, t_process *p, t_op *op)
 {
-	print("\n[%#08llu][%#08llu][%#08llu] %sread%s %s %s\n", arena->current_cycle, p->id, p->pc, GRN, NRM, op->mnemonic, op->description);
+	print("\n[%#08llu][%#08llu][%#08llu] %sread%s %s \"%s\"\n", arena->current_cycle, p->id, p->pc, GRN, NRM, op->mnemonic, op->description);
 }
 
 void	vm_read_instr(t_arena *arena, t_process *p)
@@ -474,7 +476,7 @@ void	vm_read_instr(t_arena *arena, t_process *p)
 	// Validate opcode
 	if (opcode < 1 || opcode > OP_COUNT)
 	{
-		print("[%#08llu][%#08llu][%#08llu] %sfail%s INVALID_OPCODE\n", arena->current_cycle, p->id, p->pc, RED, NRM);
+		print("[%#08llu][%#08llu][%#08llu] %sread%s INVALID_OPCODE\n", arena->current_cycle, p->id, p->pc, RED, NRM);
 		p->pc++;
 		return ;
 	}
@@ -494,7 +496,7 @@ void	vm_read_instr(t_arena *arena, t_process *p)
 		// Check that flags are valid.
 		if (vm_check_acb(instr->op, acb) == FALSE)
 		{
-			print("[%#08llu][%#08llu][%#08llu] %sfail%s INVALID_ACB\n", arena->current_cycle, p->id, p->pc, RED, NRM);
+			print("[%#08llu][%#08llu][%#08llu] %sread%s INVALID_ACB\n", arena->current_cycle, p->id, p->pc, RED, NRM);
 			p->pc++;
 			return ;
 		}
