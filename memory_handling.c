@@ -74,6 +74,7 @@ typedef struct s_arena
 	t_buff		buffer;
 	t_size		offset;
 	t_process	*processes;
+	t_size		current_cycle;
 }	t_arena;
 
 typedef void (*t_exec)(t_arena *, t_process *);
@@ -148,15 +149,16 @@ void	reg_print(t_reg *src, char *colour)
 {
 	t_size	i;
 
-	if (!src->len)
+	if (!src || !src->len)
 		return ;
 	i = 0;
 	print("%s");
-	while (i < src->len)
+	while (i < src->len - 1)
 	{
 		print("0x%02x ", src->mem[i]);
 		i++;
 	}
+	print("0x%02x", src->mem[i]);
 	print("%s", NRM);
 }
 
@@ -247,7 +249,7 @@ void	buff_print_overlay(t_buff *src, t_size start, t_size len, char *colour)
 	t_size	i;
 	t_size 	rem;
 
-	rem = (start + len) / src->len;
+	rem = (start + len) % src->len;
 	i = 0;
 	while (i < src->len)
 	{
@@ -256,11 +258,11 @@ void	buff_print_overlay(t_buff *src, t_size start, t_size len, char *colour)
 		if (i == start || (rem > 0 && i == 0))
 			print("%s", colour);
 		print("%02x ", src->mem[i]);
-		if (i == start + len || (rem > 0 && i == rem))
+		if (i == start + len || (rem > 0 && i == rem - 1))
 			print("%s", NRM);
 		i++;
 	}
-	print("%s\n", NRM);
+	print("%s\n\n", NRM);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -286,7 +288,6 @@ void	vm_instr_ld(t_arena *arena, t_process *p)
 {
 	t_uint8		reg_addr;
 	t_uint16	mem_addr;
-	t_reg		ind_read;
 
 	reg_deref((t_byte *)&reg_addr, &p->current_instruction->args[1].data);
 	if (reg_addr > 16)
@@ -299,13 +300,11 @@ void	vm_instr_ld(t_arena *arena, t_process *p)
 		if (mem_addr % IDX_MOD != 0)
 			p->zf = TRUE;
 		buff_set(&arena->buffer, p->pc + mem_addr % IDX_MOD);
-		reg_set(&ind_read, IND_SIZE);
-		buff_read((t_byte *)&ind_read.mem, &arena->buffer, ind_read.len);
-		reg_copy(&p->registers[reg_addr - 1], &ind_read);
+		buff_read((t_byte *)&p->registers[reg_addr - 1], &arena->buffer, IND_SIZE);
 	}
-	print("%s[%#08x] %sLOAD (%s src, %s dst): ", GRN, p->id, NRM, vm_type_name(p->current_instruction->args[0].type), vm_type_name(p->current_instruction->args[1].type));
+	print("[%#08llu]%s[%#08x]%s[LOAD][%s src, %s dst][", arena->current_cycle, GRN, p->id, NRM, vm_type_name(p->current_instruction->args[0].type), vm_type_name(p->current_instruction->args[1].type));
 	reg_print(&p->registers[reg_addr - 1], GRN);
-	print("\n");
+	print("]\n");
 	return ;
 }
 
@@ -349,7 +348,7 @@ t_arg	*vm_arg_new(t_arg *dst, t_uint8 type, t_uint8 promoted)
 		if (promoted == TRUE)
 		{
 			dst->promoted = TRUE;
-			dst->data.len = DIR_SIZE * 2;
+			dst->data.len = REG_SIZE;
 		}
 		else
 			dst->data.len = DIR_SIZE;
@@ -369,13 +368,13 @@ t_arg	*vm_arg_read(t_arg *dst, t_buff *src)
 	return (dst);
 }
 
-t_acb	vm_decomp_acb(t_byte deref)
+t_acb	vm_decomp_acb(t_byte acb)
 {
 	t_acb	out;
 
-	out.arg[0] = (deref & 0b00000011);
-	out.arg[1] = (deref & 0b00001100) >> 2;
-	out.arg[2] = (deref & 0b00110000) >> 4;
+	out.arg[0] = (acb & 0b11000000) >> 6;
+	out.arg[1] = (acb & 0b00110000) >> 4;
+	out.arg[2] = (acb & 0b00001100) >> 2;
 	return (out);
 }
 
@@ -406,6 +405,34 @@ void	vm_print_instr(t_instr *instr)
 	reg_print(&instr->args[2].data, RED);
 }
 
+static const t_byte g_arg_codes[] =
+{
+	0,
+	1,
+	(1U << 1U),
+	(1U << 2U)
+};
+
+t_bool	vm_check_acb(t_op op, t_acb acb)
+{
+	t_byte	arg;
+	t_uint8	params[3];
+	t_size	i;
+
+	params[0] = op.param_types.param1;
+	params[1] = op.param_types.param2;
+	params[2] = op.param_types.param3;
+	i = 0;
+	while (i < op.param_count)
+	{
+		arg = g_arg_codes[acb.arg[i]];
+		if ((arg & params[i]) == 0)
+			return (FALSE);
+		i++;
+	}
+	return (TRUE);
+}
+
 void	vm_read_instr(t_buff *b, t_process *p)
 {
 	t_acb			acb;
@@ -434,7 +461,7 @@ void	vm_read_instr(t_buff *b, t_process *p)
 	}
 
 	// Get op from global tab.
-	op = g_op_tab[opcode];
+	op = g_op_tab[opcode - 1];
 
 	// Check if corresponding op has acb.
 	if (op.has_argument_coding_byte == TRUE)
@@ -446,9 +473,7 @@ void	vm_read_instr(t_buff *b, t_process *p)
 		acb = vm_decomp_acb(*instr->acb.data.mem);
 
 		// Check that flags are valid.
-		if ((acb.arg[0] & op.param_types.param1) == 0
-			|| (acb.arg[1] & op.param_types.param2) == 0
-			|| (acb.arg[2] & op.param_types.param3) == 0)
+		if (vm_check_acb(op, acb) == FALSE)
 		{
 			print("%s[%#08x] %sERR_INVALID_ACB \n", RED, p->id, NRM);
 			p->pc++;
@@ -464,7 +489,7 @@ void	vm_read_instr(t_buff *b, t_process *p)
 	}
 
 	// Check direct value promotion.
-	if (acb.arg[0] == T_REG || acb.arg[0] == T_REG || acb.arg[0] == T_REG)
+	if (acb.arg[0] == REG_CODE || acb.arg[1] == REG_CODE || acb.arg[2] == REG_CODE)
 		promoted = TRUE;
 
 	// Read arguments.
@@ -563,22 +588,22 @@ void	test_ld(const char *corfile)
 	vm_read_player(&arena, corfile);
 
 	secret_val = 42;
-	mcpy(&arena.buffer.mem[(process_pc + 70) % MEM_SIZE], &secret_val, 1);
 
 	print("\n%sSTART OF BATTLE LOG%s\n\n", BLU, NRM);
-	print("%s[process_id]%s\n\n", GRN, NRM);
+	print("%s[current_cycle][process_id][action][result]%s\n\n", GRN, NRM);
 
 	// Create process.
 	process_pc = MEM_SIZE - 3;
+	mcpy(&arena.buffer.mem[(process_pc + 70) % MEM_SIZE], &secret_val, 1);
 	buff_set(&arena.buffer, process_pc);
 	buff_write(&arena.buffer, (t_byte *)&arena.players[0].program, arena.players[0].header.prog_size);
 	p = vm_new_process(1, process_pc);
 
-	// Print buffer.
-	buff_print_overlay(&arena.buffer, process_pc, 5, GRN);
-
 	// Read instruction from memory.
 	vm_read_instr(&arena.buffer, p);
+
+	// Print buffer.
+	buff_print_overlay(&arena.buffer, process_pc, vm_instr_size(p->current_instruction), GRN);
 
 	// Execute current instruction.
 	vm_execute_instr(&arena, p);

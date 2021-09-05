@@ -17,6 +17,7 @@
 # define IND_ADDR_SIZE			2
 # define DIR_VAL_SIZE			2
 
+# define EMPTY_CODE				0
 # define REG_CODE				1
 # define DIR_CODE				2
 # define IND_CODE				3
