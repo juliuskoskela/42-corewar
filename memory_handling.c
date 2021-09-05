@@ -33,6 +33,7 @@ typedef struct s_arg
 
 typedef struct s_instr
 {
+	t_op		*op;
 	t_arg		opcode;
 	t_arg		acb;
 	t_arg		args[3];
@@ -275,11 +276,11 @@ void	vm_instr_null(t_arena *a, t_process *p)
 char	*vm_type_name(t_byte type)
 {
 	if (type == REG_CODE)
-		return ("T_REG");
+		return ("reg");
 	else if (type == IND_CODE)
-		return ("T_IND");
+		return ("ind");
 	else if (type == DIR_CODE)
-		return ("T_DIR");
+		return ("dir");
 	else
 		return ("NULL");
 }
@@ -303,16 +304,28 @@ void	vm_print_instr(t_instr *instr)
 	reg_print(&instr->args[2].data, NRM);
 }
 
-static void	vm_instr_ld_print(t_arena *arena, t_process *p, t_size reg_addr)
+// [cycle][pc][process] exec MNONIC TYPE ARG_BYTES, TYPE ARG_BYTES, TYPE ARG_BYTES : result
+static void vm_instr_print_arg(t_arg *arg)
 {
+	print("%s%s%s ", BLU, vm_type_name(arg->type), NRM);
+	reg_print(&arg->data, NRM);
+	print(" ");
+}
+
+static void	vm_print_execution(t_arena *arena, t_process *p)
+{
+	t_size	i;
+
 	print("[%#08llu][%#08llu][%#08llu] ", arena->current_cycle, p->id, p->pc);
-	print("%sexec%s LOAD %s%s%s ", GRN, NRM, BLU, vm_type_name(p->current_instruction->args[0].type), NRM);
-	reg_print(&p->current_instruction->args[0].data, NRM);
-	print(", %s%s%s ", BLU, vm_type_name(p->current_instruction->args[1].type), NRM);
-	reg_print(&p->current_instruction->args[1].data, NRM);
-	print(" : ");
-	reg_print(&p->registers[reg_addr - 1], NRM);
-	print("\n");
+	print("%sexec%s ", GRN, NRM);
+	print("%s ( ", p->current_instruction->op->mnemonic);
+	i = 0;
+	while (i < p->current_instruction->op->param_count)
+	{
+		vm_instr_print_arg(&p->current_instruction->args[i]);
+		i++;
+	}
+	print(")\n");
 }
 
 void	vm_instr_ld(t_arena *arena, t_process *p)
@@ -333,7 +346,7 @@ void	vm_instr_ld(t_arena *arena, t_process *p)
 		buff_set(&arena->buffer, p->pc + mem_addr % IDX_MOD);
 		buff_read((t_byte *)&p->registers[reg_addr - 1], &arena->buffer, IND_SIZE);
 	}
-	vm_instr_ld_print(arena, p, reg_addr);
+	vm_print_execution(arena, p);
 	return ;
 }
 
@@ -415,17 +428,17 @@ t_byte	vm_compose_acb(t_acb *acb)
 	return (out);
 }
 
-t_bool	vm_check_acb(t_op op, t_acb acb)
+t_bool	vm_check_acb(t_op *op, t_acb acb)
 {
 	t_byte	arg;
 	t_uint8	params[3];
 	t_size	i;
 
-	params[0] = op.param_types.param1;
-	params[1] = op.param_types.param2;
-	params[2] = op.param_types.param3;
+	params[0] = op->param_types.param1;
+	params[1] = op->param_types.param2;
+	params[2] = op->param_types.param3;
 	i = 0;
-	while (i < op.param_count)
+	while (i < op->param_count)
 	{
 		arg = g_arg_codes[acb.arg[i]];
 		if ((arg & params[i]) == 0)
@@ -435,10 +448,9 @@ t_bool	vm_check_acb(t_op op, t_acb acb)
 	return (TRUE);
 }
 
-static void	vm_read_instr_print(t_arena *arena, t_process *p, t_op op)
+static void	vm_read_instr_print(t_arena *arena, t_process *p, t_op *op)
 {
-	print("\n[%#08llu][%#08llu][%#08llu] %sread%s %s", arena->current_cycle, p->id, p->pc, GRN, NRM, op.description);
-	print(" : %lu cycles\n", p->cycles_before_execution);
+	print("\n[%#08llu][%#08llu][%#08llu] %sread%s %s %s\n", arena->current_cycle, p->id, p->pc, GRN, NRM, op->mnemonic, op->description);
 }
 
 void	vm_read_instr(t_arena *arena, t_process *p)
@@ -446,7 +458,6 @@ void	vm_read_instr(t_arena *arena, t_process *p)
 	t_acb			acb;
 	t_byte			opcode;
 	t_instr			*instr;
-	t_op			op;
 	t_bool			promoted;
 	t_size			i;
 
@@ -469,10 +480,10 @@ void	vm_read_instr(t_arena *arena, t_process *p)
 	}
 
 	// Get op from global tab.
-	op = g_op_tab[opcode - 1];
+	instr->op = (t_op *)&g_op_tab[opcode - 1];
 
 	// Check if corresponding op has acb.
-	if (op.has_argument_coding_byte == TRUE)
+	if (instr->op->has_argument_coding_byte == TRUE)
 	{
 		// Read acb.
 		vm_arg_read(vm_arg_new(&instr->acb, META, FALSE), &arena->buffer);
@@ -481,7 +492,7 @@ void	vm_read_instr(t_arena *arena, t_process *p)
 		acb = vm_decomp_acb(*instr->acb.data.mem);
 
 		// Check that flags are valid.
-		if (vm_check_acb(op, acb) == FALSE)
+		if (vm_check_acb(instr->op, acb) == FALSE)
 		{
 			print("[%#08llu][%#08llu][%#08llu] %sfail%s INVALID_ACB\n", arena->current_cycle, p->id, p->pc, RED, NRM);
 			p->pc++;
@@ -491,9 +502,9 @@ void	vm_read_instr(t_arena *arena, t_process *p)
 	// If instruction has no acb, acb is composed from the op tab (only 1 possible type per param).
 	else
 	{
-		acb.arg[0] = op.param_types.param1;
-		acb.arg[1] = op.param_types.param2;
-		acb.arg[2] = op.param_types.param3;
+		acb.arg[0] = instr->op->param_types.param1;
+		acb.arg[1] = instr->op->param_types.param2;
+		acb.arg[2] = instr->op->param_types.param3;
 	}
 
 	// Check direct value promotion.
@@ -502,14 +513,14 @@ void	vm_read_instr(t_arena *arena, t_process *p)
 
 	// Read arguments.
 	i = 0;
-	while (i < op.param_count)
+	while (i < instr->op->param_count)
 	{
 		vm_arg_read(vm_arg_new(&instr->args[i], acb.arg[i], promoted), &arena->buffer);
 		i++;
 	}
 	p->current_instruction = instr;
-	p->cycles_before_execution = op.cycles;
-	vm_read_instr_print(arena, p, op);
+	p->cycles_before_execution = instr->op->cycles;
+	vm_read_instr_print(arena, p, instr->op);
 }
 
 void	vm_execute_instr(t_arena *arena, t_process *p)
@@ -605,7 +616,7 @@ void	test_ld(const char *corfile)
 
 	p = vm_new_process(1, process_pc);
 
-	print("[current_cycle][process_id][process_pc] %saction%s : result\n", GRN, NRM);
+	print("[current_cycle][process_id][process_pc] %saction%s : annotation\n", GRN, NRM);
 
 	// Read instruction from memory.
 	vm_read_instr(&arena, p);
