@@ -152,14 +152,14 @@ void	reg_print(t_reg *src, char *colour)
 	if (!src || !src->len)
 		return ;
 	i = 0;
-	print("%s");
+	print("%s[");
 	while (i < src->len - 1)
 	{
 		print("0x%02x ", src->mem[i]);
 		i++;
 	}
 	print("0x%02x", src->mem[i]);
-	print("%s", NRM);
+	print("]%s", NRM);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -281,7 +281,38 @@ char	*vm_type_name(t_byte type)
 	else if (type == DIR_CODE)
 		return ("T_DIR");
 	else
-		return ("EMPTY");
+		return ("NULL");
+}
+
+t_size	vm_instr_size(t_instr *src)
+{
+	return (
+		src->opcode.data.len
+		+ src->acb.data.len
+		+ src->args[0].data.len
+		+ src->args[1].data.len
+		+ src->args[2].data.len);
+}
+
+void	vm_print_instr(t_instr *instr)
+{
+	reg_print(&instr->opcode.data, NRM);
+	reg_print(&instr->acb.data, NRM);
+	reg_print(&instr->args[0].data, NRM);
+	reg_print(&instr->args[1].data, NRM);
+	reg_print(&instr->args[2].data, NRM);
+}
+
+static void	vm_instr_ld_print(t_arena *arena, t_process *p, t_size reg_addr)
+{
+	print("[%#08llu][%#08llu][%#08llu] ", arena->current_cycle, p->id, p->pc);
+	print("%sexec%s LOAD %s%s%s ", GRN, NRM, BLU, vm_type_name(p->current_instruction->args[0].type), NRM);
+	reg_print(&p->current_instruction->args[0].data, NRM);
+	print(", %s%s%s ", BLU, vm_type_name(p->current_instruction->args[1].type), NRM);
+	reg_print(&p->current_instruction->args[1].data, NRM);
+	print(" : ");
+	reg_print(&p->registers[reg_addr - 1], NRM);
+	print("\n");
 }
 
 void	vm_instr_ld(t_arena *arena, t_process *p)
@@ -302,9 +333,7 @@ void	vm_instr_ld(t_arena *arena, t_process *p)
 		buff_set(&arena->buffer, p->pc + mem_addr % IDX_MOD);
 		buff_read((t_byte *)&p->registers[reg_addr - 1], &arena->buffer, IND_SIZE);
 	}
-	print("[%#08llu]%s[%#08x]%s[LOAD][%s src, %s dst][", arena->current_cycle, GRN, p->id, NRM, vm_type_name(p->current_instruction->args[0].type), vm_type_name(p->current_instruction->args[1].type));
-	reg_print(&p->registers[reg_addr - 1], GRN);
-	print("]\n");
+	vm_instr_ld_print(arena, p, reg_addr);
 	return ;
 }
 
@@ -386,33 +415,6 @@ t_byte	vm_compose_acb(t_acb *acb)
 	return (out);
 }
 
-t_size	vm_instr_size(t_instr *src)
-{
-	return (
-		src->opcode.data.len
-		+ src->acb.data.len
-		+ src->args[0].data.len
-		+ src->args[1].data.len
-		+ src->args[2].data.len);
-}
-
-void	vm_print_instr(t_instr *instr)
-{
-	reg_print(&instr->opcode.data, BLU);
-	reg_print(&instr->acb.data, YEL);
-	reg_print(&instr->args[0].data, CYN);
-	reg_print(&instr->args[1].data, MAG);
-	reg_print(&instr->args[2].data, RED);
-}
-
-static const t_byte g_arg_codes[] =
-{
-	0,
-	1,
-	(1U << 1U),
-	(1U << 2U)
-};
-
 t_bool	vm_check_acb(t_op op, t_acb acb)
 {
 	t_byte	arg;
@@ -433,7 +435,14 @@ t_bool	vm_check_acb(t_op op, t_acb acb)
 	return (TRUE);
 }
 
-void	vm_read_instr(t_buff *b, t_process *p)
+static void	vm_read_instr_print(t_arena *arena, t_process *p)
+{
+	print("\n[%#08llu][%#08llu][%#08llu] %sread%s ", arena->current_cycle, p->id, p->pc, GRN, NRM);
+	vm_print_instr(p->current_instruction);
+	print(" : %lu cycles\n", p->cycles_before_execution);
+}
+
+void	vm_read_instr(t_arena *arena, t_process *p)
 {
 	t_acb			acb;
 	t_byte			opcode;
@@ -446,16 +455,16 @@ void	vm_read_instr(t_buff *b, t_process *p)
 	instr = minit(sizeof(t_instr));
 
 	// Set buffet to the position of the program counter.
-	buff_set(b, p->pc);
+	buff_set(&arena->buffer, p->pc);
 
 	// Read opcode.
-	vm_arg_read(vm_arg_new(&instr->opcode, META, FALSE), b);
+	vm_arg_read(vm_arg_new(&instr->opcode, META, FALSE), &arena->buffer);
 	reg_deref((t_byte *)&opcode, &instr->opcode.data);
 
 	// Validate opcode
-	if (opcode > OP_COUNT)
+	if (opcode < 1 || opcode > OP_COUNT)
 	{
-		print("%s[%#08x] %sERR_INVALID_OPCODE \n", RED, p->id, NRM);
+		print("[%#08llu][%#08llu][%#08llu] %sfail%s INVALID_OPCODE\n", arena->current_cycle, p->id, p->pc, RED, NRM);
 		p->pc++;
 		return ;
 	}
@@ -467,7 +476,7 @@ void	vm_read_instr(t_buff *b, t_process *p)
 	if (op.has_argument_coding_byte == TRUE)
 	{
 		// Read acb.
-		vm_arg_read(vm_arg_new(&instr->acb, META, FALSE), b);
+		vm_arg_read(vm_arg_new(&instr->acb, META, FALSE), &arena->buffer);
 
 		// Decompose acb
 		acb = vm_decomp_acb(*instr->acb.data.mem);
@@ -475,7 +484,7 @@ void	vm_read_instr(t_buff *b, t_process *p)
 		// Check that flags are valid.
 		if (vm_check_acb(op, acb) == FALSE)
 		{
-			print("%s[%#08x] %sERR_INVALID_ACB \n", RED, p->id, NRM);
+			print("[%#08llu][%#08llu][%#08llu] %sfail%s INVALID_ACB\n", arena->current_cycle, p->id, p->pc, RED, NRM);
 			p->pc++;
 			return ;
 		}
@@ -496,14 +505,12 @@ void	vm_read_instr(t_buff *b, t_process *p)
 	i = 0;
 	while (i < op.param_count)
 	{
-		vm_arg_read(vm_arg_new(&instr->args[i], acb.arg[i], promoted), b);
+		vm_arg_read(vm_arg_new(&instr->args[i], acb.arg[i], promoted), &arena->buffer);
 		i++;
 	}
 	p->current_instruction = instr;
-	print("%s[%#08x] %sCOMP_READ_INSTR: ", GRN, p->id, NRM);
-	vm_print_instr(p->current_instruction);
 	p->cycles_before_execution = op.cycles;
-	print("\n%s[%#08x] %sCYCLES_TO_EXEC: %lu\n", GRN, p->id, NRM, p->cycles_before_execution);
+	vm_read_instr_print(arena, p);
 }
 
 void	vm_execute_instr(t_arena *arena, t_process *p)
@@ -582,7 +589,8 @@ void	test_ld(const char *corfile)
 	t_arena			arena;
 	t_byte			secret_val;
 	t_size			process_pc;
-	t_process	*p;
+	t_byte			fake_op = 2;
+	t_process		*p;
 
 	vm_init_arena(&arena);
 	vm_read_player(&arena, corfile);
@@ -590,7 +598,7 @@ void	test_ld(const char *corfile)
 	secret_val = 42;
 
 	print("\n%sSTART OF BATTLE LOG%s\n\n", BLU, NRM);
-	print("%s[current_cycle][process_id][action][result]%s\n\n", GRN, NRM);
+	print("[current_cycle][process_id][process_pc] %saction%s\n", GRN, NRM);
 
 	// Create process.
 	process_pc = MEM_SIZE - 3;
@@ -600,14 +608,20 @@ void	test_ld(const char *corfile)
 	p = vm_new_process(1, process_pc);
 
 	// Read instruction from memory.
-	vm_read_instr(&arena.buffer, p);
+	vm_read_instr(&arena, p);
 
 	// Print buffer.
-	buff_print_overlay(&arena.buffer, process_pc, vm_instr_size(p->current_instruction), GRN);
+	// buff_print_overlay(&arena.buffer, process_pc, vm_instr_size(p->current_instruction), GRN);
 
 	// Execute current instruction.
 	vm_execute_instr(&arena, p);
 
+	vm_read_instr(&arena, p);
+
+	mcpy(&arena.buffer.mem[3], &fake_op, 1);
+
+	vm_read_instr(&arena, p);
+	// buff_print_overlay(&arena.buffer, 0, 0, NRM);
 	buff_free(&arena.buffer);
 	free(p);
 }
@@ -625,67 +639,3 @@ int main(int argc, char **argv)
 	}
 	test_ld(argv[2]);
 }
-
-// void	test_ld()
-// {
-// 	// Set example values.
-// 	t_byte			opcode = 2;
-// 	t_byte			acb = vm_compose_acb(&(t_acb){T_IND, T_REG, EMPTY});
-// 	t_size			pc = MEM_SIZE - 3;
-// 	t_uint16		ind_addr = 70;
-// 	t_uint16		secret_val = 42;
-// 	t_uint8			reg_addr = 3;
-
-// 	// Create the example incstruction (bit convoluted but just setup for example).
-
-// 	t_reg	instr_mem;
-// 	t_reg	ind_addr_ref;
-// 	t_reg	reg_addr_ref;
-
-// 	reg_set(&instr_mem, 5);
-// 	mcpy(&instr_mem.mem[0], &opcode, 1);
-// 	mcpy(&instr_mem.mem[1], &acb, 1);
-// 	reg_set(&ind_addr_ref, 2);
-// 	reg_ref(&ind_addr_ref, (t_byte *)&ind_addr);
-// 	mcpy(&instr_mem.mem[2], ind_addr_ref.mem, 2);
-// 	reg_set(&ind_addr_ref, 1);
-// 	reg_ref(&ind_addr_ref, (t_byte *)&reg_addr);
-// 	mcpy(&instr_mem.mem[4], &reg_addr, 1);
-
-// 	// Create buffer and write instruction to buffer at pc.
-
-// 	t_buff	buffer;
-
-// 	buff_new(&buffer, MEM_SIZE);
-// 	buff_set(&buffer, pc);
-// 	buff_write(&buffer, &instr_mem);
-
-// 	// Hide secret val.
-
-// 	mcpy(&buffer.mem[(pc + ind_addr) % MEM_SIZE], &secret_val, 2);
-
-// 	// Print buffer.
-
-// 	buff_print_overlay(&buffer, pc, 5, GRN);
-
-// 	// Create process.
-
-// 	t_process	*p;
-
-// 	print("\n%sSTART OF BATTLE LOG%s\n\n", BLU, NRM);
-// 	print("%s[process_id]%s\n\n", GRN, NRM);
-// 	p = vm_new_process(1, pc);
-// 	buff_set(&buffer, 0);
-
-// 	// Read instruction from memory.
-
-// 	vm_read_instr(&buffer, p);
-
-// 	// Execute current instruction.
-
-// 	vm_execute_instr(&buffer, p);
-
-// 	buff_free(&buffer);
-
-// 	free(p);
-// }
