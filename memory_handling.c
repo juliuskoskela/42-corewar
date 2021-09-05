@@ -597,32 +597,30 @@ void	test_ld(const char *corfile)
 
 	secret_val = 42;
 
-	print("\n%sSTART OF BATTLE LOG%s\n\n", BLU, NRM);
-	print("[current_cycle][process_id][process_pc] %saction%s\n", GRN, NRM);
-
 	// Create process.
 	process_pc = MEM_SIZE - 3;
 	mcpy(&arena.buffer.mem[(process_pc + 70) % MEM_SIZE], &secret_val, 1);
 	buff_set(&arena.buffer, process_pc);
 	buff_write(&arena.buffer, (t_byte *)&arena.players[0].program, arena.players[0].header.prog_size);
+	buff_print_overlay(&arena.buffer, 0, 0, NRM);
+
 	p = vm_new_process(1, process_pc);
 
+	print("[current_cycle][process_id][process_pc] %saction%s\n", GRN, NRM);
 	// Read instruction from memory.
 	vm_read_instr(&arena, p);
-
-	// Print buffer.
-	// buff_print_overlay(&arena.buffer, process_pc, vm_instr_size(p->current_instruction), GRN);
 
 	// Execute current instruction.
 	vm_execute_instr(&arena, p);
 
+	// Read instruction with incorrect opcode.
 	vm_read_instr(&arena, p);
 
+	// Write fake opcode to buffer.
 	mcpy(&arena.buffer.mem[3], &fake_op, 1);
 
+	// Read instruction from correctb opcode, but incorrect acb.
 	vm_read_instr(&arena, p);
-	// buff_print_overlay(&arena.buffer, 0, 0, NRM);
-	buff_free(&arena.buffer);
 	free(p);
 }
 
