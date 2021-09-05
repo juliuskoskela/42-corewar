@@ -290,7 +290,6 @@ void	vm_instr_ld(t_buff *b, t_process *p)
 
 	mem_deref((t_byte *)&opcode, &p->current_instruction->opcode.bytes);
 	mem_deref((t_byte *)&reg_addr, &p->current_instruction->args[1].bytes);
-	print("%sexecuting: %s LOAD %s => %s\n", GRN, NRM, vm_type_name(p->current_instruction->args[0].type), vm_type_name(p->current_instruction->args[1].type));
 	if (reg_addr > 16)
 		return ;
 	if (p->current_instruction->args[0].type == T_DIR)
@@ -313,7 +312,9 @@ void	vm_instr_ld(t_buff *b, t_process *p)
 		mem_copy(&p->registers[reg_addr - 1], &ind_read);
 		// mem_print(&p->registers[reg_addr - 1], GRN);
 	}
-	print("\n\ninstruction LD executed successfully!\n\n");
+	print("%sprocess %lu: %sLOAD %s, %s => ", GRN, p->id, NRM, vm_type_name(p->current_instruction->args[0].type), vm_type_name(p->current_instruction->args[1].type));
+	mem_print(&p->registers[reg_addr - 1], GRN);
+	print("\n");
 	return ;
 }
 
@@ -432,12 +433,11 @@ void	vm_read_instr(t_buff *b, t_process *p)
 	// Read opcode.
 	vm_arg_read(vm_arg_new(&instr->opcode, META, FALSE), b);
 	mem_deref((t_byte *)&opcode, &instr->opcode.bytes);
-	print("%sreading: %s%llu\n", GRN, NRM, p->id);
 
 	// Validate opcode
 	if (opcode > OP_COUNT)
 	{
-		print("Invalid opcode!\n");
+		print("%sprocess %llu: %sERR_INVALID_OPCODE \n", RED, p->id, NRM);
 		p->pc++;
 		return ;
 	}
@@ -459,7 +459,7 @@ void	vm_read_instr(t_buff *b, t_process *p)
 			|| acb.arg[1] & op.param_types.param2 == 0
 			|| acb.arg[2] & op.param_types.param3 == 0)
 		{
-			print("Invalid acb!\n");
+			print("%sprocess %llu: %sERR_INVALID_ACB \n", RED, p->id, NRM);
 			p->pc++;
 			return ;
 		}
@@ -484,10 +484,10 @@ void	vm_read_instr(t_buff *b, t_process *p)
 		i++;
 	}
 	p->current_instruction = instr;
-	print("%sread complete: %s", GRN, NRM);
+	print("%sprocess %llu: %sCOMP_READ_INSTR => ", GRN, p->id, NRM);
 	vm_print_instr(p->current_instruction);
 	p->cycles_before_execution = op.cycles;
-	print("\n%scycles to execution: %s%lu\n", GRN, NRM, p->cycles_before_execution);
+	print("\n%sprocess %llu: %sCYCLES_TO_EXEC => %lu\n", GRN, p->id, NRM, p->cycles_before_execution);
 }
 
 void	vm_execute_instr(t_buff *buff, t_process *p)
@@ -553,16 +553,11 @@ void	test_ld()
 
 	// Read instruction from memory.
 
-	print("\nprocess reads instruction starting from %llu byte\n\n", pc);
 	vm_read_instr(&buffer, p);
 
 	// Execute current instruction.
 	vm_execute_instr(&buffer, p);
-	print("program counter = %llu\n\n", p->pc);
 
-	// Print secret number.
-	print("secret number in register 3 is:\n\n");
-	mem_print(&p->registers[2], GRN);
 	buff_free(&buffer);
 	free(p);
 }
