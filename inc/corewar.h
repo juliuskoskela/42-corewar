@@ -21,10 +21,10 @@
 # define DIR_CODE				2
 # define IND_CODE				3
 
-# define EMPTY					0U
-# define T_REG					1U
-# define T_DIR					(1U << 1U)
-# define T_IND					(1U << 2U)
+# define EMPTY					0b00
+# define T_REG					0b01
+# define T_DIR					0b10
+# define T_IND					0b11
 # define T_LAB					(1U << 3U)
 
 # define MAX_ARGS_NUMBER		4
@@ -72,7 +72,7 @@ typedef struct s_op
 static const t_op	g_op_tab[] =
 {
 	{"live", 1, {T_DIR, EMPTY, EMPTY}, 1, 10, "alive", 0, 0},
-	{"ld", 2, {T_DIR | T_IND, T_REG, EMPTY}, 2, 5, "load", 1, 0},
+	{"ld", 2, {T_DIR | T_IND, T_REG, EMPTY}, 2, 5, "LOAD (T_DIR | T_IND) src => (T_REG) dst", 1, 0},
 	{"st", 2, {T_REG, T_IND | T_REG, EMPTY}, 3, 5, "store", 1, 0},
 	{"add", 3, {T_REG, T_REG, T_REG}, 4, 10, "addition", 1, 0},
 	{"sub", 3, {T_REG, T_REG, T_REG}, 5, 10, "subtraction", 1, 0},
