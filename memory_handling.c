@@ -435,10 +435,9 @@ t_bool	vm_check_acb(t_op op, t_acb acb)
 	return (TRUE);
 }
 
-static void	vm_read_instr_print(t_arena *arena, t_process *p)
+static void	vm_read_instr_print(t_arena *arena, t_process *p, t_op op)
 {
-	print("\n[%#08llu][%#08llu][%#08llu] %sread%s ", arena->current_cycle, p->id, p->pc, GRN, NRM);
-	vm_print_instr(p->current_instruction);
+	print("\n[%#08llu][%#08llu][%#08llu] %sread%s %s", arena->current_cycle, p->id, p->pc, GRN, NRM, op.description);
 	print(" : %lu cycles\n", p->cycles_before_execution);
 }
 
@@ -510,7 +509,7 @@ void	vm_read_instr(t_arena *arena, t_process *p)
 	}
 	p->current_instruction = instr;
 	p->cycles_before_execution = op.cycles;
-	vm_read_instr_print(arena, p);
+	vm_read_instr_print(arena, p, op);
 }
 
 void	vm_execute_instr(t_arena *arena, t_process *p)
@@ -589,7 +588,7 @@ void	test_ld(const char *corfile)
 	t_arena			arena;
 	t_byte			secret_val;
 	t_size			process_pc;
-	t_byte			fake_op = 2;
+	t_byte			fake_op;
 	t_process		*p;
 
 	vm_init_arena(&arena);
@@ -607,6 +606,7 @@ void	test_ld(const char *corfile)
 	p = vm_new_process(1, process_pc);
 
 	print("[current_cycle][process_id][process_pc] %saction%s\n", GRN, NRM);
+
 	// Read instruction from memory.
 	vm_read_instr(&arena, p);
 
@@ -617,6 +617,7 @@ void	test_ld(const char *corfile)
 	vm_read_instr(&arena, p);
 
 	// Write fake opcode to buffer.
+	fake_op = 2;
 	mcpy(&arena.buffer.mem[3], &fake_op, 1);
 
 	// Read instruction from correctb opcode, but incorrect acb.
