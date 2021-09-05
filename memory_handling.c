@@ -18,47 +18,47 @@
 # define DIR_SIZE 2
 # define IND_SIZE 2
 
-typedef struct s_mem
+typedef struct s_reg
 {
-	t_byte	mem[REG_SIZE];
-	t_size	len;
-}	t_mem;
+	t_byte		mem[REG_SIZE];
+	t_size		len;
+}	t_reg;
 
 typedef struct s_arg
 {
-	t_mem		bytes;
+	t_reg		data;
 	t_uint8		type;
 	t_uint8		promoted;
 }	t_arg;
 
 typedef struct s_instr
 {
-	t_arg	opcode;
-	t_arg	acb;
-	t_arg	args[3];
+	t_arg		opcode;
+	t_arg		acb;
+	t_arg		args[3];
 }	t_instr;
 
 typedef struct s_acb
 {
-	t_uint8	arg[3];
+	t_uint8		arg[3];
 }	t_acb;
 
 typedef struct s_buff
 {
-	t_byte	*mem;
-	t_size	pos;
-	t_size	len;
+	t_byte		*mem;
+	t_size		pos;
+	t_size		len;
 }	t_buff;
 
 typedef struct s_process
 {
-	t_uint32			id;
-	t_size				pc;
-	t_bool				zf;
-	t_int32				last_live;
-	t_int32				cycles_before_execution;
-	t_instr				*current_instruction;
-	t_mem				registers[REG_NUMBER];
+	t_uint32	id;
+	t_size		pc;
+	t_bool		zf;
+	t_int32		last_live;
+	t_int32		cycles_before_execution;
+	t_instr		*current_instruction;
+	t_reg		registers[REG_NUMBER];
 }	t_process;
 
 typedef struct s_arena
@@ -76,24 +76,19 @@ t_uint8	g_endianness = LITTLE;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-t_mem	*mem_new(t_mem *src, t_size len)
+t_reg	*reg_set(t_reg *src, t_size len)
 {
-	mzero(&src->mem, 4);
+	mzero(&src->mem, REG_SIZE);
 	src->len = len;
 	return (src);
 }
 
-void	mem_free(t_mem *src)
-{
-	src->len = 0;
-}
-
-void	mem_copy(t_mem *dst, t_mem *src)
+void	reg_copy(t_reg *dst, t_reg *src)
 {
 	mcpy(dst->mem, src->mem, src->len);
 }
 
-void	mem_deref(t_byte *dst, t_mem *src)
+void	reg_deref(t_byte *dst, t_reg *src)
 {
 	t_size	i;
 
@@ -118,7 +113,7 @@ void	mem_deref(t_byte *dst, t_mem *src)
 	}
 }
 
-void	mem_ref(t_mem *dst, t_byte *src)
+void	reg_ref(t_reg *dst, t_byte *src)
 {
 	t_size	i;
 
@@ -143,7 +138,7 @@ void	mem_ref(t_mem *dst, t_byte *src)
 	}
 }
 
-void	mem_print(t_mem *src, char *colour)
+void	reg_print(t_reg *src, char *colour)
 {
 	t_size	i;
 
@@ -194,7 +189,7 @@ t_buff	*buff_set(t_buff *src, t_size pos)
 	return (src);
 }
 
-t_bool	buff_read(t_mem *dst, t_buff *src)
+t_bool	buff_read(t_reg *dst, t_buff *src)
 {
 	t_size	i;
 
@@ -210,7 +205,7 @@ t_bool	buff_read(t_mem *dst, t_buff *src)
 	return (TRUE);
 }
 
-t_bool	buff_write(t_buff *dst, t_mem *src)
+t_bool	buff_write(t_buff *dst, t_reg *src)
 {
 	t_size	i;
 
@@ -278,34 +273,32 @@ char	*vm_type_name(t_byte type)
 	else if (type == T_DIR)
 		return ("T_DIR");
 	else
-		return ("emp");
+		return ("EMPTY");
 }
 
 void	vm_instr_ld(t_buff *b, t_process *p)
 {
-	t_uint8		opcode;
 	t_uint8		reg_addr;
 	t_uint16	mem_addr;
-	t_mem		ind_read;
+	t_reg		ind_read;
 
-	mem_deref((t_byte *)&opcode, &p->current_instruction->opcode.bytes);
-	mem_deref((t_byte *)&reg_addr, &p->current_instruction->args[1].bytes);
+	reg_deref((t_byte *)&reg_addr, &p->current_instruction->args[1].data);
 	if (reg_addr > 16)
 		return ;
 	if (p->current_instruction->args[0].type == T_DIR)
-		mem_copy(&p->registers[reg_addr - 1], &p->current_instruction->args[0].bytes);
+		reg_copy(&p->registers[reg_addr - 1], &p->current_instruction->args[0].data);
 	else
 	{
-		mem_deref((t_byte *)&mem_addr, &p->current_instruction->args[0].bytes);
+		reg_deref((t_byte *)&mem_addr, &p->current_instruction->args[0].data);
 		if (mem_addr % IDX_MOD != 0)
 			p->zf = TRUE;
 		buff_set(b, p->pc + mem_addr % IDX_MOD);
-		mem_new(&ind_read, IND_SIZE);
+		reg_set(&ind_read, IND_SIZE);
 		buff_read(&ind_read, b);
-		mem_copy(&p->registers[reg_addr - 1], &ind_read);
+		reg_copy(&p->registers[reg_addr - 1], &ind_read);
 	}
 	print("%s[%#08x] %sLOAD (%s src, %s dst): ", GRN, p->id, NRM, vm_type_name(p->current_instruction->args[0].type), vm_type_name(p->current_instruction->args[1].type));
-	mem_print(&p->registers[reg_addr - 1], GRN);
+	reg_print(&p->registers[reg_addr - 1], GRN);
 	print("\n");
 	return ;
 }
@@ -335,7 +328,7 @@ t_process	*vm_new_process(t_uint32 id, t_size pc)
 	i = 0;
 	while (i < REG_NUMBER)
 	{
-		mem_new(&new->registers[i], REG_SIZE);
+		reg_set(&new->registers[i], REG_SIZE);
 		i++;
 	}
 	return (new);
@@ -350,23 +343,23 @@ t_arg	*vm_arg_new(t_arg *dst, t_uint8 type, t_uint8 promoted)
 		if (promoted == TRUE)
 		{
 			dst->promoted = TRUE;
-			dst->bytes.len = DIR_SIZE * 2;
+			dst->data.len = DIR_SIZE * 2;
 		}
 		else
-			dst->bytes.len = DIR_SIZE;
+			dst->data.len = DIR_SIZE;
 	}
 	else if (type == T_IND)
-		dst->bytes.len = IND_SIZE;
+		dst->data.len = IND_SIZE;
 	else if (type == T_REG)
-		dst->bytes.len = 1;
+		dst->data.len = 1;
 	else
-		dst->bytes.len = 1;
+		dst->data.len = 1;
 	return (dst);
 }
 
 t_arg	*vm_arg_read(t_arg *dst, t_buff *src)
 {
-	buff_read(&dst->bytes, src);
+	buff_read(&dst->data, src);
 	return (dst);
 }
 
@@ -391,20 +384,20 @@ t_byte	vm_compose_acb(t_acb *acb)
 t_size	vm_instr_size(t_instr *src)
 {
 	return (
-		src->opcode.bytes.len
-		+ src->acb.bytes.len
-		+ src->args[0].bytes.len
-		+ src->args[1].bytes.len
-		+ src->args[2].bytes.len);
+		src->opcode.data.len
+		+ src->acb.data.len
+		+ src->args[0].data.len
+		+ src->args[1].data.len
+		+ src->args[2].data.len);
 }
 
 void	vm_print_instr(t_instr *instr)
 {
-	mem_print(&instr->opcode.bytes, BLU);
-	mem_print(&instr->acb.bytes, YEL);
-	mem_print(&instr->args[0].bytes, CYN);
-	mem_print(&instr->args[1].bytes, MAG);
-	mem_print(&instr->args[2].bytes, RED);
+	reg_print(&instr->opcode.data, BLU);
+	reg_print(&instr->acb.data, YEL);
+	reg_print(&instr->args[0].data, CYN);
+	reg_print(&instr->args[1].data, MAG);
+	reg_print(&instr->args[2].data, RED);
 }
 
 void	vm_read_instr(t_buff *b, t_process *p)
@@ -424,7 +417,7 @@ void	vm_read_instr(t_buff *b, t_process *p)
 
 	// Read opcode.
 	vm_arg_read(vm_arg_new(&instr->opcode, META, FALSE), b);
-	mem_deref((t_byte *)&opcode, &instr->opcode.bytes);
+	reg_deref((t_byte *)&opcode, &instr->opcode.data);
 
 	// Validate opcode
 	if (opcode > OP_COUNT)
@@ -444,7 +437,7 @@ void	vm_read_instr(t_buff *b, t_process *p)
 		vm_arg_read(vm_arg_new(&instr->acb, META, FALSE), b);
 
 		// Decompose acb
-		acb = vm_decomp_acb(*instr->acb.bytes.mem);
+		acb = vm_decomp_acb(*instr->acb.data.mem);
 
 		// Check that flags are valid.
 		if (acb.arg[0] & op.param_types.param1 == 0
@@ -486,7 +479,7 @@ void	vm_execute_instr(t_buff *buff, t_process *p)
 {
 	t_byte	opcode;
 
-	mem_deref((t_byte *)&opcode, &p->current_instruction->opcode.bytes);
+	reg_deref((t_byte *)&opcode, &p->current_instruction->opcode.data);
 	if (opcode < 1 || opcode > 16)
 		return ;
 	g_instr[opcode - 1](buff, p);
@@ -507,23 +500,23 @@ void	test_ld()
 
 	// Create the example incstruction (bit convoluted but just setup for example).
 
-	t_mem	instr_mem;
-	t_mem	ind_addr_ref;
-	t_mem	reg_addr_ref;
+	t_reg	instr_mem;
+	t_reg	ind_addr_ref;
+	t_reg	reg_addr_ref;
 
-	mem_new(&instr_mem, 5);
+	reg_set(&instr_mem, 5);
 	mcpy(&instr_mem.mem[0], &opcode, 1);
 	mcpy(&instr_mem.mem[1], &acb, 1);
-	mem_new(&ind_addr_ref, 2);
-	mem_ref(&ind_addr_ref, (t_byte *)&ind_addr);
+	reg_set(&ind_addr_ref, 2);
+	reg_ref(&ind_addr_ref, (t_byte *)&ind_addr);
 	mcpy(&instr_mem.mem[2], ind_addr_ref.mem, 2);
-	mem_new(&ind_addr_ref, 1);
-	mem_ref(&ind_addr_ref, (t_byte *)&reg_addr);
+	reg_set(&ind_addr_ref, 1);
+	reg_ref(&ind_addr_ref, (t_byte *)&reg_addr);
 	mcpy(&instr_mem.mem[4], &reg_addr, 1);
 
 	// Create buffer and write instruction to buffer at pc.
 
-	t_buff			buffer;
+	t_buff	buffer;
 
 	buff_new(&buffer, MEM_SIZE);
 	buff_set(&buffer, pc);
@@ -536,8 +529,10 @@ void	test_ld()
 	// Print buffer.
 
 	buff_print_overlay(&buffer, pc, 5, GRN);
+
 	// Create process.
-	t_process		*p;
+
+	t_process	*p;
 
 	print("\n%sSTART OF BATTLE LOG%s\n\n", BLU, NRM);
 	print("%s[process_id]%s\n\n", GRN, NRM);
@@ -549,9 +544,11 @@ void	test_ld()
 	vm_read_instr(&buffer, p);
 
 	// Execute current instruction.
+
 	vm_execute_instr(&buffer, p);
 
 	buff_free(&buffer);
+
 	free(p);
 }
 
