@@ -276,13 +276,13 @@ void	vm_instr_null(t_arena *a, t_process *p)
 char	*vm_type_name(t_byte type)
 {
 	if (type == REG_CODE)
-		return ("t_reg");
+		return ("reg_addr");
 	else if (type == IND_CODE)
-		return ("t_ind");
+		return ("ind_addr");
 	else if (type == DIR_CODE)
-		return ("t_dir");
+		return ("dir_val");
 	else
-		return ("NULL");
+		return ("empty");
 }
 
 t_size	vm_instr_size(t_instr *src)
@@ -346,7 +346,7 @@ void	vm_instr_ld(t_arena *arena, t_process *p)
 		buff_read((t_byte *)&p->registers[reg_addr - 1], &arena->buffer, IND_SIZE);
 	}
 	vm_print_execution(arena, p);
-	print(" => ");
+	print(" => %sreg%s ", BLU, NRM);
 	reg_print(&p->registers[reg_addr - 1], NRM);
 	print("\n");
 	return ;
@@ -452,7 +452,7 @@ t_bool	vm_check_acb(t_op *op, t_acb acb)
 
 static void	vm_read_instr_print(t_arena *arena, t_process *p, t_op *op)
 {
-	print("\n[%#08llu][%#08llu][%#08llu] %sread%s %s \"%s\"\n", arena->current_cycle, p->id, p->pc, GRN, NRM, op->mnemonic, op->description);
+	print("\n[%#08llu][%#08llu][%#08llu] %sread%s %s => \"%s\"\n", arena->current_cycle, p->id, p->pc, GRN, NRM, op->mnemonic, op->description);
 }
 
 void	vm_read_instr(t_arena *arena, t_process *p)
@@ -618,7 +618,7 @@ void	test_ld(const char *corfile)
 
 	p = vm_new_process(1, process_pc);
 
-	print("[current_cycle][process_id][process_pc] %saction%s : annotation\n", GRN, NRM);
+	print("[current_cycle][process_id][process_pc] %saction%s : result\n", GRN, NRM);
 
 	// Read instruction from memory.
 	vm_read_instr(&arena, p);
