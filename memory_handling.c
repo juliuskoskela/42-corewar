@@ -272,11 +272,11 @@ void	vm_instr_null(t_buff *b, t_process *p)
 char	*vm_type_name(t_byte type)
 {
 	if (type == T_REG)
-		return ("reg");
+		return ("T_REG");
 	else if (type == T_IND)
-		return ("ind");
+		return ("T_IND");
 	else if (type == T_DIR)
-		return ("dir");
+		return ("T_DIR");
 	else
 		return ("emp");
 }
@@ -293,26 +293,18 @@ void	vm_instr_ld(t_buff *b, t_process *p)
 	if (reg_addr > 16)
 		return ;
 	if (p->current_instruction->args[0].type == T_DIR)
-	{
-		// print("writing direct value to reg %u\n\n", reg_addr);
 		mem_copy(&p->registers[reg_addr - 1], &p->current_instruction->args[0].bytes);
-	}
 	else
 	{
 		mem_deref((t_byte *)&mem_addr, &p->current_instruction->args[0].bytes);
-		// print("dereferencig memory from address %u\n\n", p->pc + (mem_addr % IDX_MOD));
 		if (mem_addr % IDX_MOD != 0)
 			p->zf = TRUE;
 		buff_set(b, p->pc + mem_addr % IDX_MOD);
 		mem_new(&ind_read, IND_SIZE);
-		// print("indirect memory read yields...\n\n");
 		buff_read(&ind_read, b);
-		// mem_print(&ind_read, RED);
-		// print("\n\n.. which is copied to reg %u:\n\n", reg_addr);
 		mem_copy(&p->registers[reg_addr - 1], &ind_read);
-		// mem_print(&p->registers[reg_addr - 1], GRN);
 	}
-	print("%sprocess %lu: %sLOAD %s, %s => ", GRN, p->id, NRM, vm_type_name(p->current_instruction->args[0].type), vm_type_name(p->current_instruction->args[1].type));
+	print("%s[%#08x] %sLOAD (%s src, %s dst): ", GRN, p->id, NRM, vm_type_name(p->current_instruction->args[0].type), vm_type_name(p->current_instruction->args[1].type));
 	mem_print(&p->registers[reg_addr - 1], GRN);
 	print("\n");
 	return ;
@@ -437,7 +429,7 @@ void	vm_read_instr(t_buff *b, t_process *p)
 	// Validate opcode
 	if (opcode > OP_COUNT)
 	{
-		print("%sprocess %llu: %sERR_INVALID_OPCODE \n", RED, p->id, NRM);
+		print("%s[%#08x] %sERR_INVALID_OPCODE \n", RED, p->id, NRM);
 		p->pc++;
 		return ;
 	}
@@ -459,7 +451,7 @@ void	vm_read_instr(t_buff *b, t_process *p)
 			|| acb.arg[1] & op.param_types.param2 == 0
 			|| acb.arg[2] & op.param_types.param3 == 0)
 		{
-			print("%sprocess %llu: %sERR_INVALID_ACB \n", RED, p->id, NRM);
+			print("%s[%#08x] %sERR_INVALID_ACB \n", RED, p->id, NRM);
 			p->pc++;
 			return ;
 		}
@@ -484,10 +476,10 @@ void	vm_read_instr(t_buff *b, t_process *p)
 		i++;
 	}
 	p->current_instruction = instr;
-	print("%sprocess %llu: %sCOMP_READ_INSTR => ", GRN, p->id, NRM);
+	print("%s[%#08x] %sCOMP_READ_INSTR: ", GRN, p->id, NRM);
 	vm_print_instr(p->current_instruction);
 	p->cycles_before_execution = op.cycles;
-	print("\n%sprocess %llu: %sCYCLES_TO_EXEC => %lu\n", GRN, p->id, NRM, p->cycles_before_execution);
+	print("\n%s[%#08x] %sCYCLES_TO_EXEC: %lu\n", GRN, p->id, NRM, p->cycles_before_execution);
 }
 
 void	vm_execute_instr(t_buff *buff, t_process *p)
@@ -544,10 +536,11 @@ void	test_ld()
 	// Print buffer.
 
 	buff_print_overlay(&buffer, pc, 5, GRN);
-
 	// Create process.
 	t_process		*p;
 
+	print("\n%sSTART OF BATTLE LOG%s\n\n", BLU, NRM);
+	print("%s[process_id]%s\n\n", GRN, NRM);
 	p = vm_new_process(1, pc);
 	buff_set(&buffer, 0);
 
