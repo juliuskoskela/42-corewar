@@ -494,9 +494,72 @@ void	vm_execute_instr(t_buff *buff, t_process *p)
 	p->current_instruction = NULL;
 }
 
-void	test_ld()
+void	exit_error(char *msg)
 {
+	print("%s\n", msg);
+	exit(1);
+}
+
+void	read_player_header(t_header *player, int fd)
+{
+	t_reg	player_magic;
+	t_reg	player_program_size;
+
+	reg_set(&player_magic, sizeof(player->magic));
+	if (read(fd, &player_magic.mem, sizeof(player->magic)) != sizeof(player->magic))
+		exit_error("Failed to read magic number");
+	reg_deref(&player->magic, &player_magic);
+	if (read(fd, &player->prog_name, PROG_NAME_LENGTH) != PROG_NAME_LENGTH)
+		exit_error("Failed to read program name");
+	reg_set(&player_program_size, sizeof(player->prog_size));
+	if (read(fd, &player_program_size, sizeof(player->prog_size)) != sizeof(player->prog_size))
+		exit_error("Failed to read program size");
+	reg_deref(&player->prog_size, &player_program_size);
+	if (player->prog_size > CHAMP_MAX_SIZE)
+		exit_error("Player program size > CHAMP_MAX_SIZE");
+	if (read(fd, &player->comment, COMMENT_LENGTH) != COMMENT_LENGTH)
+		exit_error("Failed to read comment");
+}
+
+void	read_player_program(t_byte *program, int prog_size, int fd)
+{
+	if (read(fd, program, prog_size) != prog_size)
+		exit_error("Failed to read program");
+}
+
+void	vm_read_player(t_arena *arena, char *path)
+{
+	int			fd;
+	int			player_index;
+
+	fd = open(path, O_RDONLY);
+	if (fd == -1)
+		exit_error("Invalid path to player");
+	player_index = arena->player_count;
+	mzero(&arena->players[player_index], sizeof(t_player));
+	read_player_header(&arena->players[player_index].header, fd);
+	read_player_program(&arena->players[player_index].program,
+		arena->players[player_index].header.prog_size, fd);
+	arena->player_count += 1;
+}
+
+void	vm_init_arena(t_arena *arena)
+{
+	mzero(arena, sizeof(t_arena));
+	buff_new(&arena->buffer, MEM_SIZE);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+void	test_ld(const char *corfile)
+{
+	t_arena			arena;
+
+	vm_init_arena(&arena);
+	vm_read_player(&arena, corfile);
+
 	// Set example values.
+
 	t_byte			opcode = 2;
 	t_byte			acb = vm_compose_acb(&(t_acb){T_IND, T_REG, EMPTY});
 	t_size			pc = MEM_SIZE - 3;
@@ -558,77 +621,80 @@ void	test_ld()
 	free(p);
 }
 
-void	exit_error(char *msg)
-{
-	print("%s\n", msg);
-	exit(1);
-}
-
-void	read_player_header(t_header *player, int fd)
-{
-	t_reg	player_magic;
-	t_reg	player_program_size;
-
-	reg_set(&player_magic, sizeof(player->magic));
-	if (read(fd, &player_magic.mem, sizeof(player->magic)) != sizeof(player->magic))
-		exit_error("Failed to read magic number");
-	reg_deref(&player->magic, &player_magic);
-	if (read(fd, &player->prog_name, PROG_NAME_LENGTH) != PROG_NAME_LENGTH)
-		exit_error("Failed to read program name");
-	reg_set(&player_program_size, sizeof(player->prog_size));
-	if (read(fd, &player_program_size, sizeof(player->prog_size)) != sizeof(player->prog_size))
-		exit_error("Failed to read program size");
-	reg_deref(&player->prog_size, &player_program_size);
-	if (player->prog_size > CHAMP_MAX_SIZE)
-		exit_error("Player program size > CHAMP_MAX_SIZE");
-	if (read(fd, &player->comment, COMMENT_LENGTH) != COMMENT_LENGTH)
-		exit_error("Failed to read comment");
-}
-
-void	read_player_program(t_byte *program, int prog_size, int fd)
-{
-	if (read(fd, program, prog_size) != prog_size)
-		exit_error("Failed to read program");
-}
-
-void	read_player(char *path, t_arena *arena)
-{
-	int			fd;
-	int			player_index;
-
-	fd = open(path, O_RDONLY);
-	if (fd == -1)
-		exit_error("Invalid path to player");
-	player_index = arena->player_count;
-	mzero(&arena->players[player_index], sizeof(t_player));
-	read_player_header(&arena->players[player_index].header, fd);
-	read_player_program(&arena->players[player_index].program,
-		arena->players[player_index].header.prog_size, fd);
-	arena->player_count += 1;
-}
-
-void	vm_init_arena(t_arena *arena)
-{
-	mzero(arena, sizeof(t_arena));
-	buff_new(&arena->buffer, MEM_SIZE);
-}
-
 int main(int argc, char **argv)
 {
-	t_arena	arena;
-
-	if (argc == 1)
+	if (argc != 3)
 		return (1);
-	init_arena(&arena);
-	if (argc == 2)
-		read_player(argv[1], &arena);
 	else
 	{
 		if (s_cmp(argv[1], "BIG") == 0)
 			g_endianness = BIG;
 		else
 			g_endianness = LITTLE;
-		read_player(argv[2], &arena);
 	}
-	test_ld();
+	test_ld(argv[2]);
 }
+
+// void	test_ld()
+// {
+// 	// Set example values.
+// 	t_byte			opcode = 2;
+// 	t_byte			acb = vm_compose_acb(&(t_acb){T_IND, T_REG, EMPTY});
+// 	t_size			pc = MEM_SIZE - 3;
+// 	t_uint16		ind_addr = 70;
+// 	t_uint16		secret_val = 42;
+// 	t_uint8			reg_addr = 3;
+
+// 	// Create the example incstruction (bit convoluted but just setup for example).
+
+// 	t_reg	instr_mem;
+// 	t_reg	ind_addr_ref;
+// 	t_reg	reg_addr_ref;
+
+// 	reg_set(&instr_mem, 5);
+// 	mcpy(&instr_mem.mem[0], &opcode, 1);
+// 	mcpy(&instr_mem.mem[1], &acb, 1);
+// 	reg_set(&ind_addr_ref, 2);
+// 	reg_ref(&ind_addr_ref, (t_byte *)&ind_addr);
+// 	mcpy(&instr_mem.mem[2], ind_addr_ref.mem, 2);
+// 	reg_set(&ind_addr_ref, 1);
+// 	reg_ref(&ind_addr_ref, (t_byte *)&reg_addr);
+// 	mcpy(&instr_mem.mem[4], &reg_addr, 1);
+
+// 	// Create buffer and write instruction to buffer at pc.
+
+// 	t_buff	buffer;
+
+// 	buff_new(&buffer, MEM_SIZE);
+// 	buff_set(&buffer, pc);
+// 	buff_write(&buffer, &instr_mem);
+
+// 	// Hide secret val.
+
+// 	mcpy(&buffer.mem[(pc + ind_addr) % MEM_SIZE], &secret_val, 2);
+
+// 	// Print buffer.
+
+// 	buff_print_overlay(&buffer, pc, 5, GRN);
+
+// 	// Create process.
+
+// 	t_process	*p;
+
+// 	print("\n%sSTART OF BATTLE LOG%s\n\n", BLU, NRM);
+// 	print("%s[process_id]%s\n\n", GRN, NRM);
+// 	p = vm_new_process(1, pc);
+// 	buff_set(&buffer, 0);
+
+// 	// Read instruction from memory.
+
+// 	vm_read_instr(&buffer, p);
+
+// 	// Execute current instruction.
+
+// 	vm_execute_instr(&buffer, p);
+
+// 	buff_free(&buffer);
+
+// 	free(p);
+// }
