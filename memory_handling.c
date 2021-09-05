@@ -61,16 +61,22 @@ typedef struct s_process
 	t_reg		registers[REG_NUMBER];
 }	t_process;
 
+typedef struct s_player
+{
+	t_header	header;
+	t_byte		program[CHAMP_MAX_SIZE];
+}	t_player;
+
 typedef struct s_arena
 {
-	t_header	all_players[MAX_PLAYERS];
+	t_player	players[MAX_PLAYERS];
 	t_size		player_count;
 	t_buff		buffer;
 	t_size		offset;
 	t_process	*processes;
 }	t_arena;
 
-typedef void (*t_exec)(t_buff *, t_process *);
+typedef void (*t_exec)(t_arena *, t_process *);
 
 t_uint8	g_endianness = LITTLE;
 
@@ -276,7 +282,7 @@ char	*vm_type_name(t_byte type)
 		return ("EMPTY");
 }
 
-void	vm_instr_ld(t_buff *b, t_process *p)
+void	vm_instr_ld(t_arena *arena, t_process *p)
 {
 	t_uint8		reg_addr;
 	t_uint16	mem_addr;
@@ -292,9 +298,9 @@ void	vm_instr_ld(t_buff *b, t_process *p)
 		reg_deref((t_byte *)&mem_addr, &p->current_instruction->args[0].data);
 		if (mem_addr % IDX_MOD != 0)
 			p->zf = TRUE;
-		buff_set(b, p->pc + mem_addr % IDX_MOD);
+		buff_set(&arena->buffer, p->pc + mem_addr % IDX_MOD);
 		reg_set(&ind_read, IND_SIZE);
-		buff_read(&ind_read, b);
+		buff_read(&ind_read, &arena->buffer);
 		reg_copy(&p->registers[reg_addr - 1], &ind_read);
 	}
 	print("%s[%#08x] %sLOAD (%s src, %s dst): ", GRN, p->id, NRM, vm_type_name(p->current_instruction->args[0].type), vm_type_name(p->current_instruction->args[1].type));
@@ -440,9 +446,9 @@ void	vm_read_instr(t_buff *b, t_process *p)
 		acb = vm_decomp_acb(*instr->acb.data.mem);
 
 		// Check that flags are valid.
-		if (acb.arg[0] & op.param_types.param1 == 0
-			|| acb.arg[1] & op.param_types.param2 == 0
-			|| acb.arg[2] & op.param_types.param3 == 0)
+		if ((acb.arg[0] & op.param_types.param1) == 0
+			|| (acb.arg[1] & op.param_types.param2) == 0
+			|| (acb.arg[2] & op.param_types.param3) == 0)
 		{
 			print("%s[%#08x] %sERR_INVALID_ACB \n", RED, p->id, NRM);
 			p->pc++;
@@ -552,11 +558,77 @@ void	test_ld()
 	free(p);
 }
 
+void	exit_error(char *msg)
+{
+	print("%s\n", msg);
+	exit(1);
+}
+
+void	read_player_header(t_header *player, int fd)
+{
+	t_reg	player_magic;
+	t_reg	player_program_size;
+
+	reg_set(&player_magic, sizeof(player->magic));
+	if (read(fd, &player_magic.mem, sizeof(player->magic)) != sizeof(player->magic))
+		exit_error("Failed to read magic number");
+	reg_deref(&player->magic, &player_magic);
+	if (read(fd, &player->prog_name, PROG_NAME_LENGTH) != PROG_NAME_LENGTH)
+		exit_error("Failed to read program name");
+	reg_set(&player_program_size, sizeof(player->prog_size));
+	if (read(fd, &player_program_size, sizeof(player->prog_size)) != sizeof(player->prog_size))
+		exit_error("Failed to read program size");
+	reg_deref(&player->prog_size, &player_program_size);
+	if (player->prog_size > CHAMP_MAX_SIZE)
+		exit_error("Player program size > CHAMP_MAX_SIZE");
+	if (read(fd, &player->comment, COMMENT_LENGTH) != COMMENT_LENGTH)
+		exit_error("Failed to read comment");
+}
+
+void	read_player_program(t_byte *program, int prog_size, int fd)
+{
+	if (read(fd, program, prog_size) != prog_size)
+		exit_error("Failed to read program");
+}
+
+void	read_player(char *path, t_arena *arena)
+{
+	int			fd;
+	int			player_index;
+
+	fd = open(path, O_RDONLY);
+	if (fd == -1)
+		exit_error("Invalid path to player");
+	player_index = arena->player_count;
+	mzero(&arena->players[player_index], sizeof(t_player));
+	read_player_header(&arena->players[player_index].header, fd);
+	read_player_program(&arena->players[player_index].program,
+		arena->players[player_index].header.prog_size, fd);
+	arena->player_count += 1;
+}
+
+void	vm_init_arena(t_arena *arena)
+{
+	mzero(arena, sizeof(t_arena));
+	buff_new(&arena->buffer, MEM_SIZE);
+}
+
 int main(int argc, char **argv)
 {
-	if (s_cmp(argv[1], "BIG") == 0)
-		g_endianness = BIG;
+	t_arena	arena;
+
+	if (argc == 1)
+		return (1);
+	init_arena(&arena);
+	if (argc == 2)
+		read_player(argv[1], &arena);
 	else
-		g_endianness = LITTLE;
+	{
+		if (s_cmp(argv[1], "BIG") == 0)
+			g_endianness = BIG;
+		else
+			g_endianness = LITTLE;
+		read_player(argv[2], &arena);
+	}
 	test_ld();
 }
