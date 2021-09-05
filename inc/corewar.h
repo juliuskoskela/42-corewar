@@ -21,10 +21,10 @@
 # define DIR_CODE				2
 # define IND_CODE				3
 
-# define EMPTY					0b00
-# define T_REG					0b01
-# define T_DIR					0b10
-# define T_IND					0b11
+# define EMPTY					0
+# define T_REG					1
+# define T_DIR					(1U << 1U)
+# define T_IND					(1U << 2U)
 # define T_LAB					(1U << 3U)
 
 # define MAX_ARGS_NUMBER		4

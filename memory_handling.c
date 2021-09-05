@@ -195,32 +195,32 @@ t_buff	*buff_set(t_buff *src, t_size pos)
 	return (src);
 }
 
-t_bool	buff_read(t_reg *dst, t_buff *src)
+t_bool	buff_read(t_byte *dst, t_buff *src, size_t dst_len)
 {
 	t_size	i;
 
 	if (!dst || !src)
 		return (FALSE);
 	i = 0;
-	while (i < dst->len)
+	while (i < dst_len)
 	{
-		dst->mem[i] = src->mem[src->pos];
+		dst[i] = src->mem[src->pos];
 		buff_increment_pos(src, 1);
 		i++;
 	}
 	return (TRUE);
 }
 
-t_bool	buff_write(t_buff *dst, t_reg *src)
+t_bool	buff_write(t_buff *dst, t_byte *src, size_t src_len)
 {
 	t_size	i;
 
 	if (!dst || !src)
 		return (FALSE);
 	i = 0;
-	while (i < src->len)
+	while (i < src_len)
 	{
-		dst->mem[dst->pos] = src->mem[i];
+		dst->mem[dst->pos] = src[i];
 		buff_increment_pos(dst, 1);
 		i++;
 	}
@@ -265,18 +265,18 @@ void	buff_print_overlay(t_buff *src, t_size start, t_size len, char *colour)
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void	vm_instr_null(t_buff *b, t_process *p)
+void	vm_instr_null(t_arena *a, t_process *p)
 {
 	return ;
 }
 
 char	*vm_type_name(t_byte type)
 {
-	if (type == T_REG)
+	if (type == REG_CODE)
 		return ("T_REG");
-	else if (type == T_IND)
+	else if (type == IND_CODE)
 		return ("T_IND");
-	else if (type == T_DIR)
+	else if (type == DIR_CODE)
 		return ("T_DIR");
 	else
 		return ("EMPTY");
@@ -291,7 +291,7 @@ void	vm_instr_ld(t_arena *arena, t_process *p)
 	reg_deref((t_byte *)&reg_addr, &p->current_instruction->args[1].data);
 	if (reg_addr > 16)
 		return ;
-	if (p->current_instruction->args[0].type == T_DIR)
+	if (p->current_instruction->args[0].type == DIR_CODE)
 		reg_copy(&p->registers[reg_addr - 1], &p->current_instruction->args[0].data);
 	else
 	{
@@ -300,7 +300,7 @@ void	vm_instr_ld(t_arena *arena, t_process *p)
 			p->zf = TRUE;
 		buff_set(&arena->buffer, p->pc + mem_addr % IDX_MOD);
 		reg_set(&ind_read, IND_SIZE);
-		buff_read(&ind_read, &arena->buffer);
+		buff_read((t_byte *)&ind_read.mem, &arena->buffer, ind_read.len);
 		reg_copy(&p->registers[reg_addr - 1], &ind_read);
 	}
 	print("%s[%#08x] %sLOAD (%s src, %s dst): ", GRN, p->id, NRM, vm_type_name(p->current_instruction->args[0].type), vm_type_name(p->current_instruction->args[1].type));
@@ -344,7 +344,7 @@ t_arg	*vm_arg_new(t_arg *dst, t_uint8 type, t_uint8 promoted)
 {
 	mzero(dst, sizeof(t_arg));
 	dst->type = type;
-	if (type == T_DIR)
+	if (type == DIR_CODE)
 	{
 		if (promoted == TRUE)
 		{
@@ -354,9 +354,9 @@ t_arg	*vm_arg_new(t_arg *dst, t_uint8 type, t_uint8 promoted)
 		else
 			dst->data.len = DIR_SIZE;
 	}
-	else if (type == T_IND)
+	else if (type == IND_CODE)
 		dst->data.len = IND_SIZE;
-	else if (type == T_REG)
+	else if (type == REG_CODE)
 		dst->data.len = 1;
 	else
 		dst->data.len = 1;
@@ -365,7 +365,7 @@ t_arg	*vm_arg_new(t_arg *dst, t_uint8 type, t_uint8 promoted)
 
 t_arg	*vm_arg_read(t_arg *dst, t_buff *src)
 {
-	buff_read(&dst->data, src);
+	buff_read((t_byte *)&dst->data.mem, src, dst->data.len);
 	return (dst);
 }
 
@@ -481,14 +481,14 @@ void	vm_read_instr(t_buff *b, t_process *p)
 	print("\n%s[%#08x] %sCYCLES_TO_EXEC: %lu\n", GRN, p->id, NRM, p->cycles_before_execution);
 }
 
-void	vm_execute_instr(t_buff *buff, t_process *p)
+void	vm_execute_instr(t_arena *arena, t_process *p)
 {
 	t_byte	opcode;
 
 	reg_deref((t_byte *)&opcode, &p->current_instruction->opcode.data);
 	if (opcode < 1 || opcode > 16)
 		return ;
-	g_instr[opcode - 1](buff, p);
+	g_instr[opcode - 1](arena, p);
 	p->pc = (p->pc + vm_instr_size(p->current_instruction)) % MEM_SIZE;
 	free(p->current_instruction);
 	p->current_instruction = NULL;
@@ -508,13 +508,13 @@ void	read_player_header(t_header *player, int fd)
 	reg_set(&player_magic, sizeof(player->magic));
 	if (read(fd, &player_magic.mem, sizeof(player->magic)) != sizeof(player->magic))
 		exit_error("Failed to read magic number");
-	reg_deref(&player->magic, &player_magic);
+	reg_deref((t_byte *)&player->magic, &player_magic);
 	if (read(fd, &player->prog_name, PROG_NAME_LENGTH) != PROG_NAME_LENGTH)
 		exit_error("Failed to read program name");
 	reg_set(&player_program_size, sizeof(player->prog_size));
 	if (read(fd, &player_program_size, sizeof(player->prog_size)) != sizeof(player->prog_size))
 		exit_error("Failed to read program size");
-	reg_deref(&player->prog_size, &player_program_size);
+	reg_deref((t_byte *)&player->prog_size, &player_program_size);
 	if (player->prog_size > CHAMP_MAX_SIZE)
 		exit_error("Player program size > CHAMP_MAX_SIZE");
 	if (read(fd, &player->comment, COMMENT_LENGTH) != COMMENT_LENGTH)
@@ -527,7 +527,7 @@ void	read_player_program(t_byte *program, int prog_size, int fd)
 		exit_error("Failed to read program");
 }
 
-void	vm_read_player(t_arena *arena, char *path)
+void	vm_read_player(t_arena *arena, const char *path)
 {
 	int			fd;
 	int			player_index;
@@ -538,9 +538,10 @@ void	vm_read_player(t_arena *arena, char *path)
 	player_index = arena->player_count;
 	mzero(&arena->players[player_index], sizeof(t_player));
 	read_player_header(&arena->players[player_index].header, fd);
-	read_player_program(&arena->players[player_index].program,
+	read_player_program((t_byte *)&arena->players[player_index].program,
 		arena->players[player_index].header.prog_size, fd);
 	arena->player_count += 1;
+	arena->offset = MEM_SIZE / arena->player_count;
 }
 
 void	vm_init_arena(t_arena *arena)
@@ -554,70 +555,35 @@ void	vm_init_arena(t_arena *arena)
 void	test_ld(const char *corfile)
 {
 	t_arena			arena;
+	t_byte			secret_val;
+	t_size			process_pc;
+	t_process	*p;
 
 	vm_init_arena(&arena);
 	vm_read_player(&arena, corfile);
 
-	// Set example values.
-
-	t_byte			opcode = 2;
-	t_byte			acb = vm_compose_acb(&(t_acb){T_IND, T_REG, EMPTY});
-	t_size			pc = MEM_SIZE - 3;
-	t_uint16		ind_addr = 70;
-	t_uint16		secret_val = 42;
-	t_uint8			reg_addr = 3;
-
-	// Create the example incstruction (bit convoluted but just setup for example).
-
-	t_reg	instr_mem;
-	t_reg	ind_addr_ref;
-	t_reg	reg_addr_ref;
-
-	reg_set(&instr_mem, 5);
-	mcpy(&instr_mem.mem[0], &opcode, 1);
-	mcpy(&instr_mem.mem[1], &acb, 1);
-	reg_set(&ind_addr_ref, 2);
-	reg_ref(&ind_addr_ref, (t_byte *)&ind_addr);
-	mcpy(&instr_mem.mem[2], ind_addr_ref.mem, 2);
-	reg_set(&ind_addr_ref, 1);
-	reg_ref(&ind_addr_ref, (t_byte *)&reg_addr);
-	mcpy(&instr_mem.mem[4], &reg_addr, 1);
-
-	// Create buffer and write instruction to buffer at pc.
-
-	t_buff	buffer;
-
-	buff_new(&buffer, MEM_SIZE);
-	buff_set(&buffer, pc);
-	buff_write(&buffer, &instr_mem);
-
-	// Hide secret val.
-
-	mcpy(&buffer.mem[(pc + ind_addr) % MEM_SIZE], &secret_val, 2);
-
-	// Print buffer.
-
-	buff_print_overlay(&buffer, pc, 5, GRN);
-
-	// Create process.
-
-	t_process	*p;
+	secret_val = 42;
+	mcpy(&arena.buffer.mem[(process_pc + 70) % MEM_SIZE], &secret_val, 1);
 
 	print("\n%sSTART OF BATTLE LOG%s\n\n", BLU, NRM);
 	print("%s[process_id]%s\n\n", GRN, NRM);
-	p = vm_new_process(1, pc);
-	buff_set(&buffer, 0);
+
+	// Create process.
+	process_pc = MEM_SIZE - 3;
+	buff_set(&arena.buffer, process_pc);
+	buff_write(&arena.buffer, (t_byte *)&arena.players[0].program, arena.players[0].header.prog_size);
+	p = vm_new_process(1, process_pc);
+
+	// Print buffer.
+	buff_print_overlay(&arena.buffer, process_pc, 5, GRN);
 
 	// Read instruction from memory.
-
-	vm_read_instr(&buffer, p);
+	vm_read_instr(&arena.buffer, p);
 
 	// Execute current instruction.
+	vm_execute_instr(&arena, p);
 
-	vm_execute_instr(&buffer, p);
-
-	buff_free(&buffer);
-
+	buff_free(&arena.buffer);
 	free(p);
 }
 
