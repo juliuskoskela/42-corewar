@@ -4,7 +4,7 @@
 
 # define LITTLE 0
 # define BIG 1
-# define ROW_SIZE 16
+# define ROW_SIZE 64
 #define NRM  "\x1B[0m"
 #define RED  "\x1B[31m"
 #define GRN  "\x1B[32m"
@@ -153,7 +153,7 @@ void	mem_print(t_mem *src, char *colour)
 	print("%s");
 	while (i < src->len)
 	{
-		print("%#02x ", src->mem[i]);
+		print("0x%02x ", src->mem[i]);
 		i++;
 	}
 	print("%s", NRM);
@@ -254,7 +254,7 @@ void	buff_print_overlay(t_buff *src, t_size start, t_size len, char *colour)
 			print("\n");
 		if (i == start || (rem > 0 && i == 0))
 			print("%s", colour);
-		print("[%#04llu]0x%02x ", i, src->mem[i]);
+		print("%02x ", src->mem[i]);
 		if (i == start + len || (rem > 0 && i == rem))
 			print("%s", NRM);
 		i++;
