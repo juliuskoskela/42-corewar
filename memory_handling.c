@@ -605,7 +605,7 @@ void	test_ld(const char *corfile)
 
 	p = vm_new_process(1, process_pc);
 
-	print("[current_cycle][process_id][process_pc] %saction%s\n", GRN, NRM);
+	print("[current_cycle][process_id][process_pc] %saction%s : result\n", GRN, NRM);
 
 	// Read instruction from memory.
 	vm_read_instr(&arena, p);
