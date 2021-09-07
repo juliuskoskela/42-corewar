@@ -14,9 +14,7 @@
 #define CYN  "\x1B[36m"
 #define WHT  "\x1B[37m"
 # define META	0x1 << 3
-# define REG_SIZE 4
-# define DIR_SIZE 2
-# define IND_SIZE 2
+
 
 typedef struct s_reg
 {
@@ -148,7 +146,8 @@ void	reg_ref(t_reg *dst, t_byte *src)
 
 void	reg_print(t_reg *src, char *colour)
 {
-	t_size	i;
+	t_uint64	deref;
+	t_size		i;
 
 	if (!src || !src->len)
 		return ;
@@ -161,6 +160,9 @@ void	reg_print(t_reg *src, char *colour)
 	}
 	print("0x%02x", src->mem[i]);
 	print("]%s", NRM);
+	deref = 0;
+	reg_deref((t_byte *)&deref, src);
+	print(" %llu", deref);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -270,19 +272,20 @@ void	buff_print_overlay(t_buff *src, t_size start, t_size len, char *colour)
 
 void	vm_instr_null(t_arena *a, t_process *p)
 {
-	return ;
+	if (a || p)
+		return ;
 }
 
 char	*vm_type_name(t_byte type)
 {
 	if (type == REG_CODE)
-		return ("reg_addr");
+		return ("T_REG");
 	else if (type == IND_CODE)
-		return ("ind_addr");
+		return ("T_IND");
 	else if (type == DIR_CODE)
-		return ("dir_val");
+		return ("T_DIR");
 	else
-		return ("empty");
+		return ("NULL");
 }
 
 t_size	vm_instr_size(t_instr *src)
@@ -295,39 +298,36 @@ t_size	vm_instr_size(t_instr *src)
 		+ src->args[2].data.len);
 }
 
-void	vm_print_instr(t_instr *instr)
-{
-	reg_print(&instr->opcode.data, NRM);
-	reg_print(&instr->acb.data, NRM);
-	reg_print(&instr->args[0].data, NRM);
-	reg_print(&instr->args[1].data, NRM);
-	reg_print(&instr->args[2].data, NRM);
-}
-
-// [cycle][pc][process] exec MNONIC TYPE ARG_BYTES, TYPE ARG_BYTES, TYPE ARG_BYTES : result
-static void vm_instr_print_arg(t_arg *arg)
+static void	vm_print_instr_arg(t_arg *arg)
 {
 	print("%s%s%s ", BLU, vm_type_name(arg->type), NRM);
 	reg_print(&arg->data, NRM);
-	print(" ");
 }
 
-static void	vm_print_execution(t_arena *arena, t_process *p)
+void	vm_print_process_info(t_arena *a, t_process *p)
+{
+	print("[%#08llu][%#08llu][%#08llu] ", a->current_cycle, p->id, p->pc);
+}
+
+static void	vm_print_instr(t_arena *a, t_process *p, const char *action)
 {
 	t_size	i;
 
-	print("[%#08llu][%#08llu][%#08llu] ", arena->current_cycle, p->id, p->pc);
-	print("%sexec%s ", GRN, NRM);
-	print("%s ", p->current_instruction->op->mnemonic);
+	vm_print_process_info(a, p);
+	print("%s%s%s ", GRN, action, NRM);
+	print("%s ( ", p->current_instruction->op->mnemonic);
 	i = 0;
 	while (i < p->current_instruction->op->param_count)
 	{
-		vm_instr_print_arg(&p->current_instruction->args[i]);
+		vm_print_instr_arg(&p->current_instruction->args[i]);
+		if (i < p->current_instruction->op->param_count - 1)
+			print(", ");
 		i++;
 	}
+	print(" )");
 }
 
-void	vm_instr_ld(t_arena *arena, t_process *p)
+void	vm_instr_ld(t_arena *a, t_process *p)
 {
 	t_uint8		reg_addr;
 	t_uint16	mem_addr;
@@ -342,11 +342,11 @@ void	vm_instr_ld(t_arena *arena, t_process *p)
 		reg_deref((t_byte *)&mem_addr, &p->current_instruction->args[0].data);
 		if (mem_addr % IDX_MOD != 0)
 			p->zf = TRUE;
-		buff_set(&arena->buffer, p->pc + mem_addr % IDX_MOD);
-		buff_read((t_byte *)&p->registers[reg_addr - 1], &arena->buffer, IND_SIZE);
+		buff_set(&a->buffer, p->pc + mem_addr % IDX_MOD);
+		buff_read((t_byte *)&p->registers[reg_addr - 1], &a->buffer, IND_SIZE);
 	}
-	vm_print_execution(arena, p);
-	print(" => %sreg%s ", BLU, NRM);
+	vm_print_instr(a, p, "exec");
+	print(" => %sR%d%s ", BLU, reg_addr, NRM);
 	reg_print(&p->registers[reg_addr - 1], NRM);
 	print("\n");
 	return ;
@@ -398,9 +398,9 @@ t_arg	*vm_arg_new(t_arg *dst, t_uint8 type, t_uint8 promoted)
 			dst->data.len = DIR_SIZE;
 	}
 	else if (type == IND_CODE)
-		dst->data.len = IND_SIZE;
+		dst->data.len = IND_ADDR_SIZE;
 	else if (type == REG_CODE)
-		dst->data.len = 1;
+		dst->data.len = REG_ADDR_SIZE;
 	else
 		dst->data.len = 1;
 	return (dst);
@@ -450,12 +450,7 @@ t_bool	vm_check_acb(t_op *op, t_acb acb)
 	return (TRUE);
 }
 
-static void	vm_read_instr_print(t_arena *arena, t_process *p, t_op *op)
-{
-	print("\n[%#08llu][%#08llu][%#08llu] %sread%s %s => \"%s\"\n", arena->current_cycle, p->id, p->pc, GRN, NRM, op->mnemonic, op->description);
-}
-
-void	vm_read_instr(t_arena *arena, t_process *p)
+void	vm_read_instr(t_arena *a, t_process *p)
 {
 	t_acb			acb;
 	t_byte			opcode;
@@ -467,16 +462,17 @@ void	vm_read_instr(t_arena *arena, t_process *p)
 	instr = minit(sizeof(t_instr));
 
 	// Set buffet to the position of the program counter.
-	buff_set(&arena->buffer, p->pc);
+	buff_set(&a->buffer, p->pc);
 
 	// Read opcode.
-	vm_arg_read(vm_arg_new(&instr->opcode, META, FALSE), &arena->buffer);
+	vm_arg_read(vm_arg_new(&instr->opcode, META, FALSE), &a->buffer);
 	reg_deref((t_byte *)&opcode, &instr->opcode.data);
 
 	// Validate opcode
 	if (opcode < 1 || opcode > OP_COUNT)
 	{
-		print("[%#08llu][%#08llu][%#08llu] %sread%s INVALID_OPCODE\n", arena->current_cycle, p->id, p->pc, RED, NRM);
+		vm_print_process_info(a, p);
+		print("%sread%s INVALID_OPCODE\n", RED, NRM);
 		p->pc++;
 		return ;
 	}
@@ -488,7 +484,7 @@ void	vm_read_instr(t_arena *arena, t_process *p)
 	if (instr->op->has_argument_coding_byte == TRUE)
 	{
 		// Read acb.
-		vm_arg_read(vm_arg_new(&instr->acb, META, FALSE), &arena->buffer);
+		vm_arg_read(vm_arg_new(&instr->acb, META, FALSE), &a->buffer);
 
 		// Decompose acb
 		acb = vm_decomp_acb(*instr->acb.data.mem);
@@ -496,7 +492,8 @@ void	vm_read_instr(t_arena *arena, t_process *p)
 		// Check that flags are valid.
 		if (vm_check_acb(instr->op, acb) == FALSE)
 		{
-			print("[%#08llu][%#08llu][%#08llu] %sread%s INVALID_ACB\n", arena->current_cycle, p->id, p->pc, RED, NRM);
+			vm_print_process_info(a, p);
+			print("%sread%s INVALID_ACB\n", RED, NRM);
 			p->pc++;
 			return ;
 		}
@@ -517,12 +514,13 @@ void	vm_read_instr(t_arena *arena, t_process *p)
 	i = 0;
 	while (i < instr->op->param_count)
 	{
-		vm_arg_read(vm_arg_new(&instr->args[i], acb.arg[i], promoted), &arena->buffer);
+		vm_arg_read(vm_arg_new(&instr->args[i], acb.arg[i], promoted), &a->buffer);
 		i++;
 	}
 	p->current_instruction = instr;
 	p->cycles_before_execution = instr->op->cycles;
-	vm_read_instr_print(arena, p, instr->op);
+	vm_print_instr(a, p, "read");
+	print("\n");
 }
 
 void	vm_execute_instr(t_arena *arena, t_process *p)
