@@ -1,6 +1,6 @@
 #include "../inc/vm.h"
 
-void	reg_print(t_reg *src, char *colour)
+void	vm_reg_print(t_reg *src, char *colour)
 {
 	t_uint64	deref;
 	t_size		i;

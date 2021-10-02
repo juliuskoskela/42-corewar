@@ -1,4 +1,4 @@
-#include "../inc/vm_2.h"
+#include "../inc/vm.h"
 
 t_bool	vm_mem_read(t_byte *dst, t_mem *src, size_t dst_len)
 {
