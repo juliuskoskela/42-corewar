@@ -32,11 +32,12 @@ SRC_BASE	=	vm_main.c \
 				vm_create_player.c \
 				vm_create_process.c \
 				vm_introduce_champs.c \
-				vm_execute_cycle.c
-#				vm_error.c
-#				vm_reverse_bytes.c
-#				vm_test_print.c \
+				vm_execute_cycle.c \
+				vm_pause_and_print_memory.c \
 				vm_check_live.c \
+				vm_error.c \
+				vm_reverse_bytes.c
+#				vm_test_print.c \
 				vm_print_arena.c \
 				vm_get_mem_addr.c \
 				vm_get_reg_addr.c \
@@ -62,7 +63,6 @@ SRC_BASE	=	vm_main.c \
 				vm_instr_or.c \
 				vm_instr_xor.c \
 				vm_advance_pc.c \
-				vm_pause_and_print_memory.c \
 				vm_print_bytes.c \
 				vm_print_process.c \
 

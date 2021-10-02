@@ -88,13 +88,16 @@ typedef struct s_process
 
 typedef struct s_arena
 {
-	t_player	players[MAX_PLAYERS];
+	t_byte		mem[MEM_SIZE];
+	t_header	players[MAX_PLAYERS];
 	t_size		player_count;
 	t_mem		buffer;
 	t_size		offset;
 	t_process	*processes;
 	t_size		current_cycle;
 	t_size		cycle_to_die;
+	t_size		cycles_since_check;
+	t_size		last_player_alive;
 	t_size		dump_nbr_cycles;
 	t_size		pause_nbr_cycles;
 	t_int32		verbosity;
@@ -128,5 +131,11 @@ void	vm_create_player(t_arena *arena, t_int32 *player_number, char *name);
 t_process	*vm_create_process(t_arena arena, t_process *process_lst, \
 t_int32 player_id);
 void	vm_introduce_champs(t_arena arena);
+void	vm_execute_cycle(t_process *process, t_arena *arena);
+void	vm_pause_and_print_memory(
+		t_arena arena);
+		void	vm_check_live(t_process **head, t_arena *arena);
+void	vm_error(const char *message);
+void	*vm_reverse_bytes(void *dst, void *src, t_size size);
 
 #endif
