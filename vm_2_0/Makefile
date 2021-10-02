@@ -16,7 +16,7 @@ LIB_ARGPARSER	= ../lib/argparser/libargparser.a
 LIB_CORE_DIR		= ../lib/core/
 LIB_ARGPARSER_DIR	= ../lib/argparser/
 
-CC			=	gcc
+CC			=	clang
 CFLAGS 		=	-g -Wall -Wextra -Werror -fPIC -fsanitize=address
 DFLAGS		=	-Wunreachable-code -Wconversion -Wpedantic -Wtype-limits
 CPPFLAGS	=	-I $(INC_DIR) -I ../inc -I ../lib/core/inc -I ../lib/argparser/include
@@ -28,15 +28,15 @@ COMPILE.c	=	$(CC) $(DEPFLAGS) $(CFLAGS) $(CPPFLAGS) -c
 SRC_BASE	=	vm_main.c \
 				vm_parse_arguments.c \
 				vm_save_input.c \
-				vm_battle.c
+				vm_battle.c \
+				vm_create_player.c \
+				vm_create_process.c \
+				vm_introduce_champs.c \
+				vm_execute_cycle.c
 #				vm_error.c
 #				vm_reverse_bytes.c
 #				vm_test_print.c \
-#				vm_create_player.c \
-#				vm_create_process.c \
-				vm_execute_cycle.c \
 				vm_check_live.c \
-				vm_introduce_champs.c \
 				vm_print_arena.c \
 				vm_get_mem_addr.c \
 				vm_get_reg_addr.c \

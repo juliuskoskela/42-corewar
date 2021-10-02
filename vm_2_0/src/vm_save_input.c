@@ -12,4 +12,9 @@ void	vm_save_input(t_arena *arena, t_uint32 argc, char **argv)
 	arena->dump_nbr_cycles = args.dump_nbr_cycles;
 	arena->pause_nbr_cycles = args.pause_nbr_cycles;
 	i = 0;
+	while (i < args.player_count)
+	{
+		vm_create_player(arena, &args.player_numbers[i], args.player_paths[i]);
+		i++;
+	}
 }

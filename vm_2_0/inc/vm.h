@@ -20,7 +20,7 @@
 
 # define ROW_SIZE 64
 
-//t_uint8	g_endianness = LITTLE;
+static const t_uint8	g_endianness = LITTLE;
 
 typedef struct s_input_args
 {
@@ -83,6 +83,7 @@ typedef struct s_process
 	t_int32		cycles_before_execution;
 	t_instr		*current_instruction;
 	t_reg		registers[REG_NUMBER];
+	struct s_process	*next;
 }	t_process;
 
 typedef struct s_arena
@@ -119,9 +120,13 @@ t_mem	*vm_mem_set(t_mem *src, t_size pos);
 t_bool	vm_mem_write(t_mem *dst, t_byte *src, size_t src_len);
 void	vm_reg_copy(t_reg *dst, t_reg *src);
 void	vm_reg_deref(t_byte *dst, t_reg *src);
-void	reg_print(t_reg *src, char *colour);
+void	vm_reg_print(t_reg *src, char *colour);
 void	vm_reg_ref(t_reg *dst, t_byte *src);
 t_reg	*vm_reg_set(t_reg *src, t_size len);
 void	vm_battle(t_arena arena);
+void	vm_create_player(t_arena *arena, t_int32 *player_number, char *name);
+t_process	*vm_create_process(t_arena arena, t_process *process_lst, \
+t_int32 player_id);
+void	vm_introduce_champs(t_arena arena);
 
 #endif
