@@ -52,12 +52,12 @@ typedef struct s_acb
 	t_uint8		arg[3];
 }	t_acb;
 
-typedef struct s_buff
+typedef struct s_mem
 {
 	t_byte		*mem;
 	t_size		pos;
 	t_size		len;
-}	t_buff;
+}	t_mem;
 
 
 typedef struct s_process
@@ -75,7 +75,7 @@ typedef struct s_arena
 {
 	t_player	players[MAX_PLAYERS];
 	t_size		player_count;
-	t_buff		buffer;
+	t_mem		buffer;
 	t_size		offset;
 	t_process	*processes;
 	t_size		current_cycle;
