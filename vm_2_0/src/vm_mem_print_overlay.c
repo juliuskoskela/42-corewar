@@ -1,6 +1,6 @@
 #include "../inc/vm_2.h"
 
-void	mem_print_overlay(t_mem *src, t_size start, t_size len, char *colour)
+void	vm_mem_print_overlay(t_mem *src, t_size start, t_size len, char *colour)
 {
 	t_size	i;
 	t_size 	rem;
