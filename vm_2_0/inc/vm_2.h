@@ -9,6 +9,18 @@
 
 t_uint8	g_endianness = LITTLE;
 
+typedef struct s_input_args
+{
+	char		*player_paths[MAX_PLAYERS];
+	int			player_numbers[MAX_PLAYERS];
+	int			next_player_nbr;
+	int			player_count;
+	int			verbosity;
+	int			pause_nbr_cycles;
+	int			coloured_output;
+	int			dump_nbr_cycles;
+}	t_input_args;
+
 typedef struct s_reg
 {
 	t_byte		mem[REG_SIZE];
