@@ -1,4 +1,4 @@
-#include "../inc/vm.h"
+#include "vm.h"
 
 void	vm_reg_copy(t_reg *dst, t_reg *src)
 {

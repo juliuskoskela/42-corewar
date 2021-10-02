@@ -1,4 +1,4 @@
-#include "../inc/vm.h"
+#include "vm.h"
 
 void	vm_mem_increment_pos(t_mem *src, t_size i)
 {

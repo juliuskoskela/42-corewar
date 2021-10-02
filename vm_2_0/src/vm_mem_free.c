@@ -1,4 +1,4 @@
-#include "../inc/vm.h"
+#include "vm.h"
 
 void	vm_mem_free(t_mem *src)
 {

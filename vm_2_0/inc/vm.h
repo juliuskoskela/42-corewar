@@ -119,7 +119,7 @@ t_mem	*vm_mem_set(t_mem *src, t_size pos);
 t_bool	vm_mem_write(t_mem *dst, t_byte *src, size_t src_len);
 void	vm_reg_copy(t_reg *dst, t_reg *src);
 void	vm_reg_deref(t_byte *dst, t_reg *src);
-void	reg_print(t_reg *src, char *colour);
+void	vm_reg_print(t_reg *src, char *colour);
 void	vm_reg_ref(t_reg *dst, t_byte *src);
 t_reg	*vm_reg_set(t_reg *src, t_size len);
 

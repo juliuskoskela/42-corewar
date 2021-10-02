@@ -1,4 +1,4 @@
-#include "../inc/vm.h"
+#include "vm.h"
 
 void	vm_mem_print_overlay(t_mem *src, t_size start, t_size len, char *colour)
 {

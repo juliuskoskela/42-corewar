@@ -1,4 +1,4 @@
-#include "../inc/vm.h"
+#include "vm.h"
 
 t_mem	*vm_mem_new(t_mem *src, t_size len)
 {
