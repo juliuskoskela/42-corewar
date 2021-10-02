@@ -15,7 +15,6 @@
 #define WHT  "\x1B[37m"
 # define META	0x1 << 3
 
-
 typedef struct s_reg
 {
 	t_byte		mem[REG_SIZE];
@@ -343,7 +342,7 @@ void	vm_instr_ld(t_arena *a, t_process *p)
 		if (mem_addr % IDX_MOD != 0)
 			p->zf = TRUE;
 		buff_set(&a->buffer, p->pc + mem_addr % IDX_MOD);
-		buff_read((t_byte *)&p->registers[reg_addr - 1], &a->buffer, IND_SIZE);
+		buff_read((t_byte *)&p->registers[reg_addr - 1], &a->buffer, IND_ADDR_SIZE);
 	}
 	vm_print_instr(a, p, "exec");
 	print(" => %sR%d%s ", BLU, reg_addr, NRM);
@@ -395,7 +394,7 @@ t_arg	*vm_arg_new(t_arg *dst, t_uint8 type, t_uint8 promoted)
 			dst->data.len = REG_SIZE;
 		}
 		else
-			dst->data.len = DIR_SIZE;
+			dst->data.len = DIR_VAL_SIZE;
 	}
 	else if (type == IND_CODE)
 		dst->data.len = IND_ADDR_SIZE;
