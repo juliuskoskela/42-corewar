@@ -18,6 +18,8 @@
 #define CYN  "\x1B[36m"
 #define WHT  "\x1B[37m"
 
+# define ROW_SIZE 64
+
 t_uint8	g_endianness = LITTLE;
 
 typedef struct s_input_args
@@ -107,5 +109,18 @@ void	vm_save_input(
 t_input_args	vm_parse_arguments(
 		int argc,
 		char **argv);
+void	vm_mem_free(t_mem *src);
+void	vm_mem_increment_pos(t_mem *src, t_size i);
+t_mem	*vm_mem_new(t_mem *src, t_size len);
+void	vm_mem_print_overlay(t_mem *src, t_size start, t_size len, char *colour);
+void	vm_mem_print(t_mem *src);
+t_bool	vm_mem_read(t_byte *dst, t_mem *src, size_t dst_len);
+t_mem	*vm_mem_set(t_mem *src, t_size pos);
+t_bool	vm_mem_write(t_mem *dst, t_byte *src, size_t src_len);
+void	vm_reg_copy(t_reg *dst, t_reg *src);
+void	vm_reg_deref(t_byte *dst, t_reg *src);
+void	reg_print(t_reg *src, char *colour);
+void	vm_reg_ref(t_reg *dst, t_byte *src);
+t_reg	*vm_reg_set(t_reg *src, t_size len);
 
 #endif
