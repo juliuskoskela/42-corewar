@@ -69,6 +69,7 @@ int	vm_read_instr_arguments(t_process *process, t_arena *arena)
 		vm_arg_read(vm_arg_new(&process->current_instruction.args[i], acb.arg[i], promoted), &arena->mem);
 		i++;
 	}
+	return (1);
 }
 
 void	vm_execute_instruction(t_process *process,

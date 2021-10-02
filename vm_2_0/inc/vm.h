@@ -2,6 +2,7 @@
 # define VM_H
 
 # include "../../inc/corewar.h"
+# include "../instr/inc/instr.h"
 
 # define CYCLE_TO_DIE			1536
 # define CYCLE_DELTA			50
@@ -149,5 +150,7 @@ void	vm_pause_and_print_memory(
 		void	vm_check_live(t_process **head, t_arena *arena);
 void	vm_exit_error(const char *message);
 void	*vm_reverse_bytes(void *dst, void *src, t_size size);
+t_arg	*vm_arg_read(t_arg *dst, t_mem *src);
+t_arg	*vm_arg_new(t_arg *dst, t_uint8 type, t_uint8 promoted);
 
 #endif
