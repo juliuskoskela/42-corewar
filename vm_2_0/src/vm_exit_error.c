@@ -1,6 +1,6 @@
 #include "../inc/vm.h"
 
-void	vm_error(const char *message)
+void	vm_exit_error(const char *message)
 {
 	print("%s", message);
 	exit(0);

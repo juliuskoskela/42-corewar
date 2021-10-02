@@ -4,6 +4,18 @@
 # include "../../inc/corewar.h"
 
 # define CYCLE_TO_DIE			1536
+# define CYCLE_DELTA			50
+# define NBR_LIVE				21
+# define MAX_CHECKS				10
+
+# define VM_VERBOSE_LIVES		1
+# define VM_VERBOSE_CYCLES		2
+# define VM_VERBOSE_OPS			4
+# define VM_VERBOSE_DEATHS		8
+# define VM_VERBOSE_PC			16
+
+# define VM_PRINT_ARENA_WIDTH	64
+
 # define LITTLE 0
 # define BIG 1
 
@@ -50,8 +62,8 @@ typedef struct s_arg
 typedef struct s_instr
 {
 	t_op		*op;
-	t_arg		opcode;
-	t_arg		acb;
+	t_byte		opcode;
+	t_byte		acb;
 	t_arg		args[3];
 }	t_instr;
 
@@ -81,14 +93,14 @@ typedef struct s_process
 	t_bool		zf;
 	t_int32		last_live;
 	t_int32		cycles_before_execution;
-	t_instr		*current_instruction;
+	t_instr		current_instruction;
 	t_reg		registers[REG_NUMBER];
 	struct s_process	*next;
 }	t_process;
 
 typedef struct s_arena
 {
-	t_byte		mem[MEM_SIZE];
+	t_mem		mem;
 	t_header	players[MAX_PLAYERS];
 	t_size		player_count;
 	t_mem		buffer;
@@ -103,7 +115,7 @@ typedef struct s_arena
 	t_int32		verbosity;
 }	t_arena;
 
-
+typedef void (*t_exec)(t_arena *, t_process *);
 
 void	vm_save_input(
 		t_arena *arena,
@@ -135,7 +147,7 @@ void	vm_execute_cycle(t_process *process, t_arena *arena);
 void	vm_pause_and_print_memory(
 		t_arena arena);
 		void	vm_check_live(t_process **head, t_arena *arena);
-void	vm_error(const char *message);
+void	vm_exit_error(const char *message);
 void	*vm_reverse_bytes(void *dst, void *src, t_size size);
 
 #endif
