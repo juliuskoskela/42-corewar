@@ -4,6 +4,10 @@
 # include "../../inc/corewar.h"
 
 # define CYCLE_TO_DIE			1536
+# define LITTLE 0
+# define BIG 1
+
+t_uint8	g_endianness = LITTLE;
 
 typedef struct s_reg
 {
