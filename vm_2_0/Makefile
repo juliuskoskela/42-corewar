@@ -27,13 +27,13 @@ COMPILE.c	=	$(CC) $(DEPFLAGS) $(CFLAGS) $(CPPFLAGS) -c
 
 SRC_BASE	=	vm_main.c \
 				vm_parse_arguments.c \
-				vm_save_input.c
+				vm_save_input.c \
+				vm_battle.c
 #				vm_error.c
 #				vm_reverse_bytes.c
 #				vm_test_print.c \
 #				vm_create_player.c \
 #				vm_create_process.c \
-				vm_battle.c \
 				vm_execute_cycle.c \
 				vm_check_live.c \
 				vm_introduce_champs.c \

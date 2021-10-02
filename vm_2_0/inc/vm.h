@@ -58,7 +58,7 @@ typedef struct s_instr
 typedef struct s_player
 {
 	t_header	header;
-	t_byte		program[CHAMP_MAX_SIZE];
+//	t_byte		program[CHAMP_MAX_SIZE];
 }	t_player;
 
 typedef struct s_acb
@@ -122,5 +122,6 @@ void	vm_reg_deref(t_byte *dst, t_reg *src);
 void	reg_print(t_reg *src, char *colour);
 void	vm_reg_ref(t_reg *dst, t_byte *src);
 t_reg	*vm_reg_set(t_reg *src, t_size len);
+void	vm_battle(t_arena arena);
 
 #endif
