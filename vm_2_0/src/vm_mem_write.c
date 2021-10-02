@@ -1,4 +1,4 @@
-#include "../inc/vm_2.h"
+#include "vm.h"
 
 t_bool	vm_mem_write(t_mem *dst, t_byte *src, size_t src_len)
 {

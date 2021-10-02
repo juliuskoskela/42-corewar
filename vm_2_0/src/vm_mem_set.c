@@ -1,4 +1,4 @@
-#include "../inc/vm_2.h"
+#include "vm.h"
 
 t_mem	*vm_mem_set(t_mem *src, t_size pos)
 {

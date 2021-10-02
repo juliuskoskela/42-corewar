@@ -20,7 +20,7 @@
 
 # define ROW_SIZE 64
 
-t_uint8	g_endianness = LITTLE;
+//t_uint8	g_endianness = LITTLE;
 
 typedef struct s_input_args
 {

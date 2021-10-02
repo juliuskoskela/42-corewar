@@ -1,4 +1,4 @@
-#include "../inc/vm_2.h"
+#include "vm.h"
 
 void	vm_mem_print(t_mem *src)
 {

@@ -1,4 +1,4 @@
-#include "../inc/vm.h"
+#include "vm.h"
 
 void	reg_print(t_reg *src, char *colour)
 {
