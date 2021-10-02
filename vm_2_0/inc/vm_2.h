@@ -18,6 +18,8 @@
 #define CYN  "\x1B[36m"
 #define WHT  "\x1B[37m"
 
+# define ROW_SIZE 64
+
 t_uint8	g_endianness = LITTLE;
 
 typedef struct s_reg
