@@ -7,7 +7,7 @@ static void	vm_read_header_subject(t_arena *arena, t_uint32 player_number, int f
 	t_byte		buf[COMMENT_LENGTH + 1];
 
 	mzero(buf, COMMENT_LENGTH + 1);
-	player = &arena->all_players[player_number - 1];
+	player = &arena->players[player_number - 1];
 	if (read(fd, buf, sizeof(player->magic)) != sizeof(player->magic))
 		vm_error("Invalid bytes in input file\n");
 	player->magic = *(t_uint32 *)vm_reverse_bytes(\
@@ -35,7 +35,7 @@ static void	vm_read_header(t_arena *arena, t_uint32 player_number, int fd)
 	t_byte		buf[COMMENT_LENGTH + 1];
 
 	mzero(buf, COMMENT_LENGTH + 1);
-	player = &arena->all_players[player_number - 1];
+	player = &arena->players[player_number - 1];
 	if (read(fd, buf, sizeof(player->magic)) != sizeof(player->magic))
 		vm_error("Invalid bytes in input file\n");
 	player->magic = *(t_uint32 *)vm_reverse_bytes(\
@@ -68,8 +68,8 @@ static void	vm_read_program(t_arena *arena, t_uint32 player_number, int fd)
 
 	player_mem_location = (player_number - 1) * arena->offset;
 	check = read(fd, arena->mem + player_mem_location, \
-		arena->all_players[player_number - 1].prog_size);
-	if (check != arena->all_players[player_number - 1].prog_size)
+		arena->players[player_number - 1].prog_size);
+	if (check != arena->players[player_number - 1].prog_size)
 		vm_error("Invalid amount of bytes in program\n");
 }
 
@@ -80,18 +80,18 @@ void	vm_create_player(t_arena *arena, t_int32 *player_number, char *name)
 
 	if (*player_number > MAX_PLAYERS)
 		vm_error("player_number is not within MAX_PLAYERS\n");
-	if (arena->all_players[*player_number - 1].prog_size || \
-		arena->all_players[*player_number - 1].prog_name[0])
+	if (arena->players[*player_number - 1].prog_size || \
+		arena->players[*player_number - 1].prog_name[0])
 		*player_number += 1;
 	mzero(&player, sizeof(t_header));
-	arena->all_players[*player_number - 1] = player;
+	arena->players[*player_number - 1] = player;
 	if (s_cmp(".cor", s_rchr(name, '.')))
 		vm_error("Champions must be .cor files\n");
 	fd = open(name, O_RDONLY);
 	if (fd < 0)
 		vm_error("Unable to open .cor file \n");
 	vm_read_header(arena, *player_number, fd);
-	if (arena->all_players[*player_number - 1].magic != COREWAR_EXEC_MAGIC)
+	if (arena->players[*player_number - 1].magic != COREWAR_EXEC_MAGIC)
 		vm_error("COREWAR_EXEC_MAGIC does not match the bytecode\n");
 	vm_read_program(arena, *player_number, fd);
 	*player_number += 1;
