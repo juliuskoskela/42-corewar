@@ -1,4 +1,4 @@
-#include "../inc/vm_2.h"
+#include "../inc/vm.h"
 
 void	vm_reg_deref(t_byte *dst, t_reg *src)
 {

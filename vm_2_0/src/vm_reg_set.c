@@ -1,4 +1,4 @@
-#include "../inc/vm_2.h"
+#include "../inc/vm.h"
 
 t_reg	*vm_reg_set(t_reg *src, t_size len)
 {

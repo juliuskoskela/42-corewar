@@ -92,6 +92,20 @@ typedef struct s_arena
 	t_process	*processes;
 	t_size		current_cycle;
 	t_size		cycle_to_die;
+	t_size		dump_nbr_cycles;
+	t_size		pause_nbr_cycles;
+	t_int32		verbosity;
 }	t_arena;
+
+
+
+void	vm_save_input(
+		t_arena *arena,
+		t_uint32 argc,
+		char **argv);
+
+t_input_args	vm_parse_arguments(
+		int argc,
+		char **argv);
 
 #endif
