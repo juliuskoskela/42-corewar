@@ -19,11 +19,11 @@ LIB_ARGPARSER_DIR	= ../lib/argparser/
 CC			=	clang
 CFLAGS 		=	-g -Wall -Wextra -Werror -fPIC -fsanitize=address
 DFLAGS		=	-Wunreachable-code -Wconversion -Wpedantic -Wtype-limits
-CPPFLAGS	=	-I $(INC_DIR) -I ../inc -I ../lib/core/inc -I ../lib/argparser/include
+CPPFLAGS	=	-I $(INC_DIR) -I src/instr -I ../inc -I ../lib/core/inc -I ../lib/argparser/include
 DEPFLAGS	=	-MT $@ -MMD -MP -MF $(DEP_DIR)$*.d
 LDFLAGS		=	-L $(LIB_CORE_DIR) -L $(LIB_ARGPARSER_DIR)
 LDLIBS		=	-l argparser -l core
-COMPILE.c	=	$(CC) $(DEPFLAGS) $(CFLAGS) $(CPPFLAGS) -c
+COMPILE.c	=	$(CC) $(CFLAGS) $(CPPFLAGS) -c
 
 SRC_BASE	=	vm_main.c \
 				vm_parse_arguments.c \
@@ -73,12 +73,15 @@ SRC_BASE	=	vm_main.c \
 				vm_print_bytes.c \
 				vm_print_process.c
 
-SRC_INSTR =		vm_instr_null.c \
-				vm_instr_size.c
+SRC_INSTR =		$(addprefix instr/,\
+				vm_instr_null.c \
+				vm_instr_size.c \
+				)
 
+ALL_SRC = $(SRC_BASE) $(SRC_INSTR)
 
-SRC			=	$(addprefix $(SRC_DIR), $(SRC_BASE))
-OBJ			=	$(addprefix $(OBJ_DIR), $(SRC_BASE:.c=.o))
+SRC			=	$(addprefix $(SRC_DIR), $(ALL_SRC))
+OBJ			=	$(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRC))
 
 .PHONY: all fclean clean re
 
@@ -88,15 +91,15 @@ $(NAME): $(OBJ) $(LIB_CORE) $(LIB_ARGPARSER)
 				$(CC) $(CFLAGS) -o $@ $(OBJ) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS)
 				echo "\\n\033[32;1mCOREWAR VIRTUAL MACHINE COMPILED\033[0m \\n"
 
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c $(DEP_DIR)%.d | $(OBJ_DIR) $(DEP_DIR)
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJ_DIR)
 				$(COMPILE.c) $< -o $@
 				echo $@
 
 $(OBJ_DIR):
-				mkdir -p $@
+				mkdir -p $@/instr
 
-$(DEP_DIR):
-				mkdir -p $@
+# $(DEP_DIR):
+# 				mkdir -p $@/instr
 
 $(LIB_CORE):
 	$(MAKE) -C ../lib/core/

@@ -2,7 +2,7 @@
 # define VM_H
 
 # include "../../inc/corewar.h"
-# include "../instr/inc/instr.h"
+# include "../src/instr/instr.h"
 
 # define CYCLE_TO_DIE			1536
 # define CYCLE_DELTA			50

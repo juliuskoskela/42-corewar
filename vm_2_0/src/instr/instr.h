@@ -7,6 +7,7 @@
 typedef struct s_arena t_arena;
 typedef struct s_process t_process;
 typedef struct s_instr t_instr;
+
 typedef void (*t_exec)(t_arena *, t_process *);
 
 void	vm_instr_ld(t_arena *a, t_process *p);
