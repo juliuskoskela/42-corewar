@@ -71,7 +71,7 @@ static void	vm_read_program(t_arena *arena, t_uint32 player_number, int fd)
 	program_size = arena->players[player_number - 1].prog_size;
 	if (read(fd, program, program_size) != program_size)
 		vm_exit_error("Invalid amount of bytes in program\n");
-	vm_mem_set(&arena->mem, player_mem_location);
+	vm_mem_set_pos(&arena->mem, player_mem_location);
 	vm_mem_write(&arena->mem, program, program_size);
 }
 

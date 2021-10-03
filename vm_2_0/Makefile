@@ -40,7 +40,7 @@ SRC_BASE	=	vm_main.c \
 				vm_arg_new.c \
 				vm_arg_read.c \
 				vm_mem_new.c \
-				vm_mem_set.c \
+				vm_mem_set_pos.c \
 				vm_mem_write.c \
 				vm_mem_read.c \
 				vm_print_arena.c \
@@ -88,12 +88,12 @@ OBJ			=	$(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRC))
 all: $(NAME)
 
 $(NAME): $(OBJ) $(LIB_CORE) $(LIB_ARGPARSER)
-				$(CC) $(CFLAGS) -o $@ $(OBJ) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS)
+				@$(CC) $(CFLAGS) -o $@ $(OBJ) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS)
 				echo "\\n\033[32;1mCOREWAR VIRTUAL MACHINE COMPILED\033[0m \\n"
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJ_DIR)
-				$(COMPILE.c) $< -o $@
-				echo $@
+				@$(COMPILE.c) $< -o $@
+				@echo $@
 
 $(OBJ_DIR):
 				mkdir -p $@/instr
