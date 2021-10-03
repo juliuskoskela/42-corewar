@@ -6,10 +6,12 @@
 
 typedef struct s_arena t_arena;
 typedef struct s_process t_process;
-typedef struct s_exec t_exec;
+typedef struct s_instr t_instr;
+typedef void (*t_exec)(t_arena *, t_process *);
 
 void	vm_instr_ld(t_arena *a, t_process *p);
 void	vm_instr_null(t_arena *a, t_process *p);
+t_size	vm_instr_size(t_instr *src);
 
 static const t_exec g_instr_funcs[] =
 {

@@ -36,7 +36,6 @@ SRC_BASE	=	vm_main.c \
 				vm_pause_and_print_memory.c \
 				vm_check_live.c \
 				vm_exit_error.c \
-				vm_instr_null.c \
 				vm_reverse_bytes.c
 #				vm_test_print.c \
 				vm_print_arena.c \
@@ -76,18 +75,18 @@ OBJ			=	$(addprefix $(OBJ_DIR), $(SRC_BASE:.c=.o))
 all: $(NAME)
 
 $(NAME): $(OBJ) $(LIB_CORE) $(LIB_ARGPARSER)
-				@$(CC) $(CFLAGS) -o $@ $(OBJ) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS)
-				@echo "\\n\033[32;1mCOREWAR VIRTUAL MACHINE COMPILED\033[0m \\n"
+				$(CC) $(CFLAGS) -o $@ $(OBJ) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS)
+				echo "\\n\033[32;1mCOREWAR VIRTUAL MACHINE COMPILED\033[0m \\n"
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(DEP_DIR)%.d | $(OBJ_DIR) $(DEP_DIR)
-				@$(COMPILE.c) $< -o $@
-				@echo $@
+				$(COMPILE.c) $< -o $@
+				echo $@
 
 $(OBJ_DIR):
-				@mkdir -p $@
+				mkdir -p $@
 
 $(DEP_DIR):
-				@mkdir -p $@
+				mkdir -p $@
 
 $(LIB_CORE):
 	$(MAKE) -C ../lib/core/

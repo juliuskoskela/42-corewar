@@ -78,7 +78,7 @@ t_arena *arena)
 	if (!vm_read_instr_arguments(process, arena))
 		return ;
 	g_instr_funcs[process->current_instruction.opcode - 1](arena, process);
-	process->pc = (process->pc + vm_instr_size(process->current_instruction)) % MEM_SIZE;
+	process->pc = (process->pc + vm_instr_size(&process->current_instruction)) % MEM_SIZE;
 }
 
 t_op	*vm_get_instruction(t_byte opcode)
@@ -89,7 +89,7 @@ t_op	*vm_get_instruction(t_byte opcode)
 	while (g_op_tab[i].mnemonic != 0)
 	{
 		if (opcode == g_op_tab[i].opcode)
-			return (&g_op_tab[i]);
+			return ((t_op *)&g_op_tab[i]);
 		i++;
 	}
 	return (NULL);

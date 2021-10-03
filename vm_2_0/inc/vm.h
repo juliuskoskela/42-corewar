@@ -92,7 +92,7 @@ typedef struct s_process
 	t_uint32	id;
 	t_size		pc;
 	t_bool		zf;
-	t_int32		last_live;
+	t_size		last_live;
 	t_int32		cycles_before_execution;
 	t_instr		current_instruction;
 	t_reg		registers[REG_NUMBER];
@@ -110,6 +110,8 @@ typedef struct s_arena
 	t_size		current_cycle;
 	t_size		cycle_to_die;
 	t_size		cycles_since_check;
+	t_size		lives_since_check;
+	t_size		checks_performed;
 	t_size		last_player_alive;
 	t_size		dump_nbr_cycles;
 	t_size		pause_nbr_cycles;
@@ -152,5 +154,6 @@ void	vm_exit_error(const char *message);
 void	*vm_reverse_bytes(void *dst, void *src, t_size size);
 t_arg	*vm_arg_read(t_arg *dst, t_mem *src);
 t_arg	*vm_arg_new(t_arg *dst, t_uint8 type, t_uint8 promoted);
+void	vm_print_arena(t_arena arena, t_process *process_list);
 
 #endif
