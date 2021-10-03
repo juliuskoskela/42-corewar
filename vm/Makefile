@@ -76,7 +76,7 @@ SRC_INSTR =		$(addprefix instr/,\
 
 SRC_MEM =		$(addprefix mem/,\
 				vm_mem_new.c \
-				vm_mem_set.c \
+				vm_mem_set_pos.c \
 				vm_mem_write.c \
 				vm_mem_read.c \
 				vm_mem_increment_pos.c \
