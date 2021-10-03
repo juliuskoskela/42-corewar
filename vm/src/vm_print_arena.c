@@ -23,9 +23,9 @@ void	vm_print_arena(t_arena arena, t_process *process_list)
 		else if (i % VM_PRINT_ARENA_WIDTH == 0)
 			print("%#06x : ", i);
 		if (vm_is_process_pc(i, process_list) && arena.coloured_output)
-			print("\x1b[31m%02x\x1b[0m", arena.mem[i]);
+			print("\x1b[31m%02x\x1b[0m", arena.mem.mem[i]);
 		else
-			print("%02x", arena.mem[i]);
+			print("%02x", arena.mem.mem[i]);
 		i++;
 		if (i % VM_PRINT_ARENA_WIDTH == 0 && i != 0)
 			print(" \n");

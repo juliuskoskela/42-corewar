@@ -9,8 +9,8 @@ void	vm_introduce_champs(t_arena arena)
 	while (i < arena.player_count)
 	{
 		print("* Player %d, weighing %d bytes, \"%s\" (\"%s\") !\n", \
-		i + 1, arena.players[i].prog_size, \
-		arena.players[i].prog_name, arena.players[i].comment);
+		i + 1, arena.all_players[i].prog_size, \
+		arena.all_players[i].prog_name, arena.all_players[i].comment);
 		i++;
 	}
 }
