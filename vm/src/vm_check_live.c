@@ -6,7 +6,7 @@ t_process *prev)
 	if (!prev)
 	{
 		*head = (*head)->next;
-		mdel((void **)current);
+		mdel((void **)&current);
 		current = *head;
 	}
 	else

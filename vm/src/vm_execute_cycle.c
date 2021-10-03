@@ -97,7 +97,7 @@ t_op	*vm_get_instruction(t_byte opcode)
 
 // Check the byte in memory that the process->pc is pointing to.
 // Validate opcode and save the opcode and cycles_before_execution.
-// Rests of the memory will be read on the cycle of execution.
+// Rest of the memory will be read on the cycle of execution.
 
 void	vm_init_instruction_execution(t_process *process, t_arena *arena)
 {
