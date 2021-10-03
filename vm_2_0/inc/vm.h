@@ -116,6 +116,7 @@ typedef struct s_arena
 	t_size		dump_nbr_cycles;
 	t_size		pause_nbr_cycles;
 	t_int32		verbosity;
+	t_bool		coloured_output;
 }	t_arena;
 
 typedef void (*t_exec)(t_arena *, t_process *);
@@ -155,5 +156,8 @@ void	*vm_reverse_bytes(void *dst, void *src, t_size size);
 t_arg	*vm_arg_read(t_arg *dst, t_mem *src);
 t_arg	*vm_arg_new(t_arg *dst, t_uint8 type, t_uint8 promoted);
 void	vm_print_arena(t_arena arena, t_process *process_list);
+t_bool	vm_mem_read(t_byte *dst, t_mem *src, size_t dst_len);
+void	vm_mem_increment_pos(t_mem *src, t_size i);
+t_bool	vm_mem_read(t_byte *dst, t_mem *src, size_t dst_len);
 
 #endif

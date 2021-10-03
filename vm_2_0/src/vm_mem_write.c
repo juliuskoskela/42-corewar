@@ -10,7 +10,7 @@ t_bool	vm_mem_write(t_mem *dst, t_byte *src, size_t src_len)
 	while (i < src_len)
 	{
 		dst->mem[dst->pos] = src[i];
-		mem_increment_pos(dst, 1);
+		vm_mem_increment_pos(dst, 1);
 		i++;
 	}
 	return (TRUE);

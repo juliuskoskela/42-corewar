@@ -10,7 +10,7 @@ t_bool	vm_mem_read(t_byte *dst, t_mem *src, size_t dst_len)
 	while (i < dst_len)
 	{
 		dst[i] = src->mem[src->pos];
-		mem_increment_pos(src, 1);
+		vm_mem_increment_pos(src, 1);
 		i++;
 	}
 	return (TRUE);

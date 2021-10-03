@@ -36,7 +36,15 @@ SRC_BASE	=	vm_main.c \
 				vm_pause_and_print_memory.c \
 				vm_check_live.c \
 				vm_exit_error.c \
-				vm_reverse_bytes.c
+				vm_reverse_bytes.c \
+				vm_arg_new.c \
+				vm_arg_read.c \
+				vm_mem_new.c \
+				vm_mem_set.c \
+				vm_mem_write.c \
+				vm_mem_read.c \
+				vm_print_arena.c \
+				vm_mem_increment_pos.c
 #				vm_test_print.c \
 				vm_print_arena.c \
 				vm_get_mem_addr.c \
@@ -65,7 +73,9 @@ SRC_BASE	=	vm_main.c \
 				vm_print_bytes.c \
 				vm_print_process.c
 
-SRC_INSTR =		vm_instr_null.c
+SRC_INSTR =		vm_instr_null.c \
+				vm_instr_size.c
+
 
 SRC			=	$(addprefix $(SRC_DIR), $(SRC_BASE))
 OBJ			=	$(addprefix $(OBJ_DIR), $(SRC_BASE:.c=.o))
