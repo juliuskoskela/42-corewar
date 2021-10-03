@@ -16,34 +16,42 @@ LIB_ARGPARSER	= ../lib/argparser/libargparser.a
 LIB_CORE_DIR		= ../lib/core/
 LIB_ARGPARSER_DIR	= ../lib/argparser/
 
-CC			=	gcc
+CC			=	clang
 CFLAGS 		=	-g -Wall -Wextra -Werror -fPIC -fsanitize=address
 DFLAGS		=	-Wunreachable-code -Wconversion -Wpedantic -Wtype-limits
-CPPFLAGS	=	-I $(INC_DIR) -I ../inc -I ../lib/core/inc -I ../lib/argparser/include
+CPPFLAGS	=	-I $(INC_DIR) -I src/instr -I ../inc -I ../lib/core/inc -I ../lib/argparser/include
 DEPFLAGS	=	-MT $@ -MMD -MP -MF $(DEP_DIR)$*.d
 LDFLAGS		=	-L $(LIB_CORE_DIR) -L $(LIB_ARGPARSER_DIR)
 LDLIBS		=	-l argparser -l core
-COMPILE.c	=	$(CC) $(DEPFLAGS) $(CFLAGS) $(CPPFLAGS) -c
+COMPILE.c	=	$(CC) $(CFLAGS) $(CPPFLAGS) -c
 
 SRC_BASE	=	vm_main.c \
-				vm_error.c \
-				vm_reverse_bytes.c \
-				vm_save_input.c \
 				vm_parse_arguments.c \
-				vm_test_print.c \
+				vm_save_input.c \
+				vm_battle.c \
 				vm_create_player.c \
 				vm_create_process.c \
-				vm_battle.c \
-				vm_execute_cycle.c \
-				vm_check_live.c \
 				vm_introduce_champs.c \
+				vm_execute_cycle.c \
+				vm_pause_and_print_memory.c \
+				vm_check_live.c \
+				vm_exit_error.c \
+				vm_reverse_bytes.c \
+				vm_arg_new.c \
+				vm_arg_read.c \
+				vm_mem_new.c \
+				vm_mem_set_pos.c \
+				vm_mem_write.c \
+				vm_mem_read.c \
+				vm_print_arena.c \
+				vm_mem_increment_pos.c
+#				vm_test_print.c \
 				vm_print_arena.c \
 				vm_get_mem_addr.c \
 				vm_get_reg_addr.c \
 				vm_get_arg_data.c \
 				vm_get_arg_type.c \
 				vm_get_val.c \
-				vm_instr_null.c \
 				vm_instr_live.c \
 				vm_instr_st.c \
 				vm_instr_sti.c \
@@ -62,12 +70,18 @@ SRC_BASE	=	vm_main.c \
 				vm_instr_or.c \
 				vm_instr_xor.c \
 				vm_advance_pc.c \
-				vm_pause_and_print_memory.c \
 				vm_print_bytes.c \
-				vm_print_process.c \
+				vm_print_process.c
 
-SRC			=	$(addprefix $(SRC_DIR), $(SRC_BASE))
-OBJ			=	$(addprefix $(OBJ_DIR), $(SRC_BASE:.c=.o))
+SRC_INSTR =		$(addprefix instr/,\
+				vm_instr_null.c \
+				vm_instr_size.c \
+				)
+
+ALL_SRC = $(SRC_BASE) $(SRC_INSTR)
+
+SRC			=	$(addprefix $(SRC_DIR), $(ALL_SRC))
+OBJ			=	$(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRC))
 
 .PHONY: all fclean clean re
 
@@ -75,17 +89,17 @@ all: $(NAME)
 
 $(NAME): $(OBJ) $(LIB_CORE) $(LIB_ARGPARSER)
 				@$(CC) $(CFLAGS) -o $@ $(OBJ) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS)
-				@echo "\\n\033[32;1mCOREWAR VIRTUAL MACHINE COMPILED\033[0m \\n"
+				echo "\\n\033[32;1mCOREWAR VIRTUAL MACHINE COMPILED\033[0m \\n"
 
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c $(DEP_DIR)%.d | $(OBJ_DIR) $(DEP_DIR)
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJ_DIR)
 				@$(COMPILE.c) $< -o $@
 				@echo $@
 
 $(OBJ_DIR):
-				@mkdir -p $@
+				mkdir -p $@/instr
 
-$(DEP_DIR):
-				@mkdir -p $@
+# $(DEP_DIR):
+# 				mkdir -p $@/instr
 
 $(LIB_CORE):
 	$(MAKE) -C ../lib/core/

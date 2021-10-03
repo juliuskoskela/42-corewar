@@ -14,7 +14,7 @@ void	*vm_reverse_bytes(void *dst, void *src, t_size size)
 
 	tmp = minit(size);
 	if (!tmp)
-		vm_error("malloc failed \n");
+		vm_exit_error("malloc failed \n");
 	mcpy_safe(tmp, src, size);
 	dst_ptr = (t_byte *)dst;
 	i = 0;

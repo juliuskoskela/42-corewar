@@ -41,12 +41,12 @@ typedef struct s_acb
 	t_uint8		arg[3];
 }	t_acb;
 
-typedef struct s_buff
+typedef struct s_mem
 {
 	t_byte		*mem;
 	t_size		pos;
 	t_size		len;
-}	t_buff;
+}	t_mem;
 
 typedef struct s_process
 {
@@ -69,7 +69,7 @@ typedef struct s_arena
 {
 	t_player	players[MAX_PLAYERS];
 	t_size		player_count;
-	t_buff		buffer;
+	t_mem		memer;
 	t_size		offset;
 	t_process	*processes;
 	t_size		current_cycle;
@@ -166,7 +166,7 @@ void	reg_print(t_reg *src, char *colour)
 
 ///////////////////////////////////////////////////////////////////////////////
 
-t_buff	*buff_new(t_buff *src, t_size len)
+t_mem	*mem_new(t_mem *src, t_size len)
 {
 	src->mem = minit(sizeof(t_byte) * len);
 	if (!src->mem)
@@ -176,7 +176,7 @@ t_buff	*buff_new(t_buff *src, t_size len)
 	return (src);
 }
 
-void	buff_free(t_buff *src)
+void	mem_free(t_mem *src)
 {
 	if (!src)
 		return ;
@@ -186,12 +186,12 @@ void	buff_free(t_buff *src)
 	src->len = 0;
 }
 
-void	buff_increment_pos(t_buff *src, t_size i)
+void	mem_increment_pos(t_mem *src, t_size i)
 {
 	src->pos = (src->pos + i) % src->len;
 }
 
-t_buff	*buff_set(t_buff *src, t_size pos)
+t_mem	*mem_set(t_mem *src, t_size pos)
 {
 	if (!src)
 		return (NULL);
@@ -199,7 +199,7 @@ t_buff	*buff_set(t_buff *src, t_size pos)
 	return (src);
 }
 
-t_bool	buff_read(t_byte *dst, t_buff *src, size_t dst_len)
+t_bool	mem_read(t_byte *dst, t_mem *src, size_t dst_len)
 {
 	t_size	i;
 
@@ -209,13 +209,13 @@ t_bool	buff_read(t_byte *dst, t_buff *src, size_t dst_len)
 	while (i < dst_len)
 	{
 		dst[i] = src->mem[src->pos];
-		buff_increment_pos(src, 1);
+		mem_increment_pos(src, 1);
 		i++;
 	}
 	return (TRUE);
 }
 
-t_bool	buff_write(t_buff *dst, t_byte *src, size_t src_len)
+t_bool	mem_write(t_mem *dst, t_byte *src, size_t src_len)
 {
 	t_size	i;
 
@@ -225,13 +225,13 @@ t_bool	buff_write(t_buff *dst, t_byte *src, size_t src_len)
 	while (i < src_len)
 	{
 		dst->mem[dst->pos] = src[i];
-		buff_increment_pos(dst, 1);
+		mem_increment_pos(dst, 1);
 		i++;
 	}
 	return (TRUE);
 }
 
-void	buff_print(t_buff *src)
+void	mem_print(t_mem *src)
 {
 	t_size	i;
 
@@ -246,7 +246,7 @@ void	buff_print(t_buff *src)
 	print("\n");
 }
 
-void	buff_print_overlay(t_buff *src, t_size start, t_size len, char *colour)
+void	mem_print_overlay(t_mem *src, t_size start, t_size len, char *colour)
 {
 	t_size	i;
 	t_size 	rem;
@@ -341,8 +341,8 @@ void	vm_instr_ld(t_arena *a, t_process *p)
 		reg_deref((t_byte *)&mem_addr, &p->current_instruction->args[0].data);
 		if (mem_addr % IDX_MOD != 0)
 			p->zf = TRUE;
-		buff_set(&a->buffer, p->pc + mem_addr % IDX_MOD);
-		buff_read((t_byte *)&p->registers[reg_addr - 1], &a->buffer, IND_ADDR_SIZE);
+		mem_set(&a->memer, p->pc + mem_addr % IDX_MOD);
+		mem_read((t_byte *)&p->registers[reg_addr - 1], &a->memer, IND_ADDR_SIZE);
 	}
 	vm_print_instr(a, p, "exec");
 	print(" => %sR%d%s ", BLU, reg_addr, NRM);
@@ -405,9 +405,9 @@ t_arg	*vm_arg_new(t_arg *dst, t_uint8 type, t_uint8 promoted)
 	return (dst);
 }
 
-t_arg	*vm_arg_read(t_arg *dst, t_buff *src)
+t_arg	*vm_arg_read(t_arg *dst, t_mem *src)
 {
-	buff_read((t_byte *)&dst->data.mem, src, dst->data.len);
+	mem_read((t_byte *)&dst->data.mem, src, dst->data.len);
 	return (dst);
 }
 
@@ -460,11 +460,11 @@ void	vm_read_instr(t_arena *a, t_process *p)
 	promoted = FALSE;
 	instr = minit(sizeof(t_instr));
 
-	// Set buffet to the position of the program counter.
-	buff_set(&a->buffer, p->pc);
+	// Set memet to the position of the program counter.
+	mem_set(&a->memer, p->pc);
 
 	// Read opcode.
-	vm_arg_read(vm_arg_new(&instr->opcode, META, FALSE), &a->buffer);
+	vm_arg_read(vm_arg_new(&instr->opcode, META, FALSE), &a->memer);
 	reg_deref((t_byte *)&opcode, &instr->opcode.data);
 
 	// Validate opcode
@@ -483,7 +483,7 @@ void	vm_read_instr(t_arena *a, t_process *p)
 	if (instr->op->has_argument_coding_byte == TRUE)
 	{
 		// Read acb.
-		vm_arg_read(vm_arg_new(&instr->acb, META, FALSE), &a->buffer);
+		vm_arg_read(vm_arg_new(&instr->acb, META, FALSE), &a->memer);
 
 		// Decompose acb
 		acb = vm_decomp_acb(*instr->acb.data.mem);
@@ -513,7 +513,7 @@ void	vm_read_instr(t_arena *a, t_process *p)
 	i = 0;
 	while (i < instr->op->param_count)
 	{
-		vm_arg_read(vm_arg_new(&instr->args[i], acb.arg[i], promoted), &a->buffer);
+		vm_arg_read(vm_arg_new(&instr->args[i], acb.arg[i], promoted), &a->memer);
 		i++;
 	}
 	p->current_instruction = instr;
@@ -588,7 +588,7 @@ void	vm_read_player(t_arena *arena, const char *path)
 void	vm_init_arena(t_arena *arena)
 {
 	mzero(arena, sizeof(t_arena));
-	buff_new(&arena->buffer, MEM_SIZE);
+	mem_new(&arena->memer, MEM_SIZE);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -608,10 +608,10 @@ void	test_ld(const char *corfile)
 
 	// Create process.
 	process_pc = MEM_SIZE - 3;
-	mcpy(&arena.buffer.mem[(process_pc + 70) % MEM_SIZE], &secret_val, 1);
-	buff_set(&arena.buffer, process_pc);
-	buff_write(&arena.buffer, (t_byte *)&arena.players[0].program, arena.players[0].header.prog_size);
-	buff_print_overlay(&arena.buffer, 0, 0, NRM);
+	mcpy(&arena.memer.mem[(process_pc + 70) % MEM_SIZE], &secret_val, 1);
+	mem_set(&arena.memer, process_pc);
+	mem_write(&arena.memer, (t_byte *)&arena.players[0].program, arena.players[0].header.prog_size);
+	mem_print_overlay(&arena.memer, 0, 0, NRM);
 
 	p = vm_new_process(1, process_pc);
 
@@ -626,9 +626,9 @@ void	test_ld(const char *corfile)
 	// Read instruction with incorrect opcode.
 	vm_read_instr(&arena, p);
 
-	// Write fake opcode to buffer.
+	// Write fake opcode to memer.
 	fake_op = 2;
-	mcpy(&arena.buffer.mem[3], &fake_op, 1);
+	mcpy(&arena.memer.mem[3], &fake_op, 1);
 
 	// Read instruction from correctb opcode, but incorrect acb.
 	vm_read_instr(&arena, p);

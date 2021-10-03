@@ -3,8 +3,6 @@
 void	vm_init_arena(t_arena *arena)
 {
 	mzero(arena, sizeof(t_arena));
-	if (vm_mem_new(&arena->mem, MEM_SIZE) == NULL)
-		vm_exit_error("failed to allocate memory");
 	arena->cycle_to_die = CYCLE_TO_DIE;
 	arena->current_cycle = 1;
 }
