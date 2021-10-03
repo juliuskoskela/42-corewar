@@ -7,6 +7,7 @@
 NAME		=	corewar
 
 SRC_DIR		=	src/
+SRC_SUBDIRS	=	instr mem reg
 INC_DIR		=	inc/
 OBJ_DIR		=	obj/
 DEP_DIR		=	.deps/
@@ -39,12 +40,7 @@ SRC_BASE	=	vm_main.c \
 				vm_reverse_bytes.c \
 				vm_arg_new.c \
 				vm_arg_read.c \
-				vm_mem_new.c \
-				vm_mem_set.c \
-				vm_mem_write.c \
-				vm_mem_read.c \
 				vm_print_arena.c \
-				vm_mem_increment_pos.c
 #				vm_test_print.c \
 				vm_print_arena.c \
 				vm_get_mem_addr.c \
@@ -76,9 +72,28 @@ SRC_BASE	=	vm_main.c \
 SRC_INSTR =		$(addprefix instr/,\
 				vm_instr_null.c \
 				vm_instr_size.c \
-				)
+)
 
-ALL_SRC = $(SRC_BASE) $(SRC_INSTR)
+SRC_MEM =		$(addprefix mem/,\
+				vm_mem_new.c \
+				vm_mem_set.c \
+				vm_mem_write.c \
+				vm_mem_read.c \
+				vm_mem_increment_pos.c \
+				vm_mem_free.c \
+				vm_mem_print_overlay.c \
+				vm_mem_print.c \
+)
+
+SRC_REG =		$(addprefix reg/,\
+				vm_reg_copy.c \
+				vm_reg_deref.c \
+				vm_reg_print.c \
+				vm_reg_ref.c \
+				vm_reg_set.c \
+)
+
+ALL_SRC = $(SRC_BASE) $(SRC_INSTR) $(SRC_MEM) $(SRC_REG)
 
 SRC			=	$(addprefix $(SRC_DIR), $(ALL_SRC))
 OBJ			=	$(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRC))
@@ -89,14 +104,13 @@ all: $(NAME)
 
 $(NAME): $(OBJ) $(LIB_CORE) $(LIB_ARGPARSER)
 				$(CC) $(CFLAGS) -o $@ $(OBJ) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS)
-				echo "\\n\033[32;1mCOREWAR VIRTUAL MACHINE COMPILED\033[0m \\n"
+				@echo "\\n\033[32;1mCOREWAR VIRTUAL MACHINE COMPILED\033[0m \\n"
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJ_DIR)
-				$(COMPILE.c) $< -o $@
-				echo $@
-
+				@$(COMPILE.c) $< -o $@
+				@echo $@
 $(OBJ_DIR):
-				mkdir -p $@/instr
+				mkdir -p $(addprefix $(OBJ_DIR), $(SRC_SUBDIRS))
 
 # $(DEP_DIR):
 # 				mkdir -p $@/instr

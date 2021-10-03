@@ -1,6 +1,6 @@
 #include "vm.h"
 
-void	vm_reg_print(t_reg *src, char *colour)
+void	vm_reg_print(t_reg *src)
 {
 	t_uint64	deref;
 	t_size		i;
@@ -17,6 +17,6 @@ void	vm_reg_print(t_reg *src, char *colour)
 	print("0x%02x", src->mem[i]);
 	print("]%s", NRM);
 	deref = 0;
-	reg_deref((t_byte *)&deref, src);
+	vm_reg_deref((t_byte *)&deref, src);
 	print(" %llu", deref);
 }

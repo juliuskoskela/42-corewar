@@ -1,3 +1,4 @@
+#include "reg.h"
 #include "vm.h"
 
 void	vm_reg_deref(t_byte *dst, t_reg *src)
@@ -7,7 +8,7 @@ void	vm_reg_deref(t_byte *dst, t_reg *src)
 	if (!dst || !src)
 		return ;
 	i = 0;
-	if (g_endianness == LITTLE)
+	if (ENDIAN_LITTLE)
 	{
 		while (i < src->len)
 		{

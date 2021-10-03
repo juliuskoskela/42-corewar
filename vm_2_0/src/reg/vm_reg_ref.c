@@ -7,7 +7,7 @@ void	vm_reg_ref(t_reg *dst, t_byte *src)
 	if (!dst || !src)
 		return ;
 	i = 0;
-	if (g_endianness == LITTLE)
+	if (ENDIAN_LITTLE)
 	{
 		while (i < dst->len)
 		{
