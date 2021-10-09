@@ -12,7 +12,7 @@ typedef void (*t_exec)(t_arena *, t_process *);
 
 void	vm_instr_ld(t_arena *a, t_process *p);
 void    vm_instr_fork(t_arena *a, t_process *p);
-void	vm_instr_lfork(t_arena *a, t_procerss *p);
+void	vm_instr_lfork(t_arena *a, t_process *p);
 void	vm_instr_st(t_arena *a, t_process *p);
 
 void	vm_instr_null(t_arena *a, t_process *p);
