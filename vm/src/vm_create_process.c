@@ -20,8 +20,8 @@ t_int32 player_id)
 		vm_reg_set(&new_process->registers[i], REG_SIZE);
 		i++;
 	}
-	vm_reg_ref((t_reg *)&new_process->registers[i], (t_byte *)&player_id);
-	vm_reverse_bytes(&new_process->registers[0], &player_id, REG_SIZE);
+	vm_reg_ref(&new_process->registers[0], (t_byte *)&player_id);
+//	vm_reverse_bytes(&new_process->registers[0], (t_byte *)&player_id, REG_SIZE);
 	new_process->pc = (player_id - 1) * arena.offset;
 	new_process->cycles_before_execution = -1;
 	new_process->next = process_lst;
