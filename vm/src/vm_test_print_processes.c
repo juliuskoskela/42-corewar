@@ -9,5 +9,6 @@ void    vm_test_print_processes(t_arena *a)
     while (p)
     {
         vm_print_process_info(a, p);
+        p = p->next;
     }
 }
