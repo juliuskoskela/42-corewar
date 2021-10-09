@@ -71,6 +71,8 @@ SRC_BASE	=	vm_main.c \
 
 SRC_INSTR =		$(addprefix instr/,\
 				vm_instr_null.c \
+				vm_instr_fork.c \
+				vm_instr_lfork.c \
 				vm_instr_size.c \
 				vm_instr_ld.c \
 				vm_print_instr_arg.c \
