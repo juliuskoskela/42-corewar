@@ -297,7 +297,7 @@ t_size	vm_instr_size(t_instr *src)
 		+ src->args[2].data.len);
 }
 
-static void	vm_print_instr_arg(t_arg *arg)
+void	vm_print_instr_arg(t_arg *arg)
 {
 	print("%s%s%s ", BLU, vm_type_name(arg->type), NRM);
 	reg_print(&arg->data, NRM);
@@ -308,7 +308,7 @@ void	vm_print_process_info(t_arena *a, t_process *p)
 	print("[%#08llu][%#08llu][%#08llu] ", a->current_cycle, p->id, p->pc);
 }
 
-static void	vm_print_instr(t_arena *a, t_process *p, const char *action)
+void	vm_print_instr(t_arena *a, t_process *p, const char *action)
 {
 	t_size	i;
 
