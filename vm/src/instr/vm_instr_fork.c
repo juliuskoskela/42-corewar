@@ -14,5 +14,5 @@ void	vm_instr_fork(t_arena *a, t_process *p)
 	while (p->next)
 		p = p->next;
 	p->next = new;
-	print("fork"); //test
+	vm_test_print_processes(a);
 }

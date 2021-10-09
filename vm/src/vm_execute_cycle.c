@@ -116,6 +116,7 @@ void	vm_init_instruction_execution(t_process *process, t_arena *arena)
 		process->current_instruction.opcode = opcode;
 		process->current_instruction.op = instruction;
 		process->cycles_before_execution = instruction->cycles;
+		print("Next instr to be executed: %s, wait %d cycles before execution\n", instruction->description, instruction->cycles); //test
 	}
 }
 

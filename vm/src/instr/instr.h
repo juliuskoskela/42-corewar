@@ -22,6 +22,8 @@ void	vm_print_process_info(t_arena *a, t_process *p);
 void	vm_print_instr_arg(t_arg *arg);
 char	*vm_type_name(t_byte type);
 
+void	vm_test_print_processes(t_arena *a);
+
 static const t_exec g_instr_funcs[] =
 {
 	vm_instr_null,
@@ -35,10 +37,10 @@ static const t_exec g_instr_funcs[] =
 	vm_instr_null,
 	vm_instr_null,
 	vm_instr_null,
+	vm_instr_fork,
 	vm_instr_null,
 	vm_instr_null,
-	vm_instr_null,
-	vm_instr_null,
+	vm_instr_lfork,
 	vm_instr_null,
 };
 
