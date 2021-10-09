@@ -77,6 +77,7 @@ t_arena *arena)
 {
 	if (!vm_read_instr_arguments(process, arena))
 		return ;
+	vm_print_instr(arena, process, "read");
 	g_instr_funcs[process->current_instruction.opcode - 1](arena, process);
 	process->pc = (process->pc + vm_instr_size(&process->current_instruction)) % MEM_SIZE;
 }
