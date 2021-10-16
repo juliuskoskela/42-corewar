@@ -7,6 +7,7 @@ void vm_test_fork(t_process *p_lst)
 
 	count = 0;
 	tmp = p_lst;
+	print("Youngest process pc: %d ", p_lst->pc);
 	while (tmp)
 	{
 		count++;

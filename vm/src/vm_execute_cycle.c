@@ -34,7 +34,7 @@ int	vm_check_arg_types(t_acb *acb, t_process *process, t_arena *arena)
 {
 	if (process->current_instruction.op->has_argument_coding_byte)
 	{
-		vm_mem_set_pos(&arena->mem, process->pc + 1);
+		vm_mem_increment_pos(&arena->mem, 1);
 		vm_mem_read(&process->current_instruction.acb, &arena->mem, 1);
 		*acb = vm_decomp_acb(process->current_instruction.acb);
 		if (!vm_check_acb(*acb, process->current_instruction.op))
@@ -59,6 +59,7 @@ int	vm_read_instr_arguments(t_process *process, t_arena *arena)
 	size_t	i;
 
 	promoted = FALSE;
+	vm_mem_set_pos(&arena->mem, process->pc + 1);
 	if (!vm_check_arg_types(&acb, process, arena))
 		return (0);
 	if (acb.arg[0] == REG_CODE || acb.arg[1] == REG_CODE || acb.arg[2] == REG_CODE)
