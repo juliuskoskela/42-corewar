@@ -14,5 +14,5 @@ void	vm_instr_fork(t_arena *a, t_process *p)
 	new->pc = (p->pc + (offset % IDX_MOD)) % MEM_SIZE;
 	new->next = a->processes;
 	a->processes = new;
-	//vm_test_print_processes(a);
+	vm_test_fork(a->processes);
 }

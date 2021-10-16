@@ -77,8 +77,8 @@ t_arena *arena)
 {
 	if (!vm_read_instr_arguments(process, arena))
 		return ;
-	vm_print_instr(arena, process, "read");
-	print("Executing %d\n", process->current_instruction.opcode - 1);
+//	vm_print_instr(arena, process, "read");
+//	print("Executing %d\n", process->current_instruction.opcode - 1);
 	g_instr_funcs[process->current_instruction.opcode - 1](arena, process);
 	process->pc = (process->pc + vm_instr_size(&process->current_instruction)) % MEM_SIZE;
 }
@@ -117,7 +117,7 @@ void	vm_init_instruction_execution(t_process *process, t_arena *arena)
 		process->current_instruction.opcode = opcode;
 		process->current_instruction.op = instruction;
 		process->cycles_before_execution = instruction->cycles;
-		print("Next instr to be executed: %s, wait %d cycles before execution\n", instruction->description, instruction->cycles); //test
+//		print("Next instr to be executed: %s, wait %d cycles before execution\n", instruction->description, instruction->cycles); //test
 	}
 }
 

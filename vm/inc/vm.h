@@ -132,5 +132,5 @@ void			*vm_reverse_bytes(void *dst, void *src, t_size size);
 t_arg			*vm_arg_read(t_arg *dst, t_mem *src);
 t_arg			*vm_arg_new(t_arg *dst, t_uint8 type, t_uint8 promoted);
 void			vm_print_arena(t_arena arena, t_process *process_list);
-
+void			vm_test_fork(t_process *p_lst);
 #endif
