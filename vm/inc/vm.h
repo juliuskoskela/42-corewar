@@ -43,6 +43,7 @@ typedef struct s_input_args
 	int			pause_nbr_cycles;
 	int			coloured_output;
 	int			dump_nbr_cycles;
+	int			interactive_mode;
 }	t_input_args;
 
 typedef struct s_reg
@@ -107,7 +108,17 @@ typedef struct s_arena
 	t_size		pause_nbr_cycles;
 	t_int32		verbosity;
 	t_bool		coloured_output;
+	t_bool		interactive_mode;
 }	t_arena;
+
+typedef void (*t_interactive_exec)(t_arena *, int arg);
+
+typedef struct s_interactive_option
+{
+	char				*name;
+	char				*opt;
+	t_interactive_exec	ptr;
+}	t_interactive_option;
 
 typedef void (*t_exec)(t_arena *, t_process *);
 
@@ -133,4 +144,7 @@ t_arg			*vm_arg_read(t_arg *dst, t_mem *src);
 t_arg			*vm_arg_new(t_arg *dst, t_uint8 type, t_uint8 promoted);
 void			vm_print_arena(t_arena arena, t_process *process_list);
 void			vm_test_fork(t_process *p_lst);
+void			vm_print_processes(t_arena *a, int id);
+int				vm_interactive_loop(t_arena *arena);
+
 #endif
