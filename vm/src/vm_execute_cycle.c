@@ -34,8 +34,8 @@ int	vm_check_arg_types(t_acb *acb, t_process *process, t_arena *arena)
 {
 	if (process->current_instruction.op->has_argument_coding_byte)
 	{
-		vm_mem_increment_pos(&arena->mem, 1);
 		vm_mem_read(&process->current_instruction.acb, &arena->mem, 1);
+		vm_mem_increment_pos(&arena->mem, 1);
 		*acb = vm_decomp_acb(process->current_instruction.acb);
 		if (!vm_check_acb(*acb, process->current_instruction.op))
 		{
@@ -76,8 +76,10 @@ int	vm_read_instr_arguments(t_process *process, t_arena *arena)
 void	vm_execute_instruction(t_process *process,
 t_arena *arena)
 {
+	// print("execute instruction");
 	if (!vm_read_instr_arguments(process, arena))
 		return ;
+	// print("read instr arguments");
 //	vm_print_instr(arena, process, "read");
 //	print("Executing %d\n", process->current_instruction.opcode - 1);
 	g_instr_funcs[process->current_instruction.opcode - 1](arena, process);
