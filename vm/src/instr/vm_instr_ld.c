@@ -32,11 +32,8 @@ void	vm_instr_ld(t_arena *a, t_process *p)
 		vm_reg_deref((t_byte *)&mem_addr, &p->current_instruction.args[0].data);
 		if (mem_addr % IDX_MOD != 0)
 			p->zf = TRUE;
-		vm_mem_set_pos(&a->mem, p->pc + mem_addr % IDX_MOD);
-		if (p->current_instruction.promoted != 0)
-			vm_mem_read((t_byte *)&p->registers[reg_addr - 1], &a->mem, REG_SIZE);
-		else
-			vm_mem_read((t_byte *)&p->registers[reg_addr - 1], &a->mem, 2);
+		vm_mem_set_pos(&a->mem, (p->pc + mem_addr) % IDX_MOD);
+		vm_mem_read((t_byte *)&p->registers[reg_addr - 1], &a->mem, 4);
 	}
 	print(" => %sR%d%s ", BLU, reg_addr, NRM);
 	vm_reg_print(&p->registers[reg_addr - 1]);
