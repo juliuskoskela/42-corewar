@@ -65,6 +65,8 @@ static int	parse_opt(int key, char *arg, t_argparser_state *state)
 		parse_numeric_option(key, arg, state);
 	else if (key == 'c')
 		args->coloured_output = 1;
+	else if (key == 'i')
+		args->interactive_mode = 1;
 	else if (key == ARGP_KEY_ARG)
 	{
 		if (args->player_count == MAX_PLAYERS)
@@ -98,6 +100,7 @@ t_input_args	vm_parse_arguments(int argc, char **argv)
 		{"verbosity", 'v', "level", 0, "verbosity level (set between 0 and 31)"},
 		{"coloured", 'c', 0, 0, "use colours in printing to standard output"},
 		{"nbr", 'n', "nbr", 0, "set the number (> 0) of the next player"},
+		{"interactive", 'i', 0, 0, "execute vm in an interactive mode"},
 		{0}
 	};
 

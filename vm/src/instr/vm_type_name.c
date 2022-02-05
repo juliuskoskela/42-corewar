@@ -1,4 +1,4 @@
-#include "instr.h"
+#include "vm.h"
 
 char	*vm_type_name(t_byte type)
 {

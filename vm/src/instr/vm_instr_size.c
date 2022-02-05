@@ -1,4 +1,4 @@
-#include "instr.h"
+#include "vm.h"
 
 t_size	vm_instr_size(t_instr *src)
 {

@@ -41,6 +41,9 @@ SRC_BASE	=	vm_main.c \
 				vm_arg_new.c \
 				vm_arg_read.c \
 				vm_print_arena.c \
+				vm_print_processes.c \
+				vm_test_fork.c \
+				vm_interactive_loop.c
 #				vm_test_print.c \
 				vm_print_arena.c \
 				vm_get_mem_addr.c \

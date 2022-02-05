@@ -34,7 +34,6 @@ int	vm_check_arg_types(t_acb *acb, t_process *process, t_arena *arena)
 {
 	if (process->current_instruction.op->has_argument_coding_byte)
 	{
-		vm_mem_set_pos(&arena->mem, process->pc + 1);
 		vm_mem_read(&process->current_instruction.acb, &arena->mem, 1);
 		*acb = vm_decomp_acb(process->current_instruction.acb);
 		if (!vm_check_acb(*acb, process->current_instruction.op))
@@ -59,6 +58,7 @@ int	vm_read_instr_arguments(t_process *process, t_arena *arena)
 	size_t	i;
 
 	promoted = FALSE;
+	vm_mem_set_pos(&arena->mem, process->pc + 1);
 	if (!vm_check_arg_types(&acb, process, arena))
 		return (0);
 	if (acb.arg[0] == REG_CODE || acb.arg[1] == REG_CODE || acb.arg[2] == REG_CODE)
@@ -66,7 +66,8 @@ int	vm_read_instr_arguments(t_process *process, t_arena *arena)
 	i = 0;
 	while (i < process->current_instruction.op->param_count)
 	{
-		vm_arg_read(vm_arg_new(&process->current_instruction.args[i], acb.arg[i], promoted), &arena->mem);
+		vm_arg_new(&process->current_instruction.args[i], acb.arg[i], promoted);
+		vm_arg_read(&process->current_instruction.args[i], &arena->mem);
 		i++;
 	}
 	return (1);
@@ -75,9 +76,12 @@ int	vm_read_instr_arguments(t_process *process, t_arena *arena)
 void	vm_execute_instruction(t_process *process,
 t_arena *arena)
 {
+	// print("execute instruction");
 	if (!vm_read_instr_arguments(process, arena))
 		return ;
-	vm_print_instr(arena, process, "read");
+	// print("read instr arguments");
+	vm_print_instr(arena, process);
+//	print("Executing %d\n", process->current_instruction.opcode - 1);
 	g_instr_funcs[process->current_instruction.opcode - 1](arena, process);
 	process->pc = (process->pc + vm_instr_size(&process->current_instruction)) % MEM_SIZE;
 }
@@ -116,6 +120,7 @@ void	vm_init_instruction_execution(t_process *process, t_arena *arena)
 		process->current_instruction.opcode = opcode;
 		process->current_instruction.op = instruction;
 		process->cycles_before_execution = instruction->cycles;
+//		print("Next instr to be executed: %s, wait %d cycles before execution\n", instruction->description, instruction->cycles); //test
 	}
 }
 

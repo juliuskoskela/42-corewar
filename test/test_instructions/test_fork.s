@@ -11,10 +11,10 @@
 
 # { T_DIR }
 
-fork 100
-fork -100
-fork 1000
-fork -1000
-fork 0
-fork 42
-fork 1
+fork %100
+fork %-100
+fork %1000
+fork %-1000
+fork %0
+fork %42
+fork %1

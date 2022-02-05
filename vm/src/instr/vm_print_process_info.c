@@ -1,4 +1,4 @@
-#include "instr.h"
+#include "vm.h"
 
 void	vm_print_process_info(t_arena *a, t_process *p)
 {
