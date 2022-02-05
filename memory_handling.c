@@ -451,11 +451,11 @@ t_bool	vm_check_acb(t_op *op, t_acb acb)
 
 void	vm_read_instr(t_arena *a, t_process *p)
 {
-	t_acb			acb;
-	t_byte			opcode;
-	t_instr			*instr;
-	t_bool			promoted;
-	t_size			i;
+	t_acb	acb;
+	t_byte	opcode;
+	t_instr	*instr;
+	t_bool	promoted;
+	t_size	i;
 
 	promoted = FALSE;
 	instr = minit(sizeof(t_instr));

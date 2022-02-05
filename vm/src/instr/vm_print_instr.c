@@ -15,5 +15,5 @@ void	vm_print_instr(t_arena *a, t_process *p, const char *action)
 			print(", ");
 		i++;
 	}
-	print(" )\n");
+	print(" )");
 }

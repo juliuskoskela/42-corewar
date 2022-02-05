@@ -6,7 +6,10 @@ void	vm_reg_print(t_reg *src)
 	t_size		i;
 
 	if (!src || !src->len)
+	{
+		print("[NULL]");
 		return ;
+	}
 	i = 0;
 	print("[");
 	while (i < src->len - 1)

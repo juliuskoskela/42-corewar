@@ -26,7 +26,7 @@ static const t_exec g_instr_funcs[] =
 {
 	vm_instr_null,
 	vm_instr_ld,
-	vm_instr_null,
+	vm_instr_st,
 	vm_instr_null,
 	vm_instr_null,
 	vm_instr_null,

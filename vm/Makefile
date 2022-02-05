@@ -75,6 +75,7 @@ SRC_INSTR =		$(addprefix instr/,\
 				vm_instr_lfork.c \
 				vm_instr_size.c \
 				vm_instr_ld.c \
+				vm_instr_st.c \
 				vm_print_instr_arg.c \
 				vm_print_instr.c \
 				vm_print_process_info.c \
