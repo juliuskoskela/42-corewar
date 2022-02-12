@@ -5,26 +5,30 @@
 ### Instructions
 
 |Function|Implemented|Tested
-|---|---|---|
-|`live`|[ ]|[ ]
-|`ld`|[ ]|[ ]
-|`lld`|[ ]|[ ]
-|`ldi`|[ ]|[ ]
-|`lldi`|[ ]|[ ]
-|`st`|[ ]|[ ]
-|`sti`|[ ]|[ ]
-|`add`|[ ]|[ ]
-|`sub`|[ ]|[ ]
-|`and`|[ ]|[ ]
-|`or`|[ ]|[ ]
-|`xor`|[ ]|[ ]
-|`zjmp`|[ ]|[ ]
-|`fork`|[ ]|[ ]
-|`lfork`|[ ]|[ ]
-|`aff`|[ ]|[ ]
+|-------|-----|-----|
+|`live` | [ ] | [ ] |
+|`ld`   | [ ] | [ ] |
+|`lld`  | [ ] | [ ] |
+|`ldi`  | [ ] | [ ] |
+|`lldi` | [ ] | [ ] |
+|`st`   | [ ] | [ ] |
+|`sti`  | [ ] | [ ] |
+|`add`  | [ ] | [ ] |
+|`sub`  | [ ] | [ ] |
+|`and`  | [ ] | [ ] |
+|`or`   | [ ] | [ ] |
+|`xor`  | [ ] | [ ] |
+|`zjmp` | [ ] | [ ] |
+|`fork` | [ ] | [ ] |
+|`lfork`| [ ] | [ ] |
+|`aff`  | [ ] | [ ] |
 
 ### To do for each instruction
 
+1. Check the definition & requirements for instruction from subject & docs
+2. Add those requirements as a comment
+3. First implementation
+4. Add descriptive prints for debugging purposes ()
 
 ### Tests
 
