@@ -8,7 +8,7 @@
 |---------|-------|------|
 | `live`  | [No]  | [No] |
 | `ld`    | [Yes] | [No] |
-| `lld`   | [No]  | [No] |
+| `lld`   | [Yes]  | [No] |
 | `ldi`   | [No]  | [No] |
 | `lldi`  | [No]  | [No] |
 | `st`    | [Yes] | [No] |
