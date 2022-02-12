@@ -3,6 +3,7 @@
 ## Paths to executables
 user_asm="../bin/asm"
 user_corewar="../bin/corewar"
+output_dir="output"
 
 ## Verbosity level for vm: from 0 to 31
 vm_verbosity="31"
@@ -23,7 +24,7 @@ player=$(echo $player_s | rev | cut -d '/' -f 1 | rev | sed "s/\.s//")
 
 ## Set up output directory
 
-outdir="output_one_$player"
+outdir="$output_dir/output_one_$player"
 
 echo
 echo "Creating output directory $outdir"

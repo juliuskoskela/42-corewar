@@ -27,6 +27,7 @@ clean:
 fclean:
 	$(MAKE) fclean -C $(VM)
 	$(MAKE) fclean -C $(ASM)
+	rm -rf test/output
 	rm -rf bin
 
 re: fclean all

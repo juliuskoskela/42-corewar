@@ -5,23 +5,23 @@
 ### Instructions
 
 |Function|Implemented|Tested
-|-------|-----|-----|
-|`live` | [ ] | [ ] |
-|`ld`   | [ ] | [ ] |
-|`lld`  | [ ] | [ ] |
-|`ldi`  | [ ] | [ ] |
-|`lldi` | [ ] | [ ] |
-|`st`   | [ ] | [ ] |
-|`sti`  | [ ] | [ ] |
-|`add`  | [ ] | [ ] |
-|`sub`  | [ ] | [ ] |
-|`and`  | [ ] | [ ] |
-|`or`   | [ ] | [ ] |
-|`xor`  | [ ] | [ ] |
-|`zjmp` | [ ] | [ ] |
-|`fork` | [ ] | [ ] |
-|`lfork`| [ ] | [ ] |
-|`aff`  | [ ] | [ ] |
+|---------|-------|------|
+| `live`  | [No]  | [No] |
+| `ld`    | [Yes] | [No] |
+| `lld`   | [No]  | [No] |
+| `ldi`   | [No]  | [No] |
+| `lldi`  | [No]  | [No] |
+| `st`    | [Yes] | [No] |
+| `sti`   | [Yes] | [No] |
+| `add`   | [No]  | [No] |
+| `sub`   | [No]  | [No] |
+| `and`   | [No]  | [No] |
+| `or`    | [No]  | [No] |
+| `xor`   | [No]  | [No] |
+| `zjmp`  | [No]  | [No] |
+| `fork`  | [Yes] | [No] |
+| `lfork` | [Yes] | [No] |
+| `aff`   | [No]  | [No] |
 
 ### To do for each instruction
 
