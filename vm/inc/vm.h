@@ -155,6 +155,7 @@ void	vm_instr_ld(t_arena *a, t_process *p);
 void    vm_instr_fork(t_arena *a, t_process *p);
 void	vm_instr_lfork(t_arena *a, t_process *p);
 void	vm_instr_st(t_arena *a, t_process *p);
+void	vm_instr_sti(t_arena *a, t_process *p);
 
 void	vm_instr_null(t_arena *a, t_process *p);
 t_size	vm_instr_size(t_instr *src);
@@ -167,6 +168,7 @@ static const t_exec g_instr_funcs[] =
 {
 	vm_instr_null,
 	vm_instr_ld,
+	vm_instr_st,
 	vm_instr_null,
 	vm_instr_null,
 	vm_instr_null,
@@ -174,8 +176,7 @@ static const t_exec g_instr_funcs[] =
 	vm_instr_null,
 	vm_instr_null,
 	vm_instr_null,
-	vm_instr_null,
-	vm_instr_null,
+	vm_instr_sti,
 	vm_instr_fork,
 	vm_instr_null,
 	vm_instr_null,

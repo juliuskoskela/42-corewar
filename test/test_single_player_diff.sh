@@ -9,6 +9,9 @@ user_corewar="../bin/corewar"
 ## Verbosity level for vm: from 0 to 31
 vm_verbosity="31"
 
+## Number of cycles to run before exiting and dumping memory
+cycles_to_run=50
+
 ## Path to the player .cor file is taken as the first command line argument
 
 if [ $# -lt 1 ]; then
@@ -70,8 +73,6 @@ assemble_player "$user_asm -v" $outdir_user user_asm_output_$player
 
 if [ $# -ge 2 ]; then
 	cycles_to_run=$2
-else
-	cycles_to_run=50
 fi
 
 echo

@@ -52,8 +52,6 @@ SRC_BASE	=	vm_main.c \
 				vm_get_arg_type.c \
 				vm_get_val.c \
 				vm_instr_live.c \
-				vm_instr_st.c \
-				vm_instr_sti.c \
 				vm_check_acb.c \
 				vm_instr_ld.c \
 				vm_instr_ldi.c \
@@ -79,6 +77,7 @@ SRC_INSTR =		$(addprefix instr/,\
 				vm_instr_size.c \
 				vm_instr_ld.c \
 				vm_instr_st.c \
+				vm_instr_sti.c \
 				vm_print_instr_arg.c \
 				vm_print_instr.c \
 				vm_print_process_info.c \

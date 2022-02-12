@@ -1,9 +1,10 @@
-#include "instr.h"
+#include "vm.h"
 
 void	vm_instr_sti(t_arena *a, t_process *p)
 {
 	t_uint8		reg_addr;
-	t_uint16	mem_addr;
+	t_uint32	lhs;
+	t_uint32	rhs;
 
 	vm_reg_deref((t_byte *)&reg_addr, &p->current_instruction.args[0].data);
 	if (reg_addr > 16)
@@ -18,7 +19,8 @@ void	vm_instr_sti(t_arena *a, t_process *p)
 		vm_mem_set_pos(&a->mem, p->pc + mem_addr % IDX_MOD);
 		vm_mem_write(&a->mem, (t_byte *)&p->registers[reg_addr - 1], IND_ADDR_SIZE);
 	}
-	print(" => %sR%d%s ", BLU, reg_addr, NRM);
+	// print(" => %sR%d%s ", BLU, reg_addr, NRM);
+	print(" => R%d ", reg_addr);
 	vm_reg_print(&p->registers[reg_addr - 1]);
 	print("\n");
 	return ;

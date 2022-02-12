@@ -1,4 +1,4 @@
-#include "instr.h"
+#include "vm.h"
 
 // st ( dst, src )
 
@@ -30,19 +30,21 @@ void	vm_instr_st(t_arena *a, t_process *p)
 
 	// If destination is a register, copy.
 	if (p->current_instruction.args[1].type == REG_CODE)
+	{
+		print(" => Store R%u in R%u\n", reg_addr, p->current_instruction.args[0].data);
 		vm_reg_copy(&p->registers[reg_addr - 1], &p->current_instruction.args[0].data);
-
-	// If destination is an indirect address, derefrerence the address and write
-	// to memory.
+	}
 	else
 	{
 		vm_reg_deref((t_byte *)&mem_addr, &p->current_instruction.args[1].data);
+		print(" => Store R%u in %u\n", reg_addr, mem_addr);
 		if (mem_addr % IDX_MOD != 0)
 			p->zf = TRUE;
 		vm_mem_set_pos(&a->mem, p->pc + mem_addr % IDX_MOD);
-		vm_mem_write(&a->mem, (t_byte *)&p->registers[reg_addr - 1], IND_ADDR_SIZE);
+		vm_mem_write(&a->mem, (t_byte *)&p->registers[reg_addr - 1], REG_SIZE);
 	}
-	print(" => %sM%d%s ", BLU, mem_addr, NRM);
+	// print(" => %sR%d%s ", BLU, reg_addr, NRM);
+	print(" => R%u ", reg_addr);
 	vm_reg_print(&p->registers[reg_addr - 1]);
 	print("\n");
 	vm_print_process(p);
