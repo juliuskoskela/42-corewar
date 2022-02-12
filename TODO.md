@@ -8,13 +8,13 @@
 |---------|-------|------|
 | `live`  | [No]  | [No] |
 | `ld`    | [Yes] | [No] |
-| `lld`   | [Yes]  | [No] |
+| `lld`   | [Yes] | [No] |
 | `ldi`   | [No]  | [No] |
 | `lldi`  | [No]  | [No] |
 | `st`    | [Yes] | [No] |
 | `sti`   | [Yes] | [No] |
-| `add`   | [No]  | [No] |
-| `sub`   | [No]  | [No] |
+| `add`   | [Yes] | [No] |
+| `sub`   | [Yes]  | [No] |
 | `and`   | [No]  | [No] |
 | `or`    | [No]  | [No] |
 | `xor`   | [No]  | [No] |
