@@ -6,3 +6,5 @@
 .comment "Fill registers 1 - 16 with numbers 1 - 16"
 
 ld %666, r2
+ld %42, r3
+st r2, r3
