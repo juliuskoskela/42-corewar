@@ -11,8 +11,12 @@
 
 void	vm_instr_zjmp(t_arena *a, t_process *p)
 {
-	// Check process zf
+	t_uint32 dirval;
 
-	// Update PC
-	vm_instr_null(a, p);
+	// Get dir val.
+	vm_reg_store((t_byte *)&dirval, &p->current_instruction.args[0].data);
+
+	// Check process zf and update pc
+	if (p->zf)
+		p->pc += dirval;
 }
