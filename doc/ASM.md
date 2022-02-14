@@ -1,6 +1,28 @@
 ## ASM: Assembler for champions
 
 ```
+➜  ./bin/asm --help
+Usage: ./bin/asm [OPTION...] path/to/player.s
+asm: description
+
+ -h, --hex-dump               print the resulting output as a hex dump
+				to standard output
+ -d, --dot                    write the intermediate AST/parse tree to path/to/player.dot
+				from which an image can be generated with
+				`dot -Tpng -o player_dot.png path/to/player.dot`
+				(requires the Graphviz package)
+ -v, --verbose                verbose mode
+     --help                   print this help message
+     --usage                  print a short usage message
+```
+
+```
+➜  ./bin/asm --usage
+Usage: ./bin/asm [-h] [-d] [-v] [--hex-dump] [--dot] [--verbose]
+	 [--help] [--usage] path/to/player.s
+```
+
+```
 ./asm mychampion.s
 ```
 
