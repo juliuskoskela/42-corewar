@@ -26,34 +26,33 @@ t_process	*init_processes(t_arena arena)
 	return (process_lst);
 }
 
-/*
-** Cycles are executed until a live check occurs. Checks occur every
-** battle.cycle_to_die cycles.
-*/
-
-void	vm_battle(t_arena arena)
+void vm_battle(t_arena arena)
 {
+	t_size	interactive_mode_skip;
+
 	arena.processes = init_processes(arena);
-//	vm_test_print_processes(arena.processes);
 	vm_introduce_champs(arena);
+	interactive_mode_skip = 0;
 	while (arena.processes)
 	{
 		vm_execute_cycle(arena.processes, &arena);
-		while (++arena.cycles_since_check < arena.cycle_to_die)
+		if (++arena.cycles_since_check >= arena.cycle_to_die)
+			vm_check_live(&arena.processes, &arena);
+		if (arena.dump_nbr_cycles
+		&& arena.current_cycle > arena.dump_nbr_cycles)
 		{
-			vm_execute_cycle(arena.processes, &arena);
-			if (arena.current_cycle < arena.dump_nbr_cycles)
-			{
-				vm_print_arena(arena, arena.processes);
-				vm_free_processes(&arena.processes);
-				return ;
-			}
-			if (arena.pause_nbr_cycles && \
-			arena.current_cycle + 1 % arena.pause_nbr_cycles)
-				vm_pause_and_print_memory(arena);
+			vm_print_arena(arena, arena.processes);
+			vm_free_processes(&arena.processes);
+			return ;
 		}
-		vm_check_live(&arena.processes, &arena);
+		if (arena.pause_nbr_cycles
+			&& arena.current_cycle + 1 % arena.pause_nbr_cycles)
+			vm_pause_and_print_memory(arena);
+		if (interactive_mode_skip)
+			interactive_mode_skip--;
+		if (arena.interactive_mode && interactive_mode_skip == 0)
+			interactive_mode_skip = vm_interactive_loop(&arena);
 	}
-	print("Player %d (%s) won\n", arena.last_player_alive, \
-	arena.all_players[arena.last_player_alive - 1].prog_name);
+	print("Player %d (%s) won\n", arena.last_player_alive,
+		arena.players[arena.last_player_alive - 1].prog_name);
 }

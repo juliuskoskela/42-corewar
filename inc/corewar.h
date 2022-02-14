@@ -17,15 +17,24 @@
 # define IND_ADDR_SIZE			2
 # define DIR_VAL_SIZE			2
 
+# define EMPTY_CODE				0
 # define REG_CODE				1
 # define DIR_CODE				2
 # define IND_CODE				3
 
-# define EMPTY					0U
-# define T_REG					1U
+# define EMPTY					0
+# define T_REG					1
 # define T_DIR					(1U << 1U)
 # define T_IND					(1U << 2U)
 # define T_LAB					(1U << 3U)
+
+static const t_byte g_arg_codes[] =
+{
+	0,
+	1,
+	(1U << 1U),
+	(1U << 2U)
+};
 
 # define MAX_ARGS_NUMBER		4
 # define MAX_PLAYERS			4
@@ -71,22 +80,22 @@ typedef struct s_op
 
 static const t_op	g_op_tab[] =
 {
-	{"live", 1, {T_DIR, EMPTY, EMPTY}, 1, 10, "alive", 0, 0},
-	{"ld", 2, {T_DIR | T_IND, T_REG, EMPTY}, 2, 5, "load", 1, 0},
-	{"st", 2, {T_REG, T_IND | T_REG, EMPTY}, 3, 5, "store", 1, 0},
-	{"add", 3, {T_REG, T_REG, T_REG}, 4, 10, "addition", 1, 0},
-	{"sub", 3, {T_REG, T_REG, T_REG}, 5, 10, "substraction", 1, 0},
-	{"and", 3, {T_REG | T_DIR | T_IND, T_REG | T_IND | T_DIR, T_REG}, 6, 6, "and  r1, r2, r3   r1&r2 -> r3", 1, 0},
-	{"or", 3, {T_REG | T_IND | T_DIR, T_REG | T_IND | T_DIR, T_REG}, 7, 6, "or   r1, r2, r3   r1 | r2 -> r3", 1, 0},
-	{"xor", 3, {T_REG | T_IND | T_DIR, T_REG | T_IND | T_DIR, T_REG}, 8, 6, "xor  r1, r2, r3   r1^r2 -> r3", 1, 0},
-	{"zjmp", 1, {T_DIR, EMPTY, EMPTY}, 9, 20, "jump if zero", 0, 1},
-	{"ldi", 3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG}, 10, 25, "load index", 1, 1},
-	{"sti", 3, {T_REG, T_REG | T_DIR | T_IND, T_DIR | T_REG}, 11, 25, "store index", 1, 1},
-	{"fork", 1, {T_DIR, EMPTY, EMPTY}, 12, 800, "fork", 0, 1},
-	{"lld", 2, {T_DIR | T_IND, T_REG, EMPTY}, 13, 10, "long load", 1, 0},
-	{"lldi", 3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG}, 14, 50, "long load index", 1, 1},
-	{"lfork", 1, {T_DIR, EMPTY, EMPTY}, 15, 1000, "long fork", 0, 1},
-	{"aff", 1, {T_REG, EMPTY, EMPTY}, 16, 2, "aff", 1, 0},
+	{"live", 1, {T_DIR, EMPTY, EMPTY}, 1, 10, "LIVE", 0, 0},
+	{"ld", 2, {T_DIR | T_IND, T_REG, EMPTY}, 2, 5, "LOAD", 1, 0},
+	{"st", 2, {T_REG, T_IND | T_REG, EMPTY}, 3, 5, "STORE", 1, 0},
+	{"add", 3, {T_REG, T_REG, T_REG}, 4, 10, "ADD", 1, 0},
+	{"sub", 3, {T_REG, T_REG, T_REG}, 5, 10, "SUB", 1, 0},
+	{"and", 3, {T_REG | T_DIR | T_IND, T_REG | T_IND | T_DIR, T_REG}, 6, 6, "AND", 1, 0},
+	{"or", 3, {T_REG | T_IND | T_DIR, T_REG | T_IND | T_DIR, T_REG}, 7, 6, "OR", 1, 0},
+	{"xor", 3, {T_REG | T_IND | T_DIR, T_REG | T_IND | T_DIR, T_REG}, 8, 6, "XOR", 1, 0},
+	{"zjmp", 1, {T_DIR, EMPTY, EMPTY}, 9, 20, "ZERO_JUMP", 0, 1},
+	{"ldi", 3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG}, 10, 25, "LOAD_IDX", 1, 1},
+	{"sti", 3, {T_REG, T_REG | T_DIR | T_IND, T_DIR | T_REG}, 11, 25, "STORE_IDX", 1, 1},
+	{"fork", 1, {T_DIR, EMPTY, EMPTY}, 12, 800, "FORK", 0, 1},
+	{"lld", 2, {T_DIR | T_IND, T_REG, EMPTY}, 13, 10, "LLOAD", 1, 0},
+	{"lldi", 3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG}, 14, 50, "LLOAD_IDX", 1, 1},
+	{"lfork", 1, {T_DIR, EMPTY, EMPTY}, 15, 1000, "LFORK", 0, 1},
+	{"aff", 1, {T_REG, EMPTY, EMPTY}, 16, 2, "AFF", 1, 0},
 	{0, 0, {0}, 0, 0, 0, 0, 0}
 };
 
