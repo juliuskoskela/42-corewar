@@ -11,5 +11,17 @@
 
 void	vm_instr_aff(t_arena *a, t_process *p)
 {
-	// Print CHR
+	t_uint8	reg_addr;
+	t_int32	reg_val;
+
+	if (!a)
+		return ;
+	vm_reg_store((t_byte *)&reg_addr, &p->current_instruction.args[0].data);
+	if (reg_addr > 16)
+	{
+		print("reg addr > 16\n");
+		return ;
+	}
+	vm_reg_store((t_byte *)&reg_val, &p->registers[reg_addr - 1]);
+	print("%c", (char)reg_val);
 }
