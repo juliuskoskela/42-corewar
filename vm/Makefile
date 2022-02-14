@@ -43,45 +43,31 @@ SRC_BASE	=	vm_main.c \
 				vm_print_arena.c \
 				vm_print_processes.c \
 				vm_test_fork.c \
-				vm_interactive_loop.c
-#				vm_test_print.c \
-				vm_print_arena.c \
-				vm_get_mem_addr.c \
-				vm_get_reg_addr.c \
-				vm_get_arg_data.c \
-				vm_get_arg_type.c \
-				vm_get_val.c \
-				vm_instr_live.c \
-				vm_check_acb.c \
+				vm_interactive_loop.c \
+				vm_print_instr_arg.c \
+				vm_print_instr.c \
+				vm_print_process_info.c \
+				vm_type_name.c \
+				vm_instr_size.c
+
+SRC_INSTR =		$(addprefix instr/,\
+				vm_instr_null.c \
+				vm_instr_fork.c \
+				vm_instr_lfork.c \
+				vm_instr_st.c \
+				vm_instr_sti.c \
 				vm_instr_ld.c \
 				vm_instr_ldi.c \
-				vm_instr_fork.c \
 				vm_instr_lld.c \
 				vm_instr_zjmp.c \
 				vm_instr_lldi.c \
-				vm_instr_lfork.c \
 				vm_instr_aff.c \
 				vm_instr_add.c \
 				vm_instr_sub.c \
 				vm_instr_and.c \
 				vm_instr_or.c \
 				vm_instr_xor.c \
-				vm_advance_pc.c \
-				vm_print_bytes.c \
-				vm_print_process.c
-
-SRC_INSTR =		$(addprefix instr/,\
-				vm_instr_null.c \
-				vm_instr_fork.c \
-				vm_instr_lfork.c \
-				vm_instr_size.c \
-				vm_instr_ld.c \
-				vm_instr_st.c \
-				vm_instr_sti.c \
-				vm_print_instr_arg.c \
-				vm_print_instr.c \
-				vm_print_process_info.c \
-				vm_type_name.c \
+				vm_instr_live.c \
 )
 
 SRC_MEM =		$(addprefix mem/,\

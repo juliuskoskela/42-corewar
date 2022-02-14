@@ -17,7 +17,7 @@
 # define VM_VERBOSE_PC			16
 
 # define VM_PRINT_ARENA_WIDTH	64
-# define ROW_SIZE 64
+# define ROW_SIZE 				64
 
 # define ENDIAN_LITTLE 1
 
@@ -65,12 +65,6 @@ typedef struct s_instr
 	t_byte		acb;
 	t_arg		args[3];
 }	t_instr;
-
-typedef struct s_player
-{
-	t_header	header;
-//	t_byte		program[CHAMP_MAX_SIZE];
-}	t_player;
 
 typedef struct s_acb
 {
@@ -130,32 +124,57 @@ t_input_args	vm_parse_arguments(
 					int argc,
 					char **argv);
 
+void			vm_create_player(
+					t_arena *arena,
+					t_int32 *player_number,
+					char *name);
+
 void			vm_battle(t_arena arena);
-void			vm_create_player(t_arena *arena, t_int32 *player_number, char *name);
+
 t_process		*vm_create_process(t_arena arena, t_process *process_lst, t_int32 player_id);
+
 void			vm_introduce_champs(t_arena arena);
+
 void			vm_execute_cycle(t_process *process, t_arena *arena);
+
 void			vm_pause_and_print_memory(t_arena arena);
+
 void			vm_check_live(t_process **head, t_arena *arena);
+
 void			vm_exit_error(const char *message);
+
 void			*vm_reverse_bytes(void *dst, void *src, t_size size);
+
 t_arg			*vm_arg_read(t_arg *dst, t_mem *src);
 t_arg			*vm_arg_new(t_arg *dst, t_uint8 type, t_uint8 promoted);
+
 void			vm_print_arena(t_arena arena, t_process *process_list);
-void			vm_test_fork(t_process *p_lst);
 void			vm_print_processes(t_arena *a, int id);
+
 int				vm_interactive_loop(t_arena *arena);
 
+void			vm_test_fork(t_process *p_lst);
 
 // instr.h
 
 typedef void (*t_exec)(t_arena *, t_process *);
 
-void	vm_instr_ld(t_arena *a, t_process *p);
+void	vm_instr_add(t_arena *a, t_process *p);
+void	vm_instr_aff(t_arena *a, t_process *p);
+void	vm_instr_and(t_arena *a, t_process *p);
 void    vm_instr_fork(t_arena *a, t_process *p);
+void	vm_instr_ld(t_arena *a, t_process *p);
+void	vm_instr_ldi(t_arena *a, t_process *p);
 void	vm_instr_lfork(t_arena *a, t_process *p);
+void	vm_instr_live(t_arena *a, t_process *p);
+void	vm_instr_lld(t_arena *a, t_process *p);
+void	vm_instr_lldi(t_arena *a, t_process *p);
+void	vm_instr_or(t_arena *a, t_process *p);
 void	vm_instr_st(t_arena *a, t_process *p);
 void	vm_instr_sti(t_arena *a, t_process *p);
+void	vm_instr_sub(t_arena *a, t_process *p);
+void	vm_instr_xor(t_arena *a, t_process *p);
+void	vm_instr_zjmp(t_arena *a, t_process *p);
 
 void	vm_instr_null(t_arena *a, t_process *p);
 t_size	vm_instr_size(t_instr *src);
@@ -166,22 +185,22 @@ char	*vm_type_name(t_byte type);
 
 static const t_exec g_instr_funcs[] =
 {
-	vm_instr_null,
+	vm_instr_live,
 	vm_instr_ld,
 	vm_instr_st,
-	vm_instr_null,
-	vm_instr_null,
-	vm_instr_null,
-	vm_instr_null,
-	vm_instr_null,
-	vm_instr_null,
-	vm_instr_null,
+	vm_instr_add,
+	vm_instr_sub,
+	vm_instr_and,
+	vm_instr_or,
+	vm_instr_xor,
+	vm_instr_zjmp,
+	vm_instr_ldi,
 	vm_instr_sti,
 	vm_instr_fork,
-	vm_instr_null,
-	vm_instr_null,
+	vm_instr_lld,
+	vm_instr_lldi,
 	vm_instr_lfork,
-	vm_instr_null,
+	vm_instr_aff,
 };
 
 #endif
