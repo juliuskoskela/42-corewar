@@ -13,6 +13,8 @@ void	vm_instr_zjmp(t_arena *a, t_process *p)
 {
 	t_uint32 dirval;
 
+	if (!a)
+		return ;
 	// Get dir val.
 	vm_reg_store((t_byte *)&dirval, &p->current_instruction.args[0].data);
 
