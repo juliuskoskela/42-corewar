@@ -1,5 +1,13 @@
-#include "vm.h"
+/// opcode:		15 (0x0f)
+/// mnemonic:	lfork
+/// name:		lfork
+/// params:		1 : { T_DIR }
+/// acb:		false
+/// ncycles:	1000
+/// proto:		lfork offset
+/// descript:	Long version of fork. Forks this process: effectively creates a new process that inherits the current process' registers and zf. The spawned process has its PC set to his parent's PC offseted by offset.
 
+#include "vm.h"
 
 void	vm_instr_lfork(t_arena *a, t_process *p)
 {

@@ -1,3 +1,12 @@
+/// opcode:		12 (0x0c)
+/// mnemonic:	fork
+/// name:		fork
+/// params:		1 : { T_DIR }
+/// acb:		false
+/// ncycles:	800
+/// proto:		fork offset
+/// descript:	Forks this process: effectively creates a new process that inherits the current process' registers and zf. The spawned process has its PC set to his parent's PC offseted by offset.
+
 #include "vm.h"
 
 void	vm_instr_fork(t_arena *a, t_process *p)

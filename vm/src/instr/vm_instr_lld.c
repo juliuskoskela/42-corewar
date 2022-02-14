@@ -1,4 +1,11 @@
-// 13 (0x0d) | ``lld`` | "long load" | 2 : { T_DIR | T_IND, T_REG } | yes | 10 | ``lld src, dst`` Long version of ld
+/// opcode:		3 (0x03)
+/// mnemonic:	lld
+/// name:		long load
+/// params:		2 : { T_DIR | T_IND, T_REG }
+/// acb:		true
+/// ncycles:	10
+/// proto:		lld src, dst
+/// descript:	Long version of ld. Loads src in register dst, value of src affects zf
 
 #include "vm.h"
 

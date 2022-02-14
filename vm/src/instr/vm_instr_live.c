@@ -1,3 +1,12 @@
+/// opcode:		1 (0x01)
+/// mnemonic:	live
+/// name:		alive
+/// params:		1 : { T_DIR }
+/// acb:		no
+/// ncycles:	10
+/// proto:		live id
+/// descript:	Reports player #id as being alive
+
 #include "vm.h"
 
 void	vm_instr_live(t_arena *a, t_process *p)

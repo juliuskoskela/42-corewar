@@ -1,3 +1,12 @@
+/// opcode:		2 (0x02)
+/// mnemonic:	ld
+/// name:		load
+/// params:		2 : { T_DIR | T_IND, T_REG }
+/// acb:		true
+/// ncycles:	5
+/// proto:		ld src, dst
+/// descript:	Loads src in register dst, value of src affects zf
+
 #include "vm.h"
 
 void	vm_instr_ld(t_arena *a, t_process *p)

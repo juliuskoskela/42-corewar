@@ -1,3 +1,12 @@
+/// opcode:		11 (0x0b)
+/// mnemonic:	sti
+/// name:		store index
+/// params:		3 : { T_REG, T_REG | T_DIR | T_IND, T_DIR | T_REG }
+/// acb:		true
+/// ncycles:	25
+/// proto:		sti src, lhs, rhs
+/// descript:	Computes lhs + rhs and uses the result as an offset to address memory and store the value of the register src at that memory location.
+
 #include "vm.h"
 
 void	vm_instr_sti(t_arena *a, t_process *p)

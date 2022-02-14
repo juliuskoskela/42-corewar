@@ -1,6 +1,13 @@
-#include "vm.h"
+/// opcode:		3 (0x03)
+/// mnemonic:	st
+/// name:		store
+/// params:		2 : { T_REG, T_IND | T_REG }
+/// acb:		true
+/// ncycles:	5
+/// proto:		st src, dst
+/// descript:	Stores value of registry src in dst
 
-// st ( dst, src )
+#include "vm.h"
 
 void vm_print_process(t_process *p)
 {
