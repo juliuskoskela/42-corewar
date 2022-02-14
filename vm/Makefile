@@ -97,10 +97,10 @@ SRC_MEM =		$(addprefix mem/,\
 
 SRC_REG =		$(addprefix reg/,\
 				vm_reg_copy.c \
-				vm_reg_deref.c \
+				vm_reg_store.c \
 				vm_reg_print.c \
-				vm_reg_ref.c \
-				vm_reg_set.c \
+				vm_reg_load.c \
+				vm_reg_set_size.c \
 )
 
 ALL_SRC = $(SRC_BASE) $(SRC_INSTR) $(SRC_MEM) $(SRC_REG)

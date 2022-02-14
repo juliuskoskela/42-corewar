@@ -20,6 +20,6 @@ void	vm_reg_print(t_reg *src)
 	print("0x%02x", src->mem[i]);
 	print("]");
 	deref = 0;
-	vm_reg_deref((t_byte *)&deref, src);
+	vm_reg_store((t_byte *)&deref, src);
 	print(" %llu", deref);
 }

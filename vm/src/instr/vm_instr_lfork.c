@@ -7,7 +7,7 @@ void	vm_instr_lfork(t_arena *a, t_process *p)
 	t_process	*new;
 
 	//Save first argument T_DIR value
-	vm_reg_deref((t_byte *)&offset, &p->current_instruction.args[0].data);
+	vm_reg_store((t_byte *)&offset, &p->current_instruction.args[0].data);
 	new = minit(sizeof(t_process));
 	if (!new)
 		vm_exit_error("Malloc fail\n");

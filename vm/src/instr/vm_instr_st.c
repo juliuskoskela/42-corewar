@@ -21,7 +21,7 @@ void	vm_instr_st(t_arena *a, t_process *p)
 
 	mem_addr = 0;
 	// Get address of source register.
-	vm_reg_deref((t_byte *)&reg_addr, &p->current_instruction.args[0].data);
+	vm_reg_store((t_byte *)&reg_addr, &p->current_instruction.args[0].data);
 	if (reg_addr > 16)
 	{
 		print("jadjsd\n");
@@ -36,7 +36,7 @@ void	vm_instr_st(t_arena *a, t_process *p)
 	}
 	else
 	{
-		vm_reg_deref((t_byte *)&mem_addr, &p->current_instruction.args[1].data);
+		vm_reg_store((t_byte *)&mem_addr, &p->current_instruction.args[1].data);
 		print(" => Store R%u in %u\n", reg_addr, mem_addr);
 		if (mem_addr % IDX_MOD != 0)
 			p->zf = TRUE;

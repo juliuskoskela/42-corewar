@@ -17,18 +17,18 @@ void	vm_instr_add(t_arena *a, t_process *p)
 	t_int32 result;
 
 	// Get lhs, rhs, dst
-	vm_reg_deref((t_byte *)&addr[0], &p->current_instruction.args[0].data);
-	vm_reg_deref((t_byte *)&addr[1], &p->current_instruction.args[1].data);
-	vm_reg_deref((t_byte *)&addr[2], &p->current_instruction.args[2].data);
+	vm_reg_store((t_byte *)&addr[0], &p->current_instruction.args[0].data);
+	vm_reg_store((t_byte *)&addr[1], &p->current_instruction.args[1].data);
+	vm_reg_store((t_byte *)&addr[2], &p->current_instruction.args[2].data);
 
 	// Calculate result(lhs + rhs)
-	vm_reg_deref((t_byte *)&lhs, &p->registers[addr[0] - 1]);
-	vm_reg_deref((t_byte *)&rhs, &p->registers[addr[1] - 1]);
+	vm_reg_store((t_byte *)&lhs, &p->registers[addr[0] - 1]);
+	vm_reg_store((t_byte *)&rhs, &p->registers[addr[1] - 1]);
 	result = lhs + rhs;
 
 	// Update zf
 	p->zf = (result == 0);
 
 	// Store value to register dst
-	vm_reg_ref(&p->registers[addr[2] - 1], &result);
+	vm_reg_load(&p->registers[addr[2] - 1], &result);
 }

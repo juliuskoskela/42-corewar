@@ -1,6 +1,6 @@
 #include "vm.h"
 
-void	vm_reg_ref(t_reg *dst, t_byte *src)
+void	vm_reg_load(t_reg *dst, t_byte *src)
 {
 	t_size	i;
 

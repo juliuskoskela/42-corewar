@@ -1,7 +1,7 @@
 #include "reg.h"
 #include "vm.h"
 
-void	vm_reg_deref(t_byte *dst, t_reg *src)
+void	vm_reg_store(t_byte *dst, t_reg *src)
 {
 	t_size	i;
 
