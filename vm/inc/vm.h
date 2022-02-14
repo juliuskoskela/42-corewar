@@ -137,6 +137,8 @@ void			vm_introduce_champs(t_arena arena);
 
 void			vm_execute_cycle(t_process *process, t_arena *arena);
 
+int				vm_read_instr_arguments(t_process *process, t_arena *arena);
+
 void			vm_pause_and_print_memory(t_arena arena);
 
 void			vm_check_live(t_process **head, t_arena *arena);
