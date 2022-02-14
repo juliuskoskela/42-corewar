@@ -19,4 +19,5 @@ void	vm_instr_lldi(t_arena *a, t_process *p)
 	// Update zf
 
 	// Store value at `index` to register dst
+	vm_instr_null(a, p);
 }

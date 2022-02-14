@@ -16,6 +16,8 @@ void	vm_instr_sub(t_arena *a, t_process *p)
 	t_int32 rhs;
 	t_int32 result;
 
+	if (!a)
+		return ;
 	// Get lhs, rhs, dst
 	vm_reg_store((t_byte *)&addr[0], &p->current_instruction.args[0].data);
 	vm_reg_store((t_byte *)&addr[1], &p->current_instruction.args[1].data);
@@ -30,5 +32,5 @@ void	vm_instr_sub(t_arena *a, t_process *p)
 	p->zf = (result == 0);
 
 	// Store value to register dst
-	vm_reg_load(&p->registers[addr[2] - 1], &result);
+	vm_reg_load(&p->registers[addr[2] - 1], (t_byte *)&result);
 }

@@ -18,4 +18,5 @@ void	vm_instr_xor(t_arena *a, t_process *p)
 	// Update zf
 
 	// Store value to register dst
+	vm_instr_null(a, p);
 }

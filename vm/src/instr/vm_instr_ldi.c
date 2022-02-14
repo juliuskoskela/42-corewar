@@ -16,4 +16,5 @@ void	vm_instr_ldi(t_arena *a, t_process *p)
 	// Calculate index (lhs + rhs) % IDX_MOD
 
 	// Store value at `index` to register dst
+	vm_instr_null(a, p);
 }

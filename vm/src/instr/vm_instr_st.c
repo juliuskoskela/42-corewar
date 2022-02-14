@@ -24,7 +24,7 @@ void	vm_instr_st(t_arena *a, t_process *p)
 	vm_reg_store((t_byte *)&reg_addr, &p->current_instruction.args[0].data);
 	if (reg_addr > 16)
 	{
-		print("jadjsd\n");
+		print("reg addr > 16\n");
 		return ;
 	}
 

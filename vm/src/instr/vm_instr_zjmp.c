@@ -14,4 +14,5 @@ void	vm_instr_zjmp(t_arena *a, t_process *p)
 	// Check process zf
 
 	// Update PC
+	vm_instr_null(a, p);
 }
