@@ -14,7 +14,7 @@ void	vm_instr_aff(t_arena *a, t_process *p)
 	t_uint8	reg_addr;
 	t_int32	reg_val;
 
-	if (!a)
+	if (!a || !p)
 		return ;
 	vm_reg_store((t_byte *)&reg_addr, &p->current_instruction.args[0].data);
 	if (reg_addr > 16)
