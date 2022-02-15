@@ -2,7 +2,7 @@
 
 void	vm_reg_print(t_reg *src)
 {
-	t_uint64	deref;
+	t_int32	deref;
 	t_size		i;
 
 	if (!src || !src->len)
@@ -21,5 +21,5 @@ void	vm_reg_print(t_reg *src)
 	print("]");
 	deref = 0;
 	vm_reg_store((t_byte *)&deref, src);
-	print(" %llu", deref);
+	print(" %d", deref);
 }
