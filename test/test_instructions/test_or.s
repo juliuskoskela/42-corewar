@@ -37,17 +37,20 @@ or %8, %4, r3
 or 2, %4, r4
 or 2, %4, r5
 or 1, %4, r1
-or 10,%4, r16
+or 10,%4, r6
 or 8, %4, r3
 
 or %2, 4, r4
 or %2, 4, r5
 or %1, 4, r1
-or %10,4, r16
+or %10,4, r6
 or %8, 4, r3
 
 or 2, 4, r4
 or 2, 4, r5
 or 1, 4, r1
-or 10,4, r16
+or 10,4, r6
 or 8, 4, r3
+
+or r2, r16, r4
+or r3, r4, r5

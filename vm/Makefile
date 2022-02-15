@@ -69,6 +69,7 @@ SRC_INSTR =		$(addprefix instr/,\
 				vm_instr_or.c \
 				vm_instr_xor.c \
 				vm_instr_live.c \
+				vm_instr_get_param.c \
 )
 
 SRC_MEM =		$(addprefix mem/,\

@@ -178,6 +178,7 @@ void	vm_instr_sub(t_arena *a, t_process *p);
 void	vm_instr_xor(t_arena *a, t_process *p);
 void	vm_instr_zjmp(t_arena *a, t_process *p);
 
+t_int32	vm_instr_get_param(t_int32 *param, t_arena *a, t_process *p, int index);
 void	vm_instr_null(t_arena *a, t_process *p);
 t_size	vm_instr_size(t_instr *src);
 void	vm_print_instr(t_arena *a, t_process *p);
