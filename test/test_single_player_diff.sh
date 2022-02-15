@@ -34,6 +34,7 @@ outdir_user="$outdir/user"
 
 echo
 echo "Creating output directory $outdir"
+echo
 mkdir -p $outdir $outdir_user $outdir_subject
 
 ## Assemble player on subject and user asm, redirect all output to files
@@ -60,11 +61,14 @@ assemble_player() {
 
 echo
 echo "with subject asm..."
+echo
 assemble_player $subject_asm $outdir_subject subject_asm_output_$player
 
 echo
 echo "with user asm..."
+echo
 assemble_player "$user_asm -v" $outdir_user user_asm_output_$player
+echo
 
 ## Run player on subject and user VMs
 
@@ -84,6 +88,7 @@ run_vm() {
 	local corewar=$1
 	local player_cor=$2
 	local output_file=$3
+	local vm_verbosity=$4
 
 	echo "$corewar -d $cycles_to_run -v $vm_verbosity $player_cor >$output_file 2>&1"
 	$corewar $player_cor -d $cycles_to_run -v $vm_verbosity >$output_file 2>&1
@@ -95,20 +100,45 @@ run_vm() {
 
 echo
 echo "with subject vm..."
+echo
+
 subject_player_cor="$outdir_subject/$player.cor"
 subject_corewar_output_file="$outdir_subject/subject_corewar_output_$player"
-run_vm $subject_corewar "-a $subject_player_cor" $subject_corewar_output_file
+run_vm $subject_corewar "-a $subject_player_cor" $subject_corewar_output_file 0
 
 echo
 echo "with user vm..."
+echo
 user_player_cor="$outdir_user/$player.cor"
 user_corewar_output_file="$outdir_user/user_corewar_output_$player"
-run_vm $user_corewar $user_player_cor $user_corewar_output_file
+run_vm $user_corewar $user_player_cor $user_corewar_output_file 0
+
+diff_file=$outdir/diff_corewar_output_$player
+diff $subject_corewar_output_file $user_corewar_output_file > $diff_file
+
+if [ -s diff_file ]; then
+	echo
+	echo "FAILED: Differences found in output files"
+	echo
+	echo "See $diff_file for details"
+	echo
+else
+	echo
+	echo "PASSED"
+	echo
+fi
+
+subject_player_cor="$outdir_subject/$player.cor"
+subject_corewar_output_file="$outdir_subject/subject_corewar_output_$player"
+run_vm $subject_corewar "-a $subject_player_cor" $subject_corewar_output_file $vm_verbosity
+
+user_player_cor="$outdir_user/$player.cor"
+user_corewar_output_file="$outdir_user/user_corewar_output_$player"
+run_vm $user_corewar $user_player_cor $user_corewar_output_file $vm_verbosity
 
 ## Take diff
-
-diff $subject_corewar_output_file $user_corewar_output_file > $outdir/diff_corewar_output_$player
 
 echo
 echo "Test output written to $outdir"
 echo
+
