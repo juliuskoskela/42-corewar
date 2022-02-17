@@ -11,12 +11,15 @@
 
 void	vm_instr_live(t_arena *a, t_process *p)
 {
-	// Read live ID from process param.
-	
-	// Search for corresponding process in `a`.
-	
-	// If corresponding process is found, update it's `last_live` to be
-	// the current cycle.
-	
+	t_int32 id;
+
+	//get live id from the first argument of the process
+	vm_instr_get_param(&id, a, p, 0);
+
+	//update last_live for the current_process
+	p->last_live = a->current_cycle;
+
+	//save id in the arena
+	a->last_player_alive = id;
 	vm_instr_null(a, p);
 }
