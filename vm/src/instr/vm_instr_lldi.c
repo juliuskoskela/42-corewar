@@ -17,7 +17,7 @@ void	vm_instr_lldi(t_arena *a, t_process *p)
 	t_int32 mem_addr;
 	t_int32 reg_addr;
 
-	// Get register
+	// Get dst register
 	vm_reg_store((t_byte *)&reg_addr, &p->current_instruction.args[2].data);\
 
 	if (reg_addr > 16)
@@ -37,5 +37,9 @@ void	vm_instr_lldi(t_arena *a, t_process *p)
 	vm_mem_set_pos(&a->mem, p->pc + mem_addr);
 	vm_mem_read((t_byte *)&p->registers[reg_addr - 1], &a->mem, 4);
 	
-	//update zf
+	//set zf
+	if ((t_int32)*p->registers[reg_addr - 1].mem)
+		p->zf = FALSE;
+	else
+		p->zf = TRUE;
 }
