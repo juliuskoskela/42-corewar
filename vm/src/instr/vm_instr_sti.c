@@ -11,26 +11,29 @@
 
 void	vm_instr_sti(t_arena *a, t_process *p)
 {
-	t_uint8		reg_addr;
-	/*t_uint32	lhs;*/
-	/*t_uint32	rhs;*/
+	t_uint8	reg_addr;
+	t_int32	lhs;
+	t_int32	rhs;
+	t_int32	mem_offset;
 
-	vm_reg_store((t_byte *)&reg_addr, &p->current_instruction.args[0].data);
+	// Get lhs, rhs
+	if (!vm_instr_get_param(&lhs, a, p, 0))
+		return ;
+	if (!vm_instr_get_param(&rhs, a, p, 1))
+		return ;
+
+	// Calculate offset (lhs + rhs)
+	mem_offset = lhs + rhs;
+	print("lhs + rhs = %d + %d = %d\n", lhs, rhs, (int)mem_offset);
+
+	// Get src register address
+	vm_reg_store((t_byte *)&reg_addr, &p->current_instruction.args[2].data);
+	print("src reg addr: %d\n", (int)reg_addr);
 	if (reg_addr > 16)
 		return ;
-	if (p->current_instruction.args[1].type == REG_CODE)
-		vm_reg_copy(&p->registers[reg_addr - 1], &p->current_instruction.args[0].data);
-	else
-	{
-		vm_reg_store((t_byte *)&reg_addr, &p->current_instruction.args[1].data);
-		if (reg_addr % IDX_MOD != 0)
-			p->zf = TRUE;
-		vm_mem_set_pos(&a->mem, p->pc + reg_addr % IDX_MOD);
-		vm_mem_write(&a->mem, (t_byte *)&p->registers[reg_addr - 1], IND_ADDR_SIZE);
-	}
-	// print(" => %sR%d%s ", BLU, reg_addr, NRM);
-	print(" => R%d ", reg_addr);
 	vm_reg_print(&p->registers[reg_addr - 1]);
-	print("\n");
-	return ;
+
+	// Store register src in memory
+	vm_mem_set_pos(&a->mem, p->pc + mem_offset % IDX_MOD);
+	vm_mem_write(&a->mem, (t_byte *)&p->registers[reg_addr - 1], REG_SIZE);
 }
