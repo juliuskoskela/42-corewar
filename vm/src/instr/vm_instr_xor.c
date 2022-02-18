@@ -24,22 +24,19 @@ void	vm_instr_xor(t_arena *a, t_process *p)
 
 	// Calculate result(lhs ^ rhs)
 	result = lhs ^ rhs;
-	//print result
-	print("result: %d\n", (int)result);
+	print("lhs ^ rhs = %d ^ %d = %d\n", lhs, rhs, (int)result);
 
 	// Update zf
 	p->zf = (result == 0);
 
 	// Get result register address
 	vm_reg_store((t_byte *)&reg_addr, &p->current_instruction.args[2].data);
-	//print dst reg_addr
 	print("dst reg addr: %d\n", (int)reg_addr);
 	if (reg_addr > 16)
 		return ;
 
 	// Store result in register
 	vm_reg_load(&p->registers[reg_addr - 1], (t_byte *)&result);
-	// print reg contents
 	vm_reg_print(&p->registers[reg_addr - 1]);
 	print("\n");
 }

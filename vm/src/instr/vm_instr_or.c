@@ -25,7 +25,7 @@ void	vm_instr_or(t_arena *a, t_process *p)
 	// Calculate result(lhs | rhs)
 	result = lhs | rhs;
 	//print result
-	print("result: %d\n", (int)result);
+	print("lhs | rhs = %d | %d = %d\n", lhs, rhs, (int)result);
 
 	// Update zf
 	p->zf = (result == 0);
