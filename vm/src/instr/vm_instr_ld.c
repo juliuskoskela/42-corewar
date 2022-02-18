@@ -12,7 +12,7 @@
 void	vm_instr_ld(t_arena *a, t_process *p)
 {
 	t_uint8		reg_addr;
-	t_uint16	mem_addr;
+	t_int16		mem_addr;
 
 	vm_reg_store((t_byte *)&reg_addr, &p->current_instruction.args[1].data);
 	if (reg_addr > 16)
@@ -25,7 +25,7 @@ void	vm_instr_ld(t_arena *a, t_process *p)
 		if (mem_addr % IDX_MOD != 0)
 			p->zf = TRUE;
 		vm_mem_set_pos(&a->mem, (p->pc + mem_addr) % IDX_MOD);
-		vm_mem_read((t_byte *)&p->registers[reg_addr - 1], &a->mem, 4);
+		vm_mem_read((t_byte *)&p->registers[reg_addr - 1], &a->mem, REG_SIZE);
 	}
 	// print(" => %sR%d%s ", BLU, reg_addr, NRM);
 	print(" => R%d ", reg_addr);
