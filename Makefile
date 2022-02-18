@@ -30,4 +30,7 @@ fclean:
 	rm -rf test/output
 	rm -rf bin
 
+test: re
+	cd test && bash test_single_player_diff.sh subject_reference/champs/Gagnant.s 5000
+
 re: fclean all

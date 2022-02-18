@@ -194,4 +194,7 @@ fclean: clean
 
 re: fclean all
 
+test: all
+				cd test && bash test_asm_errors.sh && bash test_asm_valid.sh
+
 #include $(wildcard $(DEPFILES))

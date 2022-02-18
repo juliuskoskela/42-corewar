@@ -6,11 +6,14 @@ subject_corewar="./subject_reference/corewar"
 user_asm="../bin/asm"
 user_corewar="../bin/corewar"
 
+## Directory to place the result directories in 
+result_dir="../test_results"
+
 ## Verbosity level for vm: from 0 to 31
 vm_verbosity="31"
 
 ## Number of cycles to run before exiting and dumping memory
-cycles_to_run=50
+cycles_to_run=1535
 
 ## Path to the player .cor file is taken as the first command line argument
 
@@ -28,7 +31,7 @@ player=$(echo $player_s | rev | cut -d '/' -f 1 | rev | sed "s/\.s//")
 
 ## Set up output directory
 
-outdir="output_$player"
+outdir="$result_dir/output_$player"
 outdir_subject="$outdir/subject"
 outdir_user="$outdir/user"
 
