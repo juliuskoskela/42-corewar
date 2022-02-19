@@ -9,12 +9,13 @@
 
 # { T_DIR }
 
+
+live %742
 live %1
 live %3
 live %0
 live %100
 live %-15
+live %100001029
+live %0
 
-# Store process ID from r1 to live's argument above; assumes sti works
-sti r1, %:live, %1
-live: live %5

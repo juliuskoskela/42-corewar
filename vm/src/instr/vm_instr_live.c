@@ -19,7 +19,7 @@ void	vm_instr_live(t_arena *a, t_process *p)
 	//update last_live for the current_process
 	p->last_live = a->current_cycle;
 
-	//save id in the arena
-	a->last_player_alive = id;
-	vm_instr_null(a, p);
+	//save id in the arena, if it matches a player
+	if ((t_size)id > 0 && (t_size)id <= a->player_count)
+		a->last_player_alive = id;
 }
