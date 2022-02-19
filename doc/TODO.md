@@ -2,26 +2,34 @@
 
 ## VM
 
+- check norme
+- check leaks
+- check modulos: `All the addresses are related to PC and to IDX_MOD except for lld, lldi and
+lfork`
+- check zf: is implemented where appropriate, check is made against the correct value
+- hard coded argument lengths in instruction function variables
+- place all debug prints behind appropriate verbosity level flags (+ coloured prints behind coloured flag)
+
 ### Instructions
 
-|Function|Implemented|Tested
-|---------|-------|------|
-| `live`  | [No]  | [No] |
-| `ld`    | [Yes] | [No] |
-| `lld`   | [Yes] | [No] |
-| `ldi`   | [No]  | [No] |
-| `lldi`  | [No]  | [No] |
-| `st`    | [Yes] | [No] |
-| `sti`   | [Yes] | [No] |
-| `add`   | [Yes] | [No] |
-| `sub`   | [Yes]  | [No] |
-| `and`   | [No]  | [No] |
-| `or`    | [No]  | [No] |
-| `xor`   | [No]  | [No] |
-| `zjmp`  | [No]  | [No] |
-| `fork`  | [Yes] | [No] |
-| `lfork` | [Yes] | [No] |
-| `aff`   | [No]  | [No] |
+| Function | Implemented | Tested |
+|----------|-------------|--------|
+|  `live`  |    [Yes]     |  [No]  |
+|  `ld`    |    [Yes]    |  [No]  |
+|  `lld`   |    [Yes]    |  [No]  |
+|  `ldi`   |    [Yes]     |  [No]  |
+|  `lldi`  |    [Yes]     |  [No]  |
+|  `st`    |    [Yes]    |  [Some]  |
+|  `sti`   |    [Yes]    |  [No]  |
+|  `add`   |    [Yes]    |  [No]  |
+|  `sub`   |    [Yes]    |  [No]  |
+|  `and`   |    [Yes]    |  [No]  |
+|  `or`    |    [Yes]    |  [No]  |
+|  `xor`   |    [Yes]    |  [No]  |
+|  `zjmp`  |    [Yes]     |  [No]  |
+|  `fork`  |    [Yes]    |  [No]  |
+|  `lfork` |    [Yes]    |  [No]  |
+|  `aff`   |    [Yes]     |  [No]  |
 
 ### To do for each instruction
 
@@ -40,4 +48,10 @@
 
 ### Player
 
+- create our own player that wins
+
 ## ASM
+
+- check norme
+- check leaks
+- check github issues
