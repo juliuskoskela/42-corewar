@@ -22,7 +22,7 @@ t_process *prev)
 **	A check occurs every cycle_to_die cycles, while cycle_to_die is greater
 ** than zero. If cycle_to_die >= 0, a check occurs after each cycle.
 
-**	if a carriage performed live cycle_to_die cycles or more ago, it will
+**	if a process performed live cycle_to_die cycles or more ago, it will
 **	be killed and removed from the list.
 
 **	cycle_to_die is decreased by CYCLE_DELTA if the number of lives performed
@@ -42,13 +42,16 @@ void	vm_check_live(t_process **head, t_arena *arena)
 
 	current = *head;
 	prev = NULL;
+	// A process that performed its live statement cycles_to_die 
+	// or more cycles back is considered dead.
 	while (current)
 	{
 		if (current->last_live <= \
 			arena->current_cycle - arena->cycle_to_die)
 		{
 			if ((arena->verbosity & VM_VERBOSE_DEATHS) != 0)
-				print("Killing process %d\n", (int)current->id);
+				print("Process %d hasn't lived for %d cycles (CTD %d)",\
+				 (int)current->id, arena->cycle_to_die, arena->cycle_to_die);
 			current = vm_delete_process(head, current, prev);
 		}
 		else
