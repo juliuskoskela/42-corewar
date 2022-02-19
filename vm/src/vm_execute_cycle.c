@@ -7,7 +7,7 @@ t_arena *arena)
 
 	if (!vm_read_instr_arguments(process, arena))
 	{
-		print("an error occured while reading arguments");
+		print("an error occured while reading arguments\n");
 		return ;
 	}
 	vm_print_instr(arena, process);
