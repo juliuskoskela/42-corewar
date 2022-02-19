@@ -44,8 +44,7 @@ void	vm_check_live(t_process **head, t_arena *arena)
 	prev = NULL;
 	while (current)
 	{
-		if (current->last_live <= \
-			arena->current_cycle - arena->cycle_to_die)
+		if (current->last_live < arena->current_cycle - arena->cycle_to_die)
 		{
 			if ((arena->verbosity & VM_VERBOSE_DEATHS) != 0)
 				print("Killing process %d\n", (int)current->id);
@@ -61,7 +60,8 @@ void	vm_check_live(t_process **head, t_arena *arena)
 	if (arena->lives_since_check >= NBR_LIVE || \
 		arena->checks_performed >= MAX_CHECKS)
 	{
-		arena->cycle_to_die -= CYCLE_DELTA;
+		if (arena->cycle_to_die - CYCLE_DELTA < 0)
+			arena->cycle_to_die = 0;
 		arena->checks_performed = 0;
 	}
 	arena->lives_since_check = 0;
