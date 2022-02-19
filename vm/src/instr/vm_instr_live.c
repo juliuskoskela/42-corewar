@@ -13,13 +13,15 @@ void	vm_instr_live(t_arena *a, t_process *p)
 {
 	t_int32 id;
 
-	//get live id from the first argument of the process
 	vm_instr_get_param(&id, a, p, 0);
-
-	//update last_live for the current_process
-	p->last_live = a->current_cycle;
-
-	//save id in the arena, if it matches a player
-	if ((t_size)id > 0 && (t_size)id <= a->player_count)
+	id =* -1;
+	if (id > 0 && id <= a->player_count)
+	{
+		p->last_live = a->current_cycle;
 		a->last_player_alive = id;
+		//add verbosity check
+		if (a->verbosity & VM_VERBOSE_LIVES)
+			print("A process shows that player %d (%s) is alive.",\
+			 id, a->players[id - 1].prog_name);
+	}
 }
