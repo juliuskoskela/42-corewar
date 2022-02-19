@@ -16,7 +16,7 @@ t_process	*vm_free_processes(t_process **lst)
 
 t_process	*init_processes(t_arena arena)
 {
-	t_size		player_id;
+	t_int32		player_id;
 	t_process	*process_lst;
 
 	process_lst = NULL;
