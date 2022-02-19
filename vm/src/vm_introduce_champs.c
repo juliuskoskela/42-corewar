@@ -2,7 +2,7 @@
 
 void	vm_introduce_champs(t_arena arena)
 {
-	t_size	i;
+	t_int32	i;
 
 	print("Introducing contestants...\n");
 	i = 0;
