@@ -185,6 +185,7 @@ void	vm_print_instr(t_arena *a, t_process *p);
 void	vm_print_process_info(t_arena *a, t_process *p);
 void	vm_print_instr_arg(t_arg *arg);
 char	*vm_type_name(t_byte type);
+void    vm_print_process(t_process *p);
 
 static const t_exec g_instr_funcs[] =
 {

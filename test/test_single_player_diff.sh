@@ -1,5 +1,7 @@
 #!/bin/bash
 
+## By default, this script must be run from within the test folder!
+
 ## Paths to subject's and our executables
 subject_asm="./subject_reference/asm"
 subject_corewar="./subject_reference/corewar"

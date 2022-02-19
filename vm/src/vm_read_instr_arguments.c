@@ -15,7 +15,7 @@ t_bool	vm_check_acb(t_acb acb, t_op *op)
 		arg = g_arg_codes[acb.arg[i]];
 		if ((arg & params[i]) == 0)
 		{
-			print("invalid argument");
+			print("invalid argument\n");
 			return (FALSE);
 		}
 		i++;
