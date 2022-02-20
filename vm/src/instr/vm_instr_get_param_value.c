@@ -41,13 +41,13 @@ t_int32	vm_instr_get_param_value(t_int32 *param, t_arena *a, t_process *p, int i
 		print("ind_offset: %d ", (int)ind_offset);
 		vm_mem_set_pos(&a->mem, (t_size)((int)p->pc + ind_offset));
 		vm_mem_read((t_byte *)param, &a->mem, REG_SIZE);
+		vm_reverse_bytes(param, param, REG_SIZE);
 		print("=> value: %d", (int)*param);
 	}
 	print(" [");
 	i = 0;
 	while (i < 4)
 	{
-		// print bytes of deref
 		print("%02x", ((t_byte *)param)[i]);
 		if (i < 3)
 			print(" ");
