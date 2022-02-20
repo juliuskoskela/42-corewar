@@ -87,7 +87,7 @@ typedef struct s_arena
 {
 	t_mem		mem;
 	t_header	players[MAX_PLAYERS];
-	t_size		player_count;
+	t_int32		player_count;
 	t_mem		buffer;
 	t_size		offset;
 	t_process	*processes;

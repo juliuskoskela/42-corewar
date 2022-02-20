@@ -80,8 +80,8 @@ void	vm_create_player(t_arena *arena, int *player_number, char *name)
 	t_header	player;
 	int			fd;
 
-	if (*player_number > MAX_PLAYERS)
-		vm_exit_error("Player number is not within MAX_PLAYERS\n");
+	if (*player_number > arena->player_count || *player_number < 1)
+		vm_exit_error("player_number has to be > 1 && < nbr_of_players\n");
 	if (arena->players[*player_number - 1].prog_size || \
 		arena->players[*player_number - 1].prog_name[0])
 		*player_number += 1;

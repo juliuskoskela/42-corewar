@@ -18,4 +18,5 @@ void	vm_save_input(t_arena *arena, int argc, char **argv)
 		vm_create_player(arena, &args.player_numbers[i], args.player_paths[i]);
 		i++;
 	}
+	arena->last_player_alive = arena->player_count;
 }
