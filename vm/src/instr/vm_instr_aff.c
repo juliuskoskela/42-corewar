@@ -23,5 +23,6 @@ void	vm_instr_aff(t_arena *a, t_process *p)
 		return ;
 	}
 	vm_reg_store((t_byte *)&reg_val, &p->registers[reg_addr - 1]);
+	reg_val = reg_val % 256;
 	print("%c", (char)reg_val);
 }
