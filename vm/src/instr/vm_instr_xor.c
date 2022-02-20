@@ -14,7 +14,7 @@ void	vm_instr_xor(t_arena *a, t_process *p)
 	t_int32	lhs;
 	t_int32	rhs;
 	t_int32	result;
-	t_uint8	reg_addr;
+	t_int8	reg_addr;
 
 	// Get lhs, rhs
 	if (!vm_instr_get_param_value(&lhs, a, p, 0))
@@ -31,10 +31,11 @@ void	vm_instr_xor(t_arena *a, t_process *p)
 
 	// Get result register address
 	vm_reg_store((t_byte *)&reg_addr, &p->current_instruction.args[2].data);
-	print("dst reg addr: %d\n", (int)reg_addr);
-	if (reg_addr > 16)
+	if (reg_addr <= 0 || reg_addr > 16)
+	{
+		print("invalid register address\n");
 		return ;
-
+	}
 	// Store result in register
 	vm_reg_load(&p->registers[reg_addr - 1], (t_byte *)&result);
 	vm_reg_print(&p->registers[reg_addr - 1]);
