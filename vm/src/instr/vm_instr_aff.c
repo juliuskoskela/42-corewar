@@ -11,18 +11,18 @@
 
 void	vm_instr_aff(t_arena *a, t_process *p)
 {
-	t_uint8	reg_addr;
+	t_int8	reg_addr;
 	t_int32	reg_val;
 
 	if (!a || !p)
 		return ;
 	vm_reg_store((t_byte *)&reg_addr, &p->current_instruction.args[0].data);
-	if (reg_addr > 16)
+	if (reg_addr <= 0 || reg_addr > 16)
 	{
-		print("reg addr > 16\n");
+		print("invalid register address\n");
 		return ;
 	}
 	vm_reg_store((t_byte *)&reg_val, &p->registers[reg_addr - 1]);
 	reg_val = reg_val % 256;
-	print("%c", (char)reg_val);
+	print("Aff: %c\n", (char)reg_val);
 }
