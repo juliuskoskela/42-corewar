@@ -14,31 +14,32 @@ void	vm_instr_lldi(t_arena *a, t_process *p)
 {
 	t_int32	lhs;
 	t_int32	rhs;
-	t_int32 mem_addr;
-	t_int32 reg_addr;
+	t_int32 offset;
+	t_int32 dst_reg_addr;
 
 	// Get dst register
-	vm_reg_store((t_byte *)&reg_addr, &p->current_instruction.args[2].data);\
-
-	if (reg_addr > 16)
+	vm_reg_store((t_byte *)&dst_reg_addr, &p->current_instruction.args[2].data);\
+	if (dst_reg_addr > 16)
 	{
-		print("reg addr > 16\n");
+		print("invalid register address\n");
 		return ;
 	}
-
 	// Get lhs, rhs
-	vm_instr_get_param_value(&lhs, a, p, 0);
-	vm_instr_get_param_value(&rhs, a, p, 1);
-
+	if (!vm_instr_get_param_value(&lhs, a, p, 0))
+		return ;
+	if (!vm_instr_get_param_value(&rhs, a, p, 1))
+		return ;
 	// Calculate index lhs + rhs
-	mem_addr = lhs + rhs;
-
-	// Load value from `mem_addr` to register dst.
-	vm_mem_set_pos(&a->mem, (t_size)((int)p->pc + mem_addr));
-	vm_mem_read((t_byte *)&p->registers[reg_addr - 1], &a->mem, 4);
-	
+	offset = lhs + rhs;
+	// Load value from `offset` to register dst.
+	print(" => load value from pc + (%d + %d = %d) in R%d\n", lhs, rhs, offset, dst_reg_addr);
+	vm_mem_set_pos(&a->mem, (t_size)((int)p->pc + offset));
+	vm_mem_read((t_byte *)&p->registers[dst_reg_addr - 1], &a->mem, REG_SIZE);
+	print(" => where R%d ", dst_reg_addr);
+	vm_reg_print(&p->registers[dst_reg_addr - 1]);
+	print("\n");
 	//set zf
-	if ((t_int32)*p->registers[reg_addr - 1].mem)
+	if ((t_int32)*p->registers[dst_reg_addr - 1].mem)
 		p->zf = FALSE;
 	else
 		p->zf = TRUE;
