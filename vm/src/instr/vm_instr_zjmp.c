@@ -11,14 +11,14 @@
 
 void	vm_instr_zjmp(t_arena *a, t_process *p)
 {
-	t_uint32 dirval;
+	t_int32 offset;
 
 	if (!a)
 		return ;
 	// Get dir val.
-	vm_reg_store((t_byte *)&dirval, &p->current_instruction.args[0].data);
+	vm_reg_store((t_byte *)&offset, &p->current_instruction.args[0].data);
 
 	// Check process zf and update pc
 	if (p->zf)
-		p->pc += dirval;
+		p->pc = (t_size)((int)p->pc + (offset % IDX_MOD)) % MEM_SIZE;
 }
