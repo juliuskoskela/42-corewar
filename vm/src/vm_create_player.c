@@ -29,7 +29,7 @@ static void	vm_read_header_subject(t_arena *arena, t_uint32 player_number, int f
 }
 */
 
-static void	vm_read_header(t_arena *arena, t_uint32 player_number, int fd)
+static void	vm_read_header(t_arena *arena, int player_number, int fd)
 {
 	t_header	*player;
 	t_byte		buf[COMMENT_LENGTH + 1];
@@ -61,27 +61,27 @@ static void	vm_read_header(t_arena *arena, t_uint32 player_number, int fd)
 ** player.
 */
 
-static void	vm_read_program(t_arena *arena, t_uint32 player_number, int fd)
+static void	vm_read_program(t_arena *arena, int player_number, int fd)
 {
 	t_byte		program[CHAMP_MAX_SIZE];
-	t_uint32	program_size;
-	t_uint32	player_mem_location;
+	t_size		program_size;
+	t_size		player_mem_location;
 
-	player_mem_location = (player_number - 1) * arena->offset;
+	player_mem_location = ((t_size)player_number - 1) * arena->offset;
 	program_size = arena->players[player_number - 1].prog_size;
-	if (read(fd, program, program_size) != program_size)
+	if (read(fd, program, program_size) != (ssize_t)program_size)
 		vm_exit_error("Invalid amount of bytes in program\n");
 	vm_mem_set_pos(&arena->mem, player_mem_location);
 	vm_mem_write(&arena->mem, program, program_size);
 }
 
-void	vm_create_player(t_arena *arena, t_int32 *player_number, char *name)
+void	vm_create_player(t_arena *arena, int *player_number, char *name)
 {
 	t_header	player;
 	int			fd;
 
 	if (*player_number > MAX_PLAYERS)
-		vm_exit_error("player_number is not within MAX_PLAYERS\n");
+		vm_exit_error("Player number is not within MAX_PLAYERS\n");
 	if (arena->players[*player_number - 1].prog_size || \
 		arena->players[*player_number - 1].prog_name[0])
 		*player_number += 1;
@@ -91,7 +91,7 @@ void	vm_create_player(t_arena *arena, t_int32 *player_number, char *name)
 		vm_exit_error("Champions must be .cor files\n");
 	fd = open(name, O_RDONLY);
 	if (fd < 0)
-		vm_exit_error("Unable to open .cor file \n");
+		vm_exit_error("Unable to open .cor file\n");
 	vm_read_header(arena, *player_number, fd);
 	if (arena->players[*player_number - 1].magic != COREWAR_EXEC_MAGIC)
 		vm_exit_error("COREWAR_EXEC_MAGIC does not match the bytecode\n");

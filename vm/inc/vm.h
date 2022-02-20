@@ -117,7 +117,7 @@ typedef void (*t_exec)(t_arena *, t_process *);
 
 void			vm_save_input(
 					t_arena *arena,
-					t_uint32 argc,
+					int argc,
 					char **argv);
 
 t_input_args	vm_parse_arguments(
@@ -126,35 +126,23 @@ t_input_args	vm_parse_arguments(
 
 void			vm_create_player(
 					t_arena *arena,
-					t_int32 *player_number,
+					int *player_number,
 					char *name);
 
 void			vm_battle(t_arena arena);
-
-t_process		*vm_create_process(t_arena arena, t_process *process_lst, t_int32 player_id);
-
+t_process		*vm_create_process(t_arena arena, t_process *process_lst, t_size player_id);
 void			vm_introduce_champs(t_arena arena);
-
 void			vm_execute_cycle(t_process *process, t_arena *arena);
-
 int				vm_read_instr_arguments(t_process *process, t_arena *arena);
-
 void			vm_pause_and_print_memory(t_arena arena);
-
 void			vm_check_live(t_process **head, t_arena *arena);
-
 void			vm_exit_error(const char *message);
-
 void			*vm_reverse_bytes(void *dst, void *src, t_size size);
-
 t_arg			*vm_arg_read(t_arg *dst, t_mem *src);
-t_arg			*vm_arg_new(t_arg *dst, t_uint8 type, t_uint8 promoted);
-
+t_arg			*vm_arg_new(t_arg *dst, t_uint8 type, t_bool promoted);
 void			vm_print_arena(t_arena arena, t_process *process_list);
 void			vm_print_processes(t_arena *a, int id);
-
 int				vm_interactive_loop(t_arena *arena);
-
 void			vm_test_fork(t_process *p_lst);
 
 // instr.h
@@ -178,7 +166,7 @@ void	vm_instr_sub(t_arena *a, t_process *p);
 void	vm_instr_xor(t_arena *a, t_process *p);
 void	vm_instr_zjmp(t_arena *a, t_process *p);
 
-t_int32	vm_instr_get_param(t_int32 *param, t_arena *a, t_process *p, int index);
+t_int32	vm_instr_get_param_value(t_int32 *param, t_arena *a, t_process *p, int index);
 void	vm_instr_null(t_arena *a, t_process *p);
 t_size	vm_instr_size(t_instr *src);
 void	vm_print_instr(t_arena *a, t_process *p);

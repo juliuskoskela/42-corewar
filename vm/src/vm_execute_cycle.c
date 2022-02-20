@@ -50,7 +50,7 @@ void	vm_init_instruction_execution(t_process *process, t_arena *arena)
 		mzero(&process->current_instruction, sizeof(process->current_instruction));
 		process->current_instruction.opcode = opcode;
 		process->current_instruction.op = instruction;
-		process->cycles_before_execution = instruction->cycles;
+		process->cycles_before_execution = (int)instruction->cycles;
 //		print("Next instr to be executed: %s, wait %d cycles before execution\n", instruction->description, instruction->cycles); //test
 	}
 }

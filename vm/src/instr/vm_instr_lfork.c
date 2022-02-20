@@ -20,7 +20,7 @@ void	vm_instr_lfork(t_arena *a, t_process *p)
 	if (!new)
 		vm_exit_error("Malloc fail\n");
 	mcpy(new, p, sizeof(t_process));
-	new->pc = (p->pc + offset) % MEM_SIZE;
+	new->pc = (t_size)((int)p->pc + offset) % MEM_SIZE;
 	new->next = a->processes;
 	new->cycles_before_execution = -1;
 	mzero(&new->current_instruction, sizeof(t_instr));

@@ -1,6 +1,6 @@
 #include "vm.h"
 
-t_arg	*vm_arg_new(t_arg *dst, t_uint8 type, t_uint8 promoted)
+t_arg	*vm_arg_new(t_arg *dst, t_uint8 type, t_bool promoted)
 {
 	mzero(dst, sizeof(t_arg));
 	dst->type = type;

@@ -63,8 +63,10 @@ void	vm_check_live(t_process **head, t_arena *arena)
 	if (arena->lives_since_check >= NBR_LIVE || \
 		arena->checks_performed >= MAX_CHECKS)
 	{
-		if (arena->cycle_to_die - CYCLE_DELTA < 0)
+		if (arena->cycle_to_die <= CYCLE_DELTA)
 			arena->cycle_to_die = 0;
+		else
+			arena->cycle_to_die -= CYCLE_DELTA;
 		arena->checks_performed = 0;
 	}
 	arena->lives_since_check = 0;

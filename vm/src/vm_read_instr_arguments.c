@@ -27,9 +27,9 @@ t_acb	vm_decompose_acb(t_byte acb)
 {
 	t_acb	out;
 
-	out.arg[0] = (acb & 0b11000000) >> 6;
-	out.arg[1] = (acb & 0b00110000) >> 4;
-	out.arg[2] = (acb & 0b00001100) >> 2;
+	out.arg[0] = (acb & 0xC0) >> 6;
+	out.arg[1] = (acb & 0x30) >> 4;
+	out.arg[2] = (acb & 0xC) >> 2;
 	return (out);
 }
 

@@ -41,7 +41,7 @@ static void	parse_numeric_option(int key, char *arg, t_argparser_state *state)
 	int				nbr;
 
 	args = state->input;
-	nbr = s_toi(arg);
+	nbr = (int)s_toi(arg);
 	if (nbr == 0 && s_cmp(arg, "0") != 0)
 		argparser_usage(state);
 	else if (key == 'd' && nbr > 0)

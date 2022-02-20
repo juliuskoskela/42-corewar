@@ -28,7 +28,7 @@ t_process	*init_processes(t_arena arena)
 
 void vm_battle(t_arena arena)
 {
-	t_size	interactive_mode_skip;
+	int	interactive_mode_skip;
 
 	arena.processes = init_processes(arena);
 	vm_introduce_champs(arena);

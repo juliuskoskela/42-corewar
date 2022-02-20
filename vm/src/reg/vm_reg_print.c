@@ -3,15 +3,15 @@
 void	vm_reg_print(t_reg *src)
 {
 	t_int32	deref;
-	t_size		i;
+	t_size	i;
 
 	if (!src || !src->len)
 	{
 		print("[NULL]");
 		return ;
 	}
-	i = 0;
 	print("[");
+	i = 0;
 	while (i < src->len - 1)
 	{
 		print("0x%02x ", src->mem[i]);

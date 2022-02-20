@@ -46,7 +46,7 @@ static t_interactive_option	vm_parse_user_input(const t_interactive_option *opti
 		if (s_ncmp(options[i].opt, line, opt_len) == 0)
 		{
 			if (line[opt_len] != '\0')
-				*arg = s_toi(&line[opt_len]);
+				*arg = (int)s_toi(&line[opt_len]);
 			break ;
 		}
 		i++;
