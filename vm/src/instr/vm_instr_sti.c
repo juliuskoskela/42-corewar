@@ -11,29 +11,27 @@
 
 void	vm_instr_sti(t_arena *a, t_process *p)
 {
-	t_uint8	reg_addr;
+	t_int8	src_reg_addr;
 	t_int32	lhs;
 	t_int32	rhs;
 	t_int32	mem_offset;
 
-	// Get lhs, rhs
-	if (!vm_instr_get_param(&lhs, a, p, 0))
+	vm_reg_store((t_byte *)&src_reg_addr, &p->current_instruction.args[0].data);
+	if (src_reg_addr <= 0 || src_reg_addr > 16)
+	{
+		print("invalid register address\n");
 		return ;
-	if (!vm_instr_get_param(&rhs, a, p, 1))
+	}
+	if (!vm_instr_get_param_value(&lhs, a, p, 1))
 		return ;
-
-	// Calculate offset (lhs + rhs)
+	if (!vm_instr_get_param_value(&rhs, a, p, 2))
+		return ;
 	mem_offset = lhs + rhs;
-	print("lhs + rhs = %d + %d = %d\n", lhs, rhs, (int)mem_offset);
-
-	// Get src register address
-	vm_reg_store((t_byte *)&reg_addr, &p->current_instruction.args[2].data);
-	print("src reg addr: %d\n", (int)reg_addr);
-	if (reg_addr > 16)
-		return ;
-	vm_reg_print(&p->registers[reg_addr - 1]);
-
-	// Store register src in memory
-	vm_mem_set_pos(&a->mem, p->pc + mem_offset % IDX_MOD);
-	vm_mem_write(&a->mem, (t_byte *)&p->registers[reg_addr - 1], REG_SIZE);
+	print(" => store R%d in pc + (lhs + rhs = %d + %d = %d %% IDX_MOD)\n", src_reg_addr, lhs, rhs, (int)mem_offset);
+	vm_mem_set_pos(&a->mem, (t_size)((int)p->pc + (mem_offset % IDX_MOD)));
+	vm_mem_write(&a->mem, (t_byte *)&p->registers[src_reg_addr - 1], REG_SIZE);
+	print(" => where R%d ", src_reg_addr);
+	vm_reg_print(&p->registers[src_reg_addr - 1]);
+	print("\n");
+	vm_print_process(p);
 }
