@@ -24,7 +24,7 @@ CPPFLAGS	=	-I $(INC_DIR) -I src/instr -I ../inc -I ../lib/core/inc -I ../lib/arg
 DEPFLAGS	=	-MT $@ -MMD -MP -MF $(DEP_DIR)$*.d
 LDFLAGS		=	-L $(LIB_CORE_DIR) -L $(LIB_ARGPARSER_DIR)
 LDLIBS		=	-l argparser -l core
-COMPILE.c	=	$(CC) $(CFLAGS) $(CPPFLAGS) -c
+COMPILE.c	=	$(CC) $(CFLAGS) $(DFLAGS) $(CPPFLAGS) -c
 
 SRC_BASE	=	vm_main.c \
 				vm_parse_arguments.c \
@@ -70,7 +70,7 @@ SRC_INSTR =		$(addprefix instr/,\
 				vm_instr_or.c \
 				vm_instr_xor.c \
 				vm_instr_live.c \
-				vm_instr_get_param.c \
+				vm_instr_get_param_value.c \
 )
 
 SRC_MEM =		$(addprefix mem/,\

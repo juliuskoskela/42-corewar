@@ -17,9 +17,9 @@ void	vm_instr_and(t_arena *a, t_process *p)
 	t_uint8	reg_addr;
 
 	// Get lhs, rhs
-	if (!vm_instr_get_param(&lhs, a, p, 0))
+	if (!vm_instr_get_param_value(&lhs, a, p, 0))
 		return ;
-	if (!vm_instr_get_param(&rhs, a, p, 1))
+	if (!vm_instr_get_param_value(&rhs, a, p, 1))
 		return ;
 
 	// Calculate result(lhs & rhs)

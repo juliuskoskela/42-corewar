@@ -11,8 +11,8 @@
 
 void	vm_instr_ldi(t_arena *a, t_process *p)
 {
-	t_int32 lhs;
-	t_int32 rhs;
+	t_int32	lhs;
+	t_int32	rhs;
 	t_int32 mem_addr;
 	t_int32 reg_addr;
 
@@ -26,15 +26,13 @@ void	vm_instr_ldi(t_arena *a, t_process *p)
 	}
 
 	// Get lhs, rhs
-	vm_instr_get_param(&lhs, a, p, 0);
-	vm_instr_get_param(&rhs, a, p, 1);
+	vm_instr_get_param_value(&lhs, a, p, 0);
+	vm_instr_get_param_value(&rhs, a, p, 1);
 
 	// Calculate index (lhs + rhs) % IDX_MOD
 	mem_addr = (lhs + rhs) % IDX_MOD;
 
 	// Load value from `mem_addr` to register dst.
-	vm_mem_set_pos(&a->mem, (p->pc + mem_addr) % IDX_MOD);
+	vm_mem_set_pos(&a->mem, (t_size)((int)p->pc + (mem_addr % IDX_MOD)));
 	vm_mem_read((t_byte *)&p->registers[reg_addr - 1], &a->mem, 4);
-
-	vm_instr_null(a, p);
 }
