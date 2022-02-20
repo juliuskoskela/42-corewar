@@ -6,8 +6,8 @@ void	vm_save_input(t_arena *arena, int argc, char **argv)
 	int				i;
 
 	args = vm_parse_arguments(argc, argv);
-	arena->player_count = (t_size)args.player_count;
-	arena->offset = MEM_SIZE / arena->player_count;
+	arena->player_count = args.player_count;
+	arena->offset = MEM_SIZE / (t_size)arena->player_count;
 	arena->verbosity = args.verbosity;
 	arena->dump_nbr_cycles = (t_size)args.dump_nbr_cycles;
 	arena->pause_nbr_cycles = (t_size)args.pause_nbr_cycles;
@@ -18,5 +18,5 @@ void	vm_save_input(t_arena *arena, int argc, char **argv)
 		vm_create_player(arena, &args.player_numbers[i], args.player_paths[i]);
 		i++;
 	}
-	arena->last_player_alive = arena->player_count;
+	arena->last_player_alive = (t_size)arena->player_count;
 }

@@ -5,7 +5,7 @@
 */
 
 t_process	*vm_create_process(t_arena arena, t_process *process_lst, \
-t_size player_id)
+t_int32 player_id)
 {
 	t_process	*new_process;
 	int			i;
@@ -21,7 +21,7 @@ t_size player_id)
 		i++;
 	}
 	vm_reg_load(&new_process->registers[0], (t_byte *)&player_id);
-	new_process->pc = (player_id - 1) * arena.offset;
+	new_process->pc = (t_size)(player_id - 1) * arena.offset;
 	new_process->cycles_before_execution = -1;
 	new_process->next = process_lst;
 	return (new_process);
