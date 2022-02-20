@@ -73,7 +73,7 @@ typedef struct s_op
 	t_uint32		cycles;
 	const char		*description;
 	int				has_argument_coding_byte;
-	int				unknown;
+	int				modifies_carry;
 }	t_op;
 
 # define OP_COUNT	16
