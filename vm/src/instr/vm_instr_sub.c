@@ -11,7 +11,7 @@
 
 void	vm_instr_sub(t_arena *a, t_process *p)
 {
-	t_uint8 addr[3];
+	t_int8 	addr[3];
 	t_int32 lhs;
 	t_int32 rhs;
 	t_int32 result;
@@ -22,6 +22,13 @@ void	vm_instr_sub(t_arena *a, t_process *p)
 	vm_reg_store((t_byte *)&addr[0], &p->current_instruction.args[0].data);
 	vm_reg_store((t_byte *)&addr[1], &p->current_instruction.args[1].data);
 	vm_reg_store((t_byte *)&addr[2], &p->current_instruction.args[2].data);
+	if (addr[0] <= 0 || addr[0] > 16
+		|| addr[1] <= 0 || addr[1] > 16
+		|| addr[2] <= 0 || addr[2] > 16)
+	{
+		print("invalid register address\n");
+		return ;
+	}
 
 	// Calculate result(lhs - rhs)
 	vm_reg_store((t_byte *)&lhs, &p->registers[addr[0] - 1]);
