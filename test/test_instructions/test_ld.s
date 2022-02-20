@@ -3,8 +3,11 @@
 # 5 cycles
 
 .name "TEST_LD"
-.comment "Fill registers 1 - 16 with numbers 1 - 16"
+.comment "Tests ld"
 
 ld %666, r2
 ld %42, r3
-st r2, r3
+ld %-34324, r4
+
+ld -10, r5
+ld 3543434, r6
