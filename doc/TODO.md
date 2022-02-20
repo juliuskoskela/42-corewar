@@ -15,7 +15,7 @@ lfork`
 | Function | Implemented | Tested |
 |----------|-------------|--------|
 |  `live`  |    [Yes]     |  [No]  |
-|  `ld`    |    [Yes]    |  [No]  |
+|  `ld`    |    [Yes]    |  [Some]  |
 |  `lld`   |    [Yes]    |  [No]  |
 |  `ldi`   |    [Yes]     |  [No]  |
 |  `lldi`  |    [Yes]     |  [No]  |
@@ -29,7 +29,7 @@ lfork`
 |  `zjmp`  |    [Yes]     |  [No]  |
 |  `fork`  |    [Yes]    |  [No]  |
 |  `lfork` |    [Yes]    |  [No]  |
-|  `aff`   |    [Yes]     |  [No]  |
+|  `aff`   |    [Yes]     |  [Yes]  |
 
 ### To do for each instruction
 
