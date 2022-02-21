@@ -93,15 +93,15 @@ t_input_args	vm_parse_arguments(int argc, char **argv)
 	static const char				doc[] = "corewar: description";
 	static const char				args_doc[] = "<path/to/player.cor> ...";
 	static const t_argparser_option	options[] = {
-		{"dump", 'd', "nbr_cycles", 0, "dump memory to standard output and exit\n\
-				after nbr_cycles (> 0)"},
-		{"show", 's', "nbr_cycles", 0, "dump memory every N cycles and pause until\n\
-				a key is pressed"},
-		{"verbosity", 'v', "level", 0, "verbosity level (set between 0 and 31)"},
-		{"coloured", 'c', 0, 0, "use colours in printing to standard output"},
-		{"nbr", 'n', "nbr", 0, "set the number (> 0) of the next player"},
-		{"interactive", 'i', 0, 0, "execute vm in an interactive mode"},
-		{0}
+	{"dump", 'd', "nbr_cycles", 0, "dump memory to standard output and exit\n\
+		after nbr_cycles (> 0)"},
+	{"show", 's', "nbr_cycles", 0, "dump memory every N cycles and pause until\n\
+		a key is pressed"},
+	{"verbosity", 'v', "level", 0, "verbosity level (set between 0 and 31)"},
+	{"coloured", 'c', 0, 0, "use colours in printing to standard output"},
+	{"nbr", 'n', "nbr", 0, "set the number (> 0) of the next player"},
+	{"interactive", 'i', 0, 0, "execute vm in an interactive mode"},
+	{0}
 	};
 
 	mzero(&args, sizeof(args));

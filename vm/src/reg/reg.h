@@ -3,7 +3,7 @@
 
 # include "vm.h"
 
-typedef struct s_reg t_reg;
+typedef struct s_reg	t_reg;
 
 // Copy contents from src to dst
 void	vm_reg_copy(t_reg *dst, t_reg *src);

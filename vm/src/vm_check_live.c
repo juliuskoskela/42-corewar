@@ -1,7 +1,7 @@
 #include "vm.h"
 
-t_process	*vm_delete_process(t_process **head, t_process *current, \
-t_process *prev)
+static t_process	*vm_delete_process(t_process **head,
+t_process *current, t_process *prev)
 {
 	if (!prev)
 	{
@@ -16,6 +16,33 @@ t_process *prev)
 		current = prev->next;
 	}
 	return (current);
+}
+
+// A process that performed its live statement cycles_to_die 
+// or more cycles back is considered dead.
+
+static void	check_live_processes(t_process **head, t_arena *arena)
+{
+	t_process	*current;
+	t_process	*prev;
+
+	current = *head;
+	prev = NULL;
+	while (current)
+	{
+		if (current->last_live < arena->current_cycle - arena->cycle_to_die)
+		{
+			if ((arena->verbosity & VM_VERBOSE_DEATHS) != 0)
+				print("Process %d hasn't lived for %d cycles (CTD %d)",
+					(int)current->id, arena->cycle_to_die, arena->cycle_to_die);
+			current = vm_delete_process(head, current, prev);
+		}
+		else
+		{
+			prev = current;
+			current = current->next;
+		}
+	}
 }
 
 /*
@@ -37,28 +64,7 @@ t_process *prev)
 
 void	vm_check_live(t_process **head, t_arena *arena)
 {
-	t_process	*current;
-	t_process	*prev;
-
-	current = *head;
-	prev = NULL;
-	// A process that performed its live statement cycles_to_die 
-	// or more cycles back is considered dead.
-	while (current)
-	{
-		if (current->last_live < arena->current_cycle - arena->cycle_to_die)
-		{
-			if ((arena->verbosity & VM_VERBOSE_DEATHS) != 0)
-				print("Process %d hasn't lived for %d cycles (CTD %d)",\
-				 (int)current->id, arena->cycle_to_die, arena->cycle_to_die);
-			current = vm_delete_process(head, current, prev);
-		}
-		else
-		{
-			prev = current;
-			current = current->next;
-		}
-	}
+	check_live_processes(head, arena);
 	arena->checks_performed += 1;
 	if (arena->lives_since_check >= NBR_LIVE || \
 		arena->checks_performed >= MAX_CHECKS)

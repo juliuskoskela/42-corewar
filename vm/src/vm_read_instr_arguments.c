@@ -56,29 +56,27 @@ int	vm_check_arg_types(t_acb *acb, t_process *process, t_arena *arena)
 
 int	vm_read_instr_arguments(t_process *process, t_arena *arena)
 {
-	t_acb	acb;
-	t_bool	is_promoted;
-	size_t	i;
+	t_acb		acb;
+	t_bool		is_promoted;
+	size_t		i;
+	const char	*instr;
 
 	is_promoted = FALSE;
 	vm_mem_set_pos(&arena->mem, process->pc + 1);
 	if (!vm_check_arg_types(&acb, process, arena))
 		return (0);
+	instr = process->current_instruction.op->mnemonic;
 	i = 0;
 	while (i < process->current_instruction.op->param_count)
 	{
-		if (s_cmp(process->current_instruction.op->mnemonic, "live") == 0)
+		if (s_cmp(instr, "live") == 0)
 			is_promoted = TRUE;
-		else if (s_cmp(process->current_instruction.op->mnemonic, "lldi") == 0
-			|| s_cmp(process->current_instruction.op->mnemonic, "and") == 0
-			|| s_cmp(process->current_instruction.op->mnemonic, "or") == 0
-			|| s_cmp(process->current_instruction.op->mnemonic, "xor") == 0
-			|| s_cmp(process->current_instruction.op->mnemonic, "ld") == 0)
-		{
-			if (acb.arg[i] == DIR_CODE)
-				is_promoted = TRUE;
-		}
-		vm_arg_new(&process->current_instruction.args[i], acb.arg[i], is_promoted);
+		else if (acb.arg[i] == DIR_CODE && (s_cmp(instr, "lldi") == 0
+				|| s_cmp(instr, "and") == 0 || s_cmp(instr, "or") == 0
+				|| s_cmp(instr, "xor") == 0 || s_cmp(instr, "ld") == 0))
+			is_promoted = TRUE;
+		vm_arg_new(&process->current_instruction.args[i],
+			acb.arg[i], is_promoted);
 		vm_arg_read(&process->current_instruction.args[i], &arena->mem);
 		i++;
 	}

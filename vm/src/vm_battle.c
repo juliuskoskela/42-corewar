@@ -26,7 +26,7 @@ t_process	*init_processes(t_arena arena)
 	return (process_lst);
 }
 
-void vm_battle(t_arena arena)
+void	vm_battle(t_arena arena)
 {
 	int	interactive_mode_skip;
 
@@ -39,7 +39,7 @@ void vm_battle(t_arena arena)
 		if (++arena.cycles_since_check >= arena.cycle_to_die)
 			vm_check_live(&arena.processes, &arena);
 		if (arena.dump_nbr_cycles
-		&& arena.current_cycle > arena.dump_nbr_cycles)
+			&& arena.current_cycle > arena.dump_nbr_cycles)
 		{
 			vm_print_arena(arena, arena.processes);
 			vm_free_processes(&arena.processes);

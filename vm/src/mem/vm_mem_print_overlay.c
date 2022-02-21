@@ -3,7 +3,7 @@
 void	vm_mem_print_overlay(t_mem *src, t_size start, t_size len, char *colour)
 {
 	t_size	i;
-	t_size 	rem;
+	t_size	rem;
 
 	rem = (start + len) % src->len;
 	i = 0;

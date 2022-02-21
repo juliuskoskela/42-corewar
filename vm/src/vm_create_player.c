@@ -1,34 +1,5 @@
 #include "vm.h"
 
-/*
-static void	vm_read_header_subject(t_arena *arena, t_uint32 player_number, int fd)
-{
-	t_header	*player;
-	t_byte		buf[COMMENT_LENGTH + 1];
-
-	mzero(buf, COMMENT_LENGTH + 1);
-	player = &arena->players[player_number - 1];
-	if (read(fd, buf, sizeof(player->magic)) != sizeof(player->magic))
-		vm_exit_error("Invalid bytes in input file\n");
-	player->magic = *(t_uint32 *)vm_reverse_bytes(\
-		&player->magic, (void *)buf, sizeof(player->magic));
-	if (read(fd, buf, PROG_NAME_LENGTH) != PROG_NAME_LENGTH)
-		vm_exit_error("Invalid bytes in input file\n");
-	s_cpy(player->prog_name, (const char *)buf);
-	//read sizeof(player->prog_size) == 32 bits. This differs in subject and our corewar.
-	if (read(fd, buf, sizeof(player->prog_size_subject)) != sizeof(player->prog_size_subject))
-		vm_exit_error("Invalid bytes in input file\n");
-	player->prog_size_subject = *(t_uint32 *)vm_reverse_bytes(\
-		(void *)&player->prog_size_subject, (void *)buf, sizeof(player->prog_size_subject));
-	player->prog_size = player->prog_size_subject;
-	if (player->prog_size > CHAMP_MAX_SIZE)
-		vm_exit_error("Program size is larger than CHAMP_MAX_SIZE\n");
-	if (read(fd, buf, COMMENT_LENGTH) != COMMENT_LENGTH)
-		vm_exit_error("Invalid bytes in input file\n");
-	s_cpy(player->comment, (const char *)buf);
-}
-*/
-
 static void	vm_read_header(t_arena *arena, int player_number, int fd)
 {
 	t_header	*player;
@@ -39,7 +10,7 @@ static void	vm_read_header(t_arena *arena, int player_number, int fd)
 	if (read(fd, buf, sizeof(player->magic)) != sizeof(player->magic))
 		vm_exit_error("Invalid bytes in input file\n");
 	player->magic = *(t_uint32 *)vm_reverse_bytes(&player->magic,
-		(void *)buf, sizeof(player->magic));
+			(void *)buf, sizeof(player->magic));
 	if (read(fd, buf, PROG_NAME_LENGTH) != PROG_NAME_LENGTH)
 		vm_exit_error("Invalid bytes in input file\n");
 	s_cpy(player->prog_name, (const char *)buf);

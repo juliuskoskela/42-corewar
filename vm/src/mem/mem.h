@@ -32,7 +32,6 @@ t_bool	vm_mem_write(t_mem *dst, t_byte *src, size_t nbytes);
 // `vm_mem_write`
 void	vm_mem_increment_pos(t_mem *src, t_size i);
 
-
 // Set read position manually.
 t_mem	*vm_mem_set_pos(t_mem *src, t_size pos);
 
@@ -43,6 +42,7 @@ void	vm_mem_increment_pos(t_mem *src, t_size i);
 void	vm_mem_print(t_mem *src);
 
 // Print start + len characters with a colour
-void	vm_mem_print_overlay(t_mem *src, t_size start, t_size len, char *colour);
+void	vm_mem_print_overlay(t_mem *src, t_size start,
+			t_size len, char *colour);
 
 #endif

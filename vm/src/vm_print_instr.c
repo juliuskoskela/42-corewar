@@ -6,7 +6,6 @@ void	vm_print_instr(t_arena *a, t_process *p)
 
 	vm_print_process_info(a, p);
 	print("%s ( ", p->current_instruction.op->mnemonic);
-	// print("%s%s%s ( ", GRN, p->current_instruction.op->mnemonic, NRM);
 	i = 0;
 	while (i < p->current_instruction.op->param_count)
 	{
