@@ -73,13 +73,13 @@ typedef struct s_acb
 
 typedef struct s_process
 {
-	t_uint32	id;
-	t_size		pc;
-	t_bool		zf;
-	t_size		last_live;
-	t_int32		cycles_before_execution;
-	t_instr		current_instruction;
-	t_reg		registers[REG_NUMBER];
+	t_uint32			id;
+	t_size				pc;
+	t_bool				zf;
+	t_size				last_live;
+	t_int32				cycles_before_execution;
+	t_instr				current_instruction;
+	t_reg				registers[REG_NUMBER];
 	struct s_process	*next;
 }	t_process;
 
@@ -104,16 +104,16 @@ typedef struct s_arena
 	t_bool		interactive_mode;
 }	t_arena;
 
-typedef void (*t_interactive_exec)(t_arena *, int arg);
+typedef void	(*t_interactive_exec)(t_arena *, int arg);
 
 typedef struct s_interactive_option
 {
 	char				*name;
 	char				*opt;
 	t_interactive_exec	ptr;
-}	t_interactive_option;
+}						t_interactive_option;
 
-typedef void (*t_exec)(t_arena *, t_process *);
+typedef void	(*t_exec)(t_arena *, t_process *);
 
 void			vm_save_input(
 					t_arena *arena,
@@ -130,7 +130,8 @@ void			vm_create_player(
 					char *name);
 
 void			vm_battle(t_arena arena);
-t_process		*vm_create_process(t_arena arena, t_process *process_lst, t_int32 player_id);
+t_process		*vm_create_process(t_arena arena,
+					t_process *process_lst, t_int32 player_id);
 void			vm_introduce_champs(t_arena arena);
 void			vm_execute_cycle(t_process *process, t_arena *arena);
 int				vm_read_instr_arguments(t_process *process, t_arena *arena);
@@ -145,38 +146,40 @@ void			vm_print_processes(t_arena *a, int id);
 int				vm_interactive_loop(t_arena *arena);
 void			vm_test_fork(t_process *p_lst);
 
-// instr.h
+typedef void	(*t_exec)(t_arena *, t_process *);
 
-typedef void (*t_exec)(t_arena *, t_process *);
+void			vm_instr_add(t_arena *a, t_process *p);
+void			vm_instr_aff(t_arena *a, t_process *p);
+void			vm_instr_and(t_arena *a, t_process *p);
+void			vm_instr_fork(t_arena *a, t_process *p);
+void			vm_instr_ld(t_arena *a, t_process *p);
+void			vm_instr_ldi(t_arena *a, t_process *p);
+void			vm_instr_lfork(t_arena *a, t_process *p);
+void			vm_instr_live(t_arena *a, t_process *p);
+void			vm_instr_lld(t_arena *a, t_process *p);
+void			vm_instr_lldi(t_arena *a, t_process *p);
+void			vm_instr_or(t_arena *a, t_process *p);
+void			vm_instr_st(t_arena *a, t_process *p);
+void			vm_instr_sti(t_arena *a, t_process *p);
+void			vm_instr_sub(t_arena *a, t_process *p);
+void			vm_instr_xor(t_arena *a, t_process *p);
+void			vm_instr_zjmp(t_arena *a, t_process *p);
 
-void	vm_instr_add(t_arena *a, t_process *p);
-void	vm_instr_aff(t_arena *a, t_process *p);
-void	vm_instr_and(t_arena *a, t_process *p);
-void    vm_instr_fork(t_arena *a, t_process *p);
-void	vm_instr_ld(t_arena *a, t_process *p);
-void	vm_instr_ldi(t_arena *a, t_process *p);
-void	vm_instr_lfork(t_arena *a, t_process *p);
-void	vm_instr_live(t_arena *a, t_process *p);
-void	vm_instr_lld(t_arena *a, t_process *p);
-void	vm_instr_lldi(t_arena *a, t_process *p);
-void	vm_instr_or(t_arena *a, t_process *p);
-void	vm_instr_st(t_arena *a, t_process *p);
-void	vm_instr_sti(t_arena *a, t_process *p);
-void	vm_instr_sub(t_arena *a, t_process *p);
-void	vm_instr_xor(t_arena *a, t_process *p);
-void	vm_instr_zjmp(t_arena *a, t_process *p);
+t_int32			vm_instr_get_param_value(t_int32 *param,
+					t_arena *a, t_process *p, int index);
+void			vm_instr_print_register(char *msg,
+					t_int8 reg_addr, t_process *p);
+void			vm_instr_null(t_arena *a, t_process *p);
+t_size			vm_instr_size(t_instr *src);
+void			vm_print_instr(t_arena *a, t_process *p);
+void			vm_print_process_info(t_arena *a, t_process *p);
+void			vm_print_instr_arg(t_arg *arg);
+char			*vm_type_name(t_byte type);
+void			vm_print_process(t_process *p);
+void			vm_process_debug(char *msg, int verbosity);
 
-t_int32	vm_instr_get_param_value(t_int32 *param, t_arena *a, t_process *p, int index);
-void	vm_instr_null(t_arena *a, t_process *p);
-t_size	vm_instr_size(t_instr *src);
-void	vm_print_instr(t_arena *a, t_process *p);
-void	vm_print_process_info(t_arena *a, t_process *p);
-void	vm_print_instr_arg(t_arg *arg);
-char	*vm_type_name(t_byte type);
-void    vm_print_process(t_process *p);
-
-static const t_exec g_instr_funcs[] =
-{
+static const
+	t_exec g_instr_funcs[] = {
 	vm_instr_live,
 	vm_instr_ld,
 	vm_instr_st,

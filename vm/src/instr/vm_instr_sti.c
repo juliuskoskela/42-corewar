@@ -5,7 +5,9 @@
 /// acb:		true
 /// ncycles:	25
 /// proto:		sti src, lhs, rhs
-/// descript:	Computes lhs + rhs and uses the result as an offset to address memory and store the value of the register src at that memory location.
+/// descript:	Computes lhs + rhs and uses the result as an offset to address
+///				memory and store the value of the register src at that memory
+///				location.
 
 #include "vm.h"
 
@@ -14,24 +16,24 @@ void	vm_instr_sti(t_arena *a, t_process *p)
 	t_int8	src_reg_addr;
 	t_int32	lhs;
 	t_int32	rhs;
-	t_int32	mem_offset;
+	t_int32	offset;
 
 	vm_reg_store((t_byte *)&src_reg_addr, &p->current_instruction.args[0].data);
 	if (src_reg_addr <= 0 || src_reg_addr > 16)
 	{
-		print("invalid register address\n");
+		vm_process_debug("Invalid register number", a->verbosity);
 		return ;
 	}
 	if (!vm_instr_get_param_value(&lhs, a, p, 1))
 		return ;
 	if (!vm_instr_get_param_value(&rhs, a, p, 2))
 		return ;
-	mem_offset = lhs + rhs;
-	print(" => store R%d in pc + (lhs + rhs = %d + %d = %d %% IDX_MOD)\n", src_reg_addr, lhs, rhs, (int)mem_offset);
-	vm_mem_set_pos(&a->mem, (t_size)((int)p->pc + (mem_offset % IDX_MOD)));
+	offset = lhs + rhs;
+	if (a->verbosity & VM_VERBOSE_OPS)
+		print(" => store R%d in pc + (%d + %d = %d %% IDX_MOD)\n",
+			src_reg_addr, lhs, rhs, offset);
+	vm_mem_set_pos(&a->mem, (t_size)((int)p->pc + (offset % IDX_MOD)));
 	vm_mem_write(&a->mem, (t_byte *)&p->registers[src_reg_addr - 1], REG_SIZE);
-	print(" => where R%d ", src_reg_addr);
-	vm_reg_print(&p->registers[src_reg_addr - 1]);
-	print("\n");
-	vm_print_process(p);
+	if (a->verbosity & VM_VERBOSE_OPS)
+		vm_instr_print_register(" => where R%d ", src_reg_addr, p);
 }

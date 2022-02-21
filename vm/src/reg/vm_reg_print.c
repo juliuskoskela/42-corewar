@@ -1,5 +1,27 @@
 #include "vm.h"
 
+static void	print_dereferenced_value(t_int32 value, t_size len)
+{
+	t_size	i;
+
+	if (len == 1)
+		print("%hhd", value);
+	else if (len == 2)
+		print("%hd", value);
+	else if (len == 4)
+		print("%d", value);
+	i = 0;
+	print(" [");
+	while (i < len)
+	{
+		print("%02x", ((t_byte *)&value)[i]);
+		if (i < len - 1)
+			print(" ");
+		i++;
+	}
+	print("]");
+}
+
 void	vm_reg_print(t_reg *src)
 {
 	t_int32	deref;
@@ -21,21 +43,5 @@ void	vm_reg_print(t_reg *src)
 	print("] => ");
 	deref = 0;
 	vm_reg_store((t_byte *)&deref, src);
-	if (src->len == 1)
-		print("%hhd", deref);
-	else if (src->len == 2)
-		print("%hd", deref);
-	else if (src->len == 4)
-		print("%d", deref);
-	i = 0;
-	print(" [");
-	while (i < 4)
-	{
-		// print bytes of deref
-		print("%02x", ((t_byte *)&deref)[i]);
-		if (i < 3)
-			print(" ");
-		i++;
-	}
-	print("]");
+	print_dereferenced_value(deref, src->len);
 }

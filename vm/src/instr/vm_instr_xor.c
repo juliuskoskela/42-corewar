@@ -5,7 +5,8 @@
 /// acb:		true
 /// ncycles:	6
 /// proto:		xor lhs, rhs, dst
-/// descript:	Computes (lhs ^ rhs) and stores the result in register dst. Result affects zf.
+/// descript:	Computes (lhs ^ rhs) and stores the result in register dst.
+///				Result affects zf.
 
 #include "vm.h"
 
@@ -16,28 +17,23 @@ void	vm_instr_xor(t_arena *a, t_process *p)
 	t_int32	result;
 	t_int8	reg_addr;
 
-	// Get lhs, rhs
+	vm_reg_store((t_byte *)&reg_addr, &p->current_instruction.args[2].data);
+	if (reg_addr <= 0 || reg_addr > 16)
+	{
+		vm_process_debug("Invalid register number", a->verbosity);
+		return ;
+	}
 	if (!vm_instr_get_param_value(&lhs, a, p, 0))
 		return ;
 	if (!vm_instr_get_param_value(&rhs, a, p, 1))
 		return ;
-
-	// Calculate result(lhs ^ rhs)
 	result = lhs ^ rhs;
-	print("lhs ^ rhs = %d ^ %d = %d\n", lhs, rhs, (int)result);
-
-	// Update zf
 	p->zf = (result == 0);
-
-	// Get result register address
-	vm_reg_store((t_byte *)&reg_addr, &p->current_instruction.args[2].data);
-	if (reg_addr <= 0 || reg_addr > 16)
-	{
-		print("invalid register address\n");
-		return ;
-	}
-	// Store result in register
 	vm_reg_load(&p->registers[reg_addr - 1], (t_byte *)&result);
-	vm_reg_print(&p->registers[reg_addr - 1]);
-	print("\n");
+	if (a->verbosity & VM_VERBOSE_OPS)
+	{
+		print(" => %d ^ %d = %d to R%d\n", lhs, rhs, result, reg_addr);
+		vm_reg_print(&p->registers[reg_addr - 1]);
+		print("\n");
+	}
 }

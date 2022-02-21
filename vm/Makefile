@@ -50,7 +50,8 @@ SRC_BASE	=	vm_main.c \
 				vm_type_name.c \
 				vm_instr_size.c \
 				vm_read_instr_arguments.c \
-				vm_print_process.c
+				vm_print_process.c \
+				vm_process_debug.c
 
 SRC_INSTR =		$(addprefix instr/,\
 				vm_instr_null.c \
@@ -71,6 +72,7 @@ SRC_INSTR =		$(addprefix instr/,\
 				vm_instr_xor.c \
 				vm_instr_live.c \
 				vm_instr_get_param_value.c \
+				vm_instr_print_register.c \
 )
 
 SRC_MEM =		$(addprefix mem/,\

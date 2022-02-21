@@ -19,9 +19,10 @@ void	vm_instr_live(t_arena *a, t_process *p)
 	{
 		p->last_live = a->current_cycle;
 		a->last_player_alive = (t_size)id;
-		//add verbosity check
 		if (a->verbosity & VM_VERBOSE_LIVES)
-			print("player %d (%s) is said to be alive\n",\
-			 id, a->players[id - 1].prog_name);
+		{
+			print("player %d (%s) is said to be alive\n",
+				id, a->players[id - 1].prog_name);
+		}
 	}
 }
