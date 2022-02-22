@@ -28,6 +28,8 @@ void	vm_instr_lfork(t_arena *a, t_process *p)
 	mzero(&new->current_instruction, sizeof(t_instr));
 	a->processes = new;
 	if (a->verbosity & VM_VERBOSE_OPS)
+	{
 		print(" => old pc: %d offset: %d new pc: %d\n", p->pc, offset, new->pc);
-	vm_test_fork(a->processes);
+		vm_test_fork(a->processes);
+	}
 }

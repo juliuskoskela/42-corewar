@@ -11,7 +11,7 @@ vm_verbosity="31"
 ## Path to the player .cor file is taken as the first command line argument
 
 if [ $# -lt 1 ]; then
-	echo "usage: bash test_one.sh path/to/player.s [ cycles_to_run ]"
+	echo "usage: bash test_single_player.sh path/to/player.s [ cycles_to_run ]"
 	exit 0
 fi
 

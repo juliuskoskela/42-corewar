@@ -10,7 +10,8 @@ t_arena *arena)
 		print("an error occured while reading arguments\n");
 		return ;
 	}
-	vm_print_instr(arena, process);
+	if (arena->verbosity & VM_VERBOSE_OPS)
+		vm_print_instr(arena, process);
 	g_instr_funcs[process->current_instruction.opcode - 1](arena, process);
 	new_pc = (process->pc + vm_instr_size(&process->current_instruction))
 		% MEM_SIZE;
