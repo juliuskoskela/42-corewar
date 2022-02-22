@@ -5,4 +5,4 @@
 bin
 asm/asm
 vm/corewar
-test_results
+#test_results
