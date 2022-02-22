@@ -69,7 +69,7 @@ do
 		echo "move $player_cor to $outdir_player_subject" >> $log_file
 		mv $player_cor $outdir_player_subject
 	else
-		echo "$subject_asm exited with $subject_asm_exit"
+		echo "$subject_asm exited with $subject_asm_exit" | tee -a $log_file
 		exit
 	fi
 
@@ -83,7 +83,7 @@ do
 		echo "move $player_cor to $outdir_player_user" >> $log_file
 		mv $player_cor $outdir_player_user
 	else
-		echo "$user_asm exited with $user_asm_exit"
+		echo "$user_asm exited with $user_asm_exit" | tee -a $log_file
 		exit
 	fi
 done
@@ -104,7 +104,7 @@ run_vm() {
 	$corewar $player_cor_files -d $cycles_to_run -v $vm_verbosity >$output_file 2>&1
 	exit_status=$?
 	if [ $exit_status != 0 ]; then
-		echo "$corewar exited with $exit_status; see $output_file"
+		echo "$corewar exited with $exit_status; see $output_file" | tee -a $log_file
 	fi
 }
 
@@ -137,13 +137,13 @@ diff $subject_corewar_output_file $user_corewar_output_file > $diff_file
 
 if [ -s $diff_file ]; then
 	echo
-	echo "FAILED: Differences found in output files"
+	echo "FAILED: Differences found in output files" | tee -a $log_file
 	echo
-	echo "See $diff_file for details"
+	echo "See $diff_file for details" | tee -a $log_file
 	echo
 else
 	echo
-	echo "PASSED"
+	echo "PASSED" | tee -a $log_file
 	echo
 fi
 
@@ -153,6 +153,6 @@ run_vm $subject_corewar "-a $subject_player_cor_files" $subject_corewar_output_f
 user_corewar_output_file="$outdir/user/user_corewar_output"
 run_vm $user_corewar "$user_player_cor_files" $user_corewar_output_file $vm_verbosity
 
-echo "Test output written to $outdir"
+echo "Test output written to $outdir" | tee -a $log_file
 echo
 
