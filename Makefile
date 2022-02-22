@@ -32,5 +32,6 @@ fclean:
 
 test: re
 	cd test && bash test_single_player_diff.sh subject_reference/champs/Gagnant.s 5000
+	cd test && bash test_multiplayer_diff.sh subject_reference/champs/examples/bee_gees.s subject_reference/champs/examples/zork.s 10000
 
 re: fclean all
