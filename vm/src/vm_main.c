@@ -9,6 +9,11 @@ void	vm_init_arena(t_arena *arena)
 	arena->current_cycle = 1;
 }
 
+void	vm_free_arena_memory(t_arena *arena)
+{
+	vm_mem_free(&arena->mem);
+}
+
 int	main(int argc, char **argv)
 {
 	t_arena	arena;
@@ -16,5 +21,6 @@ int	main(int argc, char **argv)
 	vm_init_arena(&arena);
 	vm_save_input(&arena, argc, argv);
 	vm_battle(arena);
+	vm_free_arena_memory(&arena);
 	return (0);
 }
