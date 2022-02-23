@@ -17,7 +17,7 @@ LIB_ARGPARSER	= ../lib/argparser/libargparser.a
 LIB_CORE_DIR		= ../lib/core/
 LIB_ARGPARSER_DIR	= ../lib/argparser/
 
-CC			=	clang
+CC			=	gcc
 CFLAGS 		=	-g -Wall -Wextra -Werror -fPIC -fsanitize=address
 DFLAGS		=	-Wunreachable-code -Wconversion -Wpedantic -Wtype-limits
 CPPFLAGS	=	-I $(INC_DIR) -I src/instr -I ../inc -I ../lib/core/inc -I ../lib/argparser/include
