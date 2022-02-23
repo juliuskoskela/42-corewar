@@ -27,7 +27,7 @@ void	vm_init_instruction_execution(t_process *process, t_arena *arena)
 	vm_mem_read(&opcode, &arena->mem, 1);
 	instruction = vm_get_instruction(opcode);
 	if (instruction == NULL)
-		process->pc++;
+		vm_increment_process_pc(process, 1, 0);
 	else
 	{
 		mzero(&process->current_instruction,
@@ -37,7 +37,8 @@ void	vm_init_instruction_execution(t_process *process, t_arena *arena)
 		process->cycles_before_execution = (int)instruction->cycles;
 		if (!vm_read_instr_arguments(process, arena))
 		{
-			print("an error occured while reading arguments\n");
+			vm_process_debug("Error on reading arguments", arena->verbosity);
+			vm_increment_process_pc(process, 2, arena->verbosity);
 			return ;
 		}
 		if (opcode == 1)

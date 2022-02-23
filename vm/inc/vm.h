@@ -179,6 +179,9 @@ void			vm_print_instr_arg(t_arg *arg);
 char			*vm_type_name(t_byte type);
 void			vm_print_process(t_process *p);
 void			vm_process_debug(char *msg, int verbosity);
+void			vm_increment_process_pc(t_process *p,
+					t_int32 delta, t_int32 verbosity);
+
 
 static const
 	t_exec g_instr_funcs[] = {
