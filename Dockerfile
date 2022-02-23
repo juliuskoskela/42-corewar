@@ -22,7 +22,7 @@ RUN groupadd -r ${user} && adduser --ingroup ${user} ${user}
 #	&& sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 # Set working directory
-WORKDIR /home/${user}/code
+WORKDIR /code
 
 # Next, you can either
 # 1) share the current working directory by binding it to the container as a volume
