@@ -5,11 +5,6 @@ t_arena *arena)
 {
 	t_size	new_pc;
 
-	if (!vm_read_instr_arguments(process, arena))
-	{
-		print("an error occured while reading arguments\n");
-		return ;
-	}
 	if (arena->verbosity & VM_VERBOSE_OPS)
 		vm_print_instr(arena, process);
 	g_instr_funcs[process->current_instruction.opcode - 1](arena, process);
@@ -21,44 +16,6 @@ t_arena *arena)
 			process->pc, process->pc, new_pc, new_pc);
 	}
 	process->pc = new_pc;
-}
-
-t_op	*vm_get_instruction(t_byte opcode)
-{
-	int	i;
-
-	i = 0;
-	while (g_op_tab[i].mnemonic != 0)
-	{
-		if (opcode == g_op_tab[i].opcode)
-			return ((t_op *)&g_op_tab[i]);
-		i++;
-	}
-	return (NULL);
-}
-
-// Check the byte in memory that the process->pc is pointing to.
-// Validate opcode and save the opcode and cycles_before_execution.
-// Rest of the memory will be read on the cycle of execution.
-
-void	vm_init_instruction_execution(t_process *process, t_arena *arena)
-{
-	t_byte	opcode;
-	t_op	*instruction;
-
-	vm_mem_set_pos(&arena->mem, process->pc);
-	vm_mem_read(&opcode, &arena->mem, 1);
-	instruction = vm_get_instruction(opcode);
-	if (instruction == NULL)
-		process->pc++;
-	else
-	{
-		mzero(&process->current_instruction,
-			sizeof(process->current_instruction));
-		process->current_instruction.opcode = opcode;
-		process->current_instruction.op = instruction;
-		process->cycles_before_execution = (int)instruction->cycles;
-	}
 }
 
 void	vm_execute_process(t_process *process, t_arena *arena)
