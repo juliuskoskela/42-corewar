@@ -34,14 +34,15 @@ void	vm_init_instruction_execution(t_process *process, t_arena *arena)
 			sizeof(process->current_instruction));
 		process->current_instruction.opcode = opcode;
 		process->current_instruction.op = instruction;
-		process->cycles_before_execution = (int)instruction->cycles;
+		process->cycles_before_execution = -1;
 		if (!vm_read_instr_arguments(process, arena))
 		{
 			vm_process_debug("Error on reading arguments", arena->verbosity);
 			vm_increment_process_pc(process, 2, arena->verbosity);
 			return ;
 		}
-		if (opcode == 1)
-			process->current_instruction = vm_validate_instr(process, arena);
+		// if (opcode == 1 && !vm_validate_live_instr(process, arena))
+		// 	return ;
+		process->cycles_before_execution = (int)instruction->cycles;
 	}
 }

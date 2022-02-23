@@ -132,7 +132,7 @@ void			vm_create_player(
 void			vm_battle(t_arena arena);
 t_process		*vm_create_process(t_arena arena,
 					t_process *process_lst, t_int32 player_id);
-t_instr			vm_validate_instr(t_process *process, t_arena *arena);
+int				vm_validate_live_instr(t_process *process, t_arena *arena);
 void			vm_init_instruction_execution(t_process *p, t_arena *a);
 void			vm_introduce_champs(t_arena arena);
 void			vm_execute_cycle(t_process *process, t_arena *arena);
