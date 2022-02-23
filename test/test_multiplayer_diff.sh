@@ -35,8 +35,11 @@ do
 	outdir=$outdir"_"$player
 done
 
-mkdir -p $outdir/subject
-mkdir -p $outdir/user
+outdir_player_subject="$outdir/subject"
+outdir_player_user="$outdir/user"
+
+mkdir -p $outdir_player_subject
+mkdir -p $outdir_player_user
 
 ## Set up log file
 
@@ -56,8 +59,6 @@ do
 	player_s=$var
 	player_cor=$(echo $player_s | sed "s/\.s/\.cor/")
 	player=$(echo $player_s | rev | cut -d '/' -f 1 | rev | sed "s/\.s//")
-	outdir_player_subject="$outdir/subject"
-	outdir_player_user="$outdir/user"
 
 	echo "Assembling player $player_s" >> $log_file
 	echo "$subject_asm $player_s >$outdir_player_subject/subject_asm_output_$player 2>&1" >> $log_file
@@ -111,10 +112,16 @@ run_vm() {
 echo "with subject vm..." >> $log_file
 
 # Form a string with all the subject player .cor files
+
 subject_player_cor_files=""
-for var in $outdir_player_subject/*.cor
+for var in "$@"
 do
-	subject_player_cor_files=$subject_player_cor_files" "$var
+	if [[ $var =~ ^[0-9]+$ ]]; then
+		continue
+	fi
+	player_s=$var
+	player_cor=$(echo $player_s | sed "s/\.s/\.cor/" | rev | cut -d '/' -f 1 | rev)
+	subject_player_cor_files="$subject_player_cor_files $outdir_player_subject/$player_cor"
 done
 
 subject_corewar_output_file="$outdir/subject/subject_corewar_output"
@@ -124,9 +131,14 @@ echo "with user vm..." >> $log_file
 
 # Form a string with all the user player .cor files
 user_player_cor_files=""
-for var in $outdir_player_user/*.cor
+for var in "$@"
 do
-	user_player_cor_files=$user_player_cor_files" "$var
+	if [[ $var =~ ^[0-9]+$ ]]; then
+		continue
+	fi
+	player_s=$var
+	player_cor=$(echo $player_s | sed "s/\.s/\.cor/" | rev | cut -d '/' -f 1 | rev)
+	user_player_cor_files="$user_player_cor_files $outdir_player_user/$player_cor"
 done
 
 user_corewar_output_file="$outdir/user/user_corewar_output"
