@@ -36,10 +36,10 @@ test: re
 
 	@echo "\\n\033[1;34mtest 1:\033[0m"
 	@echo "\033[1;90mld with 516 as first argument loads from offset pc + 4 \\nst with 516 as second argument stores to offset pc + 4\033[0m \\n"
-	@echo "\033[1;90mrun 10 cycles and dump:\033[0m"
-	@cd test && bash test_multiplayer_diff.sh test_instructions/test_ld_516.s 10
+	@echo "\033[1;90mrun 15 cycles and dump:\033[0m"
+	@cd test && bash test_multiplayer_diff.sh test_instructions/test_module_1.s 15
 	@echo "\033[1;90mrun more cycles:\033[0m"
-	@cd test && bash test_multiplayer_diff.sh test_instructions/test_ld_516.s
+	@cd test && bash test_multiplayer_diff.sh test_instructions/test_module_1.s
 	@echo "\\n\033[1;90mRunning with no champion params. Usage should be outputted\033[0m \\n"
 	@-./bin/corewar
 	@echo "\\n\033[1;90mRunning with too many champions. Usage should be outputted\033[0m \\n"
