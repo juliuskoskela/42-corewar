@@ -36,11 +36,6 @@ void	vm_init_instruction_execution(t_process *process, t_arena *arena)
 		process->current_instruction.op = instruction;
 		process->cycles_before_execution = (int)instruction->cycles;
 		if (!vm_read_instr_arguments(process, arena))
-		{
-			print("an error occured while reading arguments\n");
 			return ;
-		}
-	//	if (opcode == 1)
-	//		process->current_instruction = vm_validate_instr(process, arena);
 	}
 }

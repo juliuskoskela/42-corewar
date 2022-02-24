@@ -14,10 +14,7 @@ t_bool	vm_check_acb(t_acb acb, t_op *op)
 	{
 		arg = g_arg_codes[acb.arg[i]];
 		if ((arg & params[i]) == 0)
-		{
-			print("invalid argument\n");
 			return (FALSE);
-		}
 		i++;
 	}
 	return (TRUE);
@@ -40,10 +37,7 @@ int	vm_check_arg_types(t_acb *acb, t_process *process, t_arena *arena)
 		vm_mem_read(&process->current_instruction.acb, &arena->mem, 1);
 		*acb = vm_decompose_acb(process->current_instruction.acb);
 		if (!vm_check_acb(*acb, process->current_instruction.op))
-		{
-			process->pc += 2;
 			return (0);
-		}
 	}
 	else
 	{
