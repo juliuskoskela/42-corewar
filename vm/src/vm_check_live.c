@@ -33,8 +33,9 @@ static void	check_live_processes(t_process **head, t_arena *arena)
 		if (current->last_live < arena->current_cycle - arena->cycle_to_die)
 		{
 			if ((arena->verbosity & VM_VERBOSE_DEATHS) != 0)
-				print("Process %d hasn't lived for %d cycles (CTD %d)",
-					(int)current->id, arena->cycle_to_die, arena->cycle_to_die);
+				print("Process %d hasn't lived for %d cycles (CTD %d)\n",
+					(int)current->id, arena->current_cycle - current->last_live,
+					arena->cycle_to_die);
 			current = vm_delete_process(head, current, prev);
 		}
 		else
@@ -76,4 +77,5 @@ void	vm_check_live(t_process **head, t_arena *arena)
 		arena->checks_performed = 0;
 	}
 	arena->lives_since_check = 0;
+	arena->cycles_since_check = 0;
 }

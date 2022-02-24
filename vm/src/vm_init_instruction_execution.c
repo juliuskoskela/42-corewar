@@ -40,7 +40,7 @@ void	vm_init_instruction_execution(t_process *process, t_arena *arena)
 			print("an error occured while reading arguments\n");
 			return ;
 		}
-		if (opcode == 1)
-			process->current_instruction = vm_validate_instr(process, arena);
+	//	if (opcode == 1)
+	//		process->current_instruction = vm_validate_instr(process, arena);
 	}
 }
