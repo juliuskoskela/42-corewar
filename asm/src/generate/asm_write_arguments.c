@@ -15,34 +15,34 @@
 #include "generate.h"
 #include <stdlib.h>
 
-static void	asm_write_direct(t_output_data *data, uint32_t *lc,
-uint32_t curr_op_lc, t_astnode *parameter, int size)
+static void	asm_write_direct(t_output_data *data, t_location_counters *lc,
+t_astnode *parameter, int size)
 {
 	if (parameter->type == INTEGER)
 		asm_get_numeric_value(&parameter->num_value, parameter->value);
 	else
-		asm_get_label_value(data, lc, curr_op_lc, parameter, size);
+		asm_get_label_value(data, lc, parameter, size);
 	if (data->verbose)
 	{
 		asm_print_output_info("write direct", g_astnode_types[parameter->type],
 			parameter->num_value);
 	}
-	asm_write_bytes(data, lc, &parameter->num_value, size);
+	asm_write_bytes(data, &lc->current, &parameter->num_value, size);
 }
 
-static void	asm_write_indirect(t_output_data *data, uint32_t *lc,
-uint32_t curr_op_lc, t_astnode *parameter, int size)
+static void	asm_write_indirect(t_output_data *data, t_location_counters *lc,
+t_astnode *parameter, int size)
 {
 	if (parameter->type == INTEGER)
 		asm_get_numeric_value(&parameter->num_value, parameter->value);
 	else
-		asm_get_label_value(data, lc, curr_op_lc, parameter, size);
+		asm_get_label_value(data, lc, parameter, size);
 	if (data->verbose)
 	{
 		asm_print_output_info("write indirect",
 			g_astnode_types[parameter->type], parameter->num_value);
 	}
-	asm_write_bytes(data, lc, &parameter->num_value, size);
+	asm_write_bytes(data, &lc->current, &parameter->num_value, size);
 }
 
 static void	asm_write_register(t_output_data *data, uint32_t *lc,
@@ -59,8 +59,8 @@ t_astnode *parameter, int size)
 	asm_write_bytes(data, lc, &parameter->num_value, size);
 }
 
-void	asm_write_arguments(t_output_data *data, uint32_t *lc,
-uint32_t curr_op_lc, t_astnode *instruction_node)
+void	asm_write_arguments(t_output_data *data, t_location_counters *lc,
+t_astnode *instruction_node)
 {
 	t_astnode	*parameter_list;
 	t_astnode	*parameter;
@@ -74,11 +74,14 @@ uint32_t curr_op_lc, t_astnode *instruction_node)
 	{
 		parameter = parameter_list->left_child;
 		if (parameter->type == REGISTER)
-			asm_write_register(data, lc, parameter, param_sizes[i]);
+			asm_write_register(data, &lc->current, parameter, param_sizes[i]);
 		else if (parameter->type == INDIRECT)
-			asm_write_indirect(data, lc, curr_op_lc, parameter->right_child, param_sizes[i]);
+		{
+			asm_write_indirect(data, lc, parameter->right_child,
+				param_sizes[i]);
+		}
 		else
-			asm_write_direct(data, lc, curr_op_lc, parameter->right_child, param_sizes[i]);
+			asm_write_direct(data, lc, parameter->right_child, param_sizes[i]);
 		parameter_list = parameter_list->right_child;
 		i++;
 	}

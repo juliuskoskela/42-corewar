@@ -29,7 +29,7 @@ static void	asm_add_label_to_list(t_symbol_list **labels, t_astnode *label)
 	}
 }
 
-void	asm_generate_statement(t_output_data *data, uint32_t *lc,
+void	asm_generate_statement(t_output_data *data, t_location_counters *lc,
 t_symbol_list **labels, t_astnode *node)
 {
 	if (node->left_child != NULL)

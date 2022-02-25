@@ -39,8 +39,8 @@ uint32_t ref_location, uint32_t op_location, size_t size)
 	}
 }
 
-void	asm_get_label_value(t_output_data *data, uint32_t *lc,
-uint32_t curr_op_lc, t_astnode *parameter, int size)
+void	asm_get_label_value(t_output_data *data, t_location_counters *lc,
+t_astnode *parameter, int size)
 {
 	t_symbol_list	*label;
 
@@ -48,7 +48,7 @@ uint32_t curr_op_lc, t_astnode *parameter, int size)
 	if (label == NULL)
 		asm_generate_error(parameter, "Undefined label");
 	if (label->node->num_value != -1)
-		parameter->num_value = label->node->num_value - (int32_t)curr_op_lc;
+		parameter->num_value = label->node->num_value - (int32_t)lc->current_op;
 	else
 	{
 		if (data->verbose)
@@ -56,6 +56,6 @@ uint32_t curr_op_lc, t_astnode *parameter, int size)
 			asm_print_output_info("add forward reference for label",
 				label->symbol, parameter->num_value);
 		}
-		asm_add_forward_ref_to_label(label, *lc, curr_op_lc, size);
+		asm_add_forward_ref_to_label(label, lc->current, lc->current_op, size);
 	}
 }
