@@ -76,12 +76,9 @@ static int	parse_opt(int key, char *arg, t_argparser_state *state)
 		args->next_player_nbr = set_next_player_nbr(args);
 		args->player_count += 1;
 	}
-	else if (key == ARGP_KEY_END)
-	{
-		if (args->player_count == 0)
-			argparser_usage(state);
-	}
-	else
+	else if (key == ARGP_KEY_END && args->player_count == 0)
+		argparser_usage(state);
+	else if (args->player_count)
 		return (ARGP_ERR_UNKNOWN);
 	return (0);
 }

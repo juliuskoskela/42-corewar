@@ -26,33 +26,31 @@ t_process	*init_processes(t_arena arena)
 	return (process_lst);
 }
 
-void	vm_battle(t_arena arena)
+void	vm_battle(t_arena a)
 {
 	int	interactive_mode_skip;
 
-	arena.processes = init_processes(arena);
-	vm_introduce_champs(arena);
+	a.processes = init_processes(a);
+	vm_introduce_champs(a);
 	interactive_mode_skip = 0;
-	while (arena.processes)
+	while (a.processes)
 	{
-		vm_execute_cycle(arena.processes, &arena);
-		if (++arena.cycles_since_check >= arena.cycle_to_die)
-			vm_check_live(&arena.processes, &arena);
-		if (arena.dump_nbr_cycles
-			&& arena.current_cycle > arena.dump_nbr_cycles)
+		vm_execute_cycle(a.processes, &a);
+		if (++a.cycles_since_check >= a.cycle_to_die)
+			vm_check_live(&a.processes, &a);
+		if (a.dump_nbr_cycles && a.current_cycle > a.dump_nbr_cycles)
 		{
-			vm_print_arena(arena, arena.processes);
-			vm_free_processes(&arena.processes);
+			vm_print_arena(a, a.processes);
+			vm_free_processes(&a.processes);
 			return ;
 		}
-		if (arena.pause_nbr_cycles
-			&& arena.current_cycle + 1 % arena.pause_nbr_cycles)
-			vm_pause_and_print_memory(arena);
+		if (a.pause_nbr_cycles && a.current_cycle + 1 % a.pause_nbr_cycles)
+			vm_pause_and_print_memory(a);
 		if (interactive_mode_skip)
 			interactive_mode_skip--;
-		if (arena.interactive_mode && interactive_mode_skip == 0)
-			interactive_mode_skip = vm_interactive_loop(&arena);
+		if (a.interactive_mode && interactive_mode_skip == 0)
+			interactive_mode_skip = vm_interactive_loop(&a);
 	}
-	print("Contestant %d, \"%s\", has won\n", arena.last_player_alive,
-		arena.players[arena.last_player_alive - 1].prog_name);
+	print("Contestant %d, \"%s\", has won\n", a.last_player_alive,
+		a.players[a.last_player_alive - 1].prog_name);
 }

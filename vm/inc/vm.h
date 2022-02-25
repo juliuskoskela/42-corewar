@@ -132,7 +132,6 @@ void			vm_create_player(
 void			vm_battle(t_arena arena);
 t_process		*vm_create_process(t_arena arena,
 					t_process *process_lst, t_int32 player_id);
-t_instr			vm_validate_instr(t_process *process, t_arena *arena);
 void			vm_init_instruction_execution(t_process *p, t_arena *a);
 void			vm_introduce_champs(t_arena arena);
 void			vm_execute_cycle(t_process *process, t_arena *arena);
@@ -179,6 +178,13 @@ void			vm_print_instr_arg(t_arg *arg);
 char			*vm_type_name(t_byte type);
 void			vm_print_process(t_process *p);
 void			vm_process_debug(char *msg, int verbosity);
+
+void	vm_interactive_print_processes(t_arena *arena, int arg);
+void	vm_interactive_print_arena(t_arena *arena, int arg);
+void	vm_interactive_exit(t_arena *arena, int arg);
+void	vm_interactive_help(t_arena *arena, int arg);
+
+
 
 static const
 	t_exec g_instr_funcs[] = {
