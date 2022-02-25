@@ -180,14 +180,10 @@ void			vm_print_process(t_process *p);
 void			vm_process_debug(char *msg, int verbosity);
 void			vm_increment_process_pc(t_process *p,
 					t_int32 delta, t_int32 verbosity);
-
-
-void	vm_interactive_print_processes(t_arena *arena, int arg);
-void	vm_interactive_print_arena(t_arena *arena, int arg);
-void	vm_interactive_exit(t_arena *arena, int arg);
-void	vm_interactive_help(t_arena *arena, int arg);
-
-
+void			vm_interactive_print_processes(t_arena *arena, int arg);
+void			vm_interactive_print_arena(t_arena *arena, int arg);
+void			vm_interactive_exit(t_arena *arena, int arg);
+void			vm_interactive_help(t_arena *arena, int arg);
 
 static const
 	t_exec g_instr_funcs[] = {
