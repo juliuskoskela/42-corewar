@@ -53,7 +53,8 @@ SRC_BASE	=	vm_main.c \
 				vm_print_process.c \
 				vm_process_debug.c \
 				vm_init_instruction_execution.c \
-				vm_increment_process_pc.c
+				vm_increment_process_pc.c \
+				vm_interactive_help.c 
 
 SRC_INSTR =		$(addprefix instr/,\
 				vm_instr_null.c \
