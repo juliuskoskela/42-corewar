@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   vm_instr_st.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: satukoskinen <satukoskinen@student.42.f    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/25 20:15:14 by satukoskine       #+#    #+#             */
+/*   Updated: 2022/02/25 20:15:15 by satukoskine      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 /// opcode:		3 (0x03)
 /// mnemonic:	st
 /// name:		store
@@ -50,6 +62,7 @@ void	vm_instr_st(t_arena *a, t_process *p)
 		store_to_register(a, p, src_reg_addr);
 	else
 		store_to_memory(a, p, src_reg_addr);
+	// zf !!!
 	if (a->verbosity & VM_VERBOSE_OPS)
 		vm_instr_print_register(" => where R%d", src_reg_addr, p);
 }

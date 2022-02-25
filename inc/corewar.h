@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   a header                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: marvin                                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 1970/01/01 00:00:00 by marvin            #+#    #+#             */
+/*   Updated: 1970/01/01 00:00:00 by marvin           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef COREWAR_H
 # define COREWAR_H
 
@@ -76,7 +88,7 @@ typedef struct s_op
 	t_uint32		cycles;
 	const char		*description;
 	int				has_argument_coding_byte;
-	int				modifies_carry;
+	int				unknown;
 }	t_op;
 
 # define OP_COUNT	16

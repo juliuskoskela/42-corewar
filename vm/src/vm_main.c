@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   vm_main.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: satukoskinen <satukoskinen@student.42.f    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/25 20:11:52 by satukoskine       #+#    #+#             */
+/*   Updated: 2022/02/25 20:11:53 by satukoskine      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "vm.h"
 
-void	vm_init_arena(t_arena *arena)
+static void	vm_init_arena(t_arena *arena)
 {
 	mzero(arena, sizeof(t_arena));
 	if (vm_mem_new(&arena->mem, MEM_SIZE) == NULL)
@@ -9,7 +21,7 @@ void	vm_init_arena(t_arena *arena)
 	arena->current_cycle = 1;
 }
 
-void	vm_free_arena_memory(t_arena *arena)
+static void	vm_free_arena_memory(t_arena *arena)
 {
 	vm_mem_free(&arena->mem);
 }

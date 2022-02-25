@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   vm_read_instr_arguments.c                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: satukoskinen <satukoskinen@student.42.f    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/25 20:11:04 by satukoskine       #+#    #+#             */
+/*   Updated: 2022/02/25 20:11:05 by satukoskine      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "vm.h"
 
-t_bool	vm_check_acb(t_acb acb, t_op *op)
+static t_bool	vm_check_acb(t_acb acb, t_op *op)
 {
 	t_byte	arg;
 	t_uint8	params[3];
@@ -20,7 +32,7 @@ t_bool	vm_check_acb(t_acb acb, t_op *op)
 	return (TRUE);
 }
 
-t_acb	vm_decompose_acb(t_byte acb)
+static t_acb	vm_decompose_acb(t_byte acb)
 {
 	t_acb	out;
 
@@ -30,7 +42,7 @@ t_acb	vm_decompose_acb(t_byte acb)
 	return (out);
 }
 
-int	vm_check_arg_types(t_acb *acb, t_process *process, t_arena *arena)
+static int	vm_check_arg_types(t_acb *acb, t_process *process, t_arena *arena)
 {
 	if (process->current_instruction.op->has_argument_coding_byte)
 	{

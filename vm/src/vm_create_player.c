@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   vm_create_player.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: satukoskinen <satukoskinen@student.42.f    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/25 20:12:34 by satukoskine       #+#    #+#             */
+/*   Updated: 2022/02/25 20:12:35 by satukoskine      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "vm.h"
 
 static void	vm_read_header(t_arena *arena, int player_number, int fd)

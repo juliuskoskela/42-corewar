@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   vm_battle.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: satukoskinen <satukoskinen@student.42.f    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/25 20:12:42 by satukoskine       #+#    #+#             */
+/*   Updated: 2022/02/25 20:12:42 by satukoskine      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "vm.h"
 
-t_process	*vm_free_processes(t_process **lst)
+static t_process	*vm_free_processes(t_process **lst)
 {
 	t_process	*tmp;
 
@@ -14,7 +26,7 @@ t_process	*vm_free_processes(t_process **lst)
 	return (NULL);
 }
 
-t_process	*init_processes(t_arena arena)
+static t_process	*init_processes(t_arena arena)
 {
 	t_int32		player_id;
 	t_process	*process_lst;

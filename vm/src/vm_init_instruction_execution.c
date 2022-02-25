@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   vm_init_instruction_execution.c                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: satukoskinen <satukoskinen@student.42.f    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/25 20:12:12 by satukoskine       #+#    #+#             */
+/*   Updated: 2022/02/25 20:12:13 by satukoskine      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 // Check the byte in memory that the process->pc is pointing to.
 // Validate opcode and save the opcode and cycles_before_execution.
 // Rest of the memory will be read on the cycle of execution.
 
 #include "vm.h"
 
-t_op	*vm_get_instruction(t_byte opcode)
+static t_op	*vm_get_instruction(t_byte opcode)
 {
 	int	i;
 

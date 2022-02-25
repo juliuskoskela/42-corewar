@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   vm_instr_live.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: satukoskinen <satukoskinen@student.42.f    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/25 20:14:50 by satukoskine       #+#    #+#             */
+/*   Updated: 2022/02/25 20:14:51 by satukoskine      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 /// opcode:		1 (0x01)
 /// mnemonic:	live
 /// name:		alive
@@ -21,7 +33,7 @@ void	vm_instr_live(t_arena *a, t_process *p)
 		a->last_player_alive = (t_size)id;
 		if (a->verbosity & VM_VERBOSE_LIVES)
 		{
-			print("player %d (%s) is said to be alive\n",
+			print("Player %d (%s) is said to be alive\n",
 				id, a->players[id - 1].prog_name);
 		}
 	}
