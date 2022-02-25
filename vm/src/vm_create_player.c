@@ -53,7 +53,7 @@ void	vm_create_player(t_arena *arena, int *player_number, char *name)
 
 	if (*player_number > arena->player_count || *player_number < 1)
 		vm_exit_error("player_number has to be > 1 && < nbr_of_players\n");
-	if (arena->players[*player_number - 1].prog_size || \
+	while (arena->players[*player_number - 1].prog_size || \
 		arena->players[*player_number - 1].prog_name[0])
 		*player_number += 1;
 	mzero(&player, sizeof(t_header));
