@@ -52,7 +52,6 @@ SRC_BASE	=	vm_main.c \
 				vm_read_instr_arguments.c \
 				vm_print_process.c \
 				vm_process_debug.c \
-				vm_validate_live_instr.c \
 				vm_init_instruction_execution.c \
 				vm_increment_process_pc.c
 

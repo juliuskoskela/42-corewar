@@ -6,7 +6,7 @@
 - check leaks
 - check modulos: `All the addresses are related to PC and to IDX_MOD except for lld, lldi and
 lfork`
-- check zf: 1) is implemented where appropriate, 2) check is made against the correct value
+- check zf: 1) is implemented where appropriate, 2) check is made against the correct value. This needs to be added to ld, ldi, lld and lldi instructions.
 - hard coded argument lengths in instruction function variables
 - place all debug prints behind appropriate verbosity level flags (+ coloured prints behind coloured flag)
 

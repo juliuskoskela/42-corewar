@@ -41,8 +41,6 @@ void	vm_init_instruction_execution(t_process *process, t_arena *arena)
 			vm_increment_process_pc(process, 2, arena->verbosity);
 			return ;
 		}
-		// if (opcode == 1 && !vm_validate_live_instr(process, arena))
-		// 	return ;
 		process->cycles_before_execution = (int)instruction->cycles;
 	}
 }

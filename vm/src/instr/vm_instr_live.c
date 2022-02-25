@@ -15,9 +15,9 @@ void	vm_instr_live(t_arena *a, t_process *p)
 
 	vm_instr_get_param_value(&id, a, p, 0);
 	id *= -1;
+	p->last_live = a->current_cycle;
 	if (id > 0 && id <= a->player_count)
 	{
-		p->last_live = a->current_cycle;
 		a->last_player_alive = (t_size)id;
 		if (a->verbosity & VM_VERBOSE_LIVES)
 		{

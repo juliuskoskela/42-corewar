@@ -1,6 +1,6 @@
 #include "vm.h"
 
-void vm_test_fork(t_process *p_lst)
+void	vm_test_fork(t_process *p_lst)
 {
 	int			count;
 	t_process	*tmp;
@@ -15,7 +15,7 @@ void vm_test_fork(t_process *p_lst)
 	}
 	print("Total processes: %d\n", count);
 	tmp = p_lst;
-	while(tmp)
+	while (tmp)
 	{
 		print("%d ", tmp->id);
 		tmp = tmp->next;
