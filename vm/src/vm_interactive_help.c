@@ -18,14 +18,14 @@ void	vm_interactive_print_arena(t_arena *arena, int arg)
 void	vm_interactive_exit(t_arena *arena, int arg)
 {
 	if (!arena || !arg)
-		;
+		return ;
 	exit(0);
 }
 
 void	vm_interactive_help(t_arena *arena, int arg)
 {
 	if (!arena || !arg)
-		;
+		return ;
 	print("Interactive options:\n\
 	p [ID]\t\tprint all processes or processes related to an ID\n\
 	a\t\tprint arena's memmory\n\
