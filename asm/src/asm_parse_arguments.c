@@ -38,14 +38,14 @@ t_input_args	asm_parse_arguments(int argc, char **argv)
 	static const char				doc[] = "asm: description";
 	static const char				args_doc[] = "path/to/player.s";
 	static const t_argparser_option	options[] = {
-		{"hex-dump", 'h', 0, 0, "print the resulting output as a hex dump\n\
+	{"hex-dump", 'h', 0, 0, "print the resulting output as a hex dump\n\
 				to standard output"},
-		{"dot", 'd', 0, 0, "write the intermediate AST/parse tree to path/to/player.dot\n\
+	{"dot", 'd', 0, 0, "write the intermediate AST/parse tree to path/to/player.dot\n\
 				from which an image can be generated with\n\
 				`dot -Tpng -o player_dot.png path/to/player.dot`\n\
 				(requires the Graphviz package)"},
-		{"verbose", 'v', 0, 0, "verbose mode"},
-		{0}
+	{"verbose", 'v', 0, 0, "verbose mode"},
+	{0}
 	};
 
 	mzero(&arguments, sizeof(arguments));

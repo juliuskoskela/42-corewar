@@ -33,6 +33,6 @@ void	_argparser_help(t_argparser_state *state)
 		print_fd(1, "%s\n", state->root_argp->doc);
 	print_fd(1, "\n");
 	argparser_help_print_options(state->root_argp->options);
-	argparser_help_print_options(g_default_options);
+	argparser_help_print_options(g_default_opts);
 	exit(0);
 }

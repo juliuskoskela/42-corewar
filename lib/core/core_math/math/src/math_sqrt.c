@@ -62,7 +62,7 @@ static void	whole(int i, double *z, double *j, double *rst)
 
 static void	decimal(int i, double *z, double *j, double *rst)
 {
-	while (i >= 0 )
+	while (i >= 0)
 	{
 		if (*z - ((2 * *rst) + (*j * p10(i))) * (*j * p10(i)) >= 0)
 		{

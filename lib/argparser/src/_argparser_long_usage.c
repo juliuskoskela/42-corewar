@@ -65,9 +65,9 @@ void	_argparser_long_usage(t_argparser_state *state)
 	col = 0;
 	col += print_fd(1, "Usage: %s", state->name);
 	argparser_print_short_options(state->root_argp->options, &col);
-	argparser_print_short_options(g_default_options, &col);
+	argparser_print_short_options(g_default_opts, &col);
 	argparser_print_long_options(state->root_argp->options, &col);
-	argparser_print_long_options(g_default_options, &col);
+	argparser_print_long_options(g_default_opts, &col);
 	if (state->root_argp->args_doc != NULL)
 		print_fd(1, " %s", state->root_argp->args_doc);
 	print_fd(1, "\n");

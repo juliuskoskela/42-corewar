@@ -35,7 +35,7 @@ static t_token	asm_get_hex_token(t_token token, t_lexer *lexer)
 	asm_lexer_advance(lexer);
 	asm_lexer_advance(lexer);
 	if (!is_digit(lexer->current_char)
-		 && lexer->current_char < 'a' && lexer->current_char > 'f')
+		&& lexer->current_char < 'a' && lexer->current_char > 'f')
 		asm_lexer_error(lexer, "Unrecognized token");
 	token_len = 2;
 	while (is_digit(lexer->current_char)

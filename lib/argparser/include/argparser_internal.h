@@ -9,10 +9,10 @@
 # define ARGP_SHORT_OPT			0
 # define ARGP_LONG_OPT			1
 
-static const t_argparser_option	g_default_options[] = {
-	{"help", 1, 0, 0, "print this help message"},
-	{"usage", 2, 0, 0, "print a short usage message"},
-	{0, 0, 0, 0, 0}
+static const t_argparser_option	g_default_opts[] = {
+{"help", 1, 0, 0, "print this help message"},
+{"usage", 2, 0, 0, "print a short usage message"},
+{0, 0, 0, 0, 0}
 };
 
 int							_argparser_parse_argument(

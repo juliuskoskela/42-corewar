@@ -20,16 +20,11 @@ const t_argparser_option *options)
 	i = 0;
 	while (options[i].name != NULL)
 	{
-		if (option_type == ARGP_LONG_OPT)
-		{
-			if (s_cmp(&argument[2], options[i].name) == 0)
-				return (&options[i]);
-		}
-		else
-		{
-			if (argument[1] == (char)options[i].key)
-				return (&options[i]);
-		}
+		if (option_type == ARGP_LONG_OPT
+			&& (s_cmp(&argument[2], options[i].name) == 0))
+			return (&options[i]);
+		else if (argument[1] == (char)options[i].key)
+			return (&options[i]);
 		i++;
 	}
 	return (NULL);

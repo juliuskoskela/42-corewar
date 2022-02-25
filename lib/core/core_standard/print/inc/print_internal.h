@@ -62,8 +62,7 @@ int				_conv_int(t_data *specs, char **result);
 int				_conv_double(t_data *specs, char **result);
 int				_failure(t_data *specs, char **result);
 
-static const t_fptr	g_type_conversions[] =
-{
+static const t_fptr	g_type_conversions[] = {
 	_conv_char,
 	_conv_char,
 	_conv_int,
