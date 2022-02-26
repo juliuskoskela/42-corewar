@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_execute_cycle.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: satukoskinen <satukoskinen@student.42.f    +#+  +:+       +#+        */
+/*   By: ksuomala <ksuomala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 20:12:28 by satukoskine       #+#    #+#             */
-/*   Updated: 2022/02/25 20:12:28 by satukoskine      ###   ########.fr       */
+/*   Updated: 2022/02/26 11:32:18 by ksuomala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ t_arena *arena)
 		vm_print_instr(arena, process);
 	g_instr_funcs[process->current_instruction.opcode - 1](arena, process);
 	instr_size = vm_instr_size(&process->current_instruction);
-	vm_increment_process_pc(process, (int)instr_size, arena->verbosity);
+	if (process->current_instruction.opcode != 9)
+		vm_increment_process_pc(process, (int)instr_size, arena->verbosity);	
 }
 
 static void	vm_execute_process(t_process *process, t_arena *arena)
