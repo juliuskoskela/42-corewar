@@ -31,7 +31,8 @@
 # define VM_PRINT_ARENA_WIDTH	64
 # define ROW_SIZE 				64
 
-# define ENDIAN_LITTLE 1
+
+# define VM_NEGATIVE_IDS		1
 
 // Colours for printing.
 
