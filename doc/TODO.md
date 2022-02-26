@@ -1,34 +1,37 @@
 # TO DO
 
+Before submitting:
+- author file
+- Somerme
+- Makefile rules
 ## VM
 
-- check norme
 - check leaks
 - check modulos: `All the addresses are related to PC and to IDX_MOD except for lld, lldi and
 lfork`
 - check zf: 1) is implemented where appropriate, 2) check is made against the correct value. This needs to be added to ld, ldi, lld and lldi instructions.
-- hard coded argument lengths in instruction function variables
-- place all debug prints behind appropriate verbosity level flags (+ coloured prints behind coloured flag)
+
+(- hard coded argument lengths in instruction function variables -> let that be)
 
 ### Instructions
 
 | Function | Implemented | Tested |
 |----------|-------------|--------|
-|  `live`  |    [Yes]     |  [No]  |
+|  `live`  |    [Yes]     |  [Some]  |
 |  `ld`    |    [Yes]    |  [Some]  |
-|  `lld`   |    [Yes]    |  [No]  |
-|  `ldi`   |    [Yes]     |  [No]  |
-|  `lldi`  |    [Yes]     |  [No]  |
+|  `lld`   |    [Yes]    |  [Some]  |
+|  `ldi`   |    [Yes]     |  [Some]  |
+|  `lldi`  |    [Yes]     |  [Some]  |
 |  `st`    |    [Yes]    |  [Some]  |
 |  `sti`   |    [Yes]    |  [Some]  |
-|  `add`   |    [Yes]    |  [No]  |
-|  `sub`   |    [Yes]    |  [No]  |
+|  `add`   |    [Yes]    |  [Some]  |
+|  `sub`   |    [Yes]    |  [Some]  |
 |  `and`   |    [Yes]    |  [Some]  |
 |  `or`    |    [Yes]    |  [Some]  |
 |  `xor`   |    [Yes]    |  [Some]  |
-|  `zjmp`  |    [Yes]     |  [No]  |
-|  `fork`  |    [Yes]    |  [No]  |
-|  `lfork` |    [Yes]    |  [No]  |
+|  `zjmp`  |    [Yes]     |  [Some]  |
+|  `fork`  |    [Yes]    |  [Some]  |
+|  `lfork` |    [Yes]    |  [Some]  |
 |  `aff`   |    [Yes]     |  [Yes]  |
 
 ### To do for each instruction
@@ -52,6 +55,5 @@ lfork`
 
 ## ASM
 
-- check norme
 - check leaks
 - check github issues

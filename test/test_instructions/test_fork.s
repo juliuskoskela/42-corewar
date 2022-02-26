@@ -11,10 +11,14 @@
 
 # { T_DIR }
 
+forkhere:
 fork %100
 fork %-100
 fork %1000
 fork %-1000
+fork %10000
+fork %-10000
 fork %0
 fork %42
 fork %1
+fork %:forkhere

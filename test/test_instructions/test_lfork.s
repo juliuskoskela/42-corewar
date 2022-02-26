@@ -12,10 +12,12 @@
 
 # { T_DIR }
 
-lfork 100
-lfork -100
-lfork 1000
-lfork -1000
-lfork 0
-lfork 42
-lfork 1
+lfork %100
+lfork %-100
+lfork %1000
+lfork %-1000
+lfork %10000
+lfork %-10000
+lfork %0
+lfork %42
+lfork %1
