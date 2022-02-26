@@ -6,7 +6,7 @@
 /*   By: ksuomala <ksuomala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 20:12:28 by satukoskine       #+#    #+#             */
-/*   Updated: 2022/02/26 11:32:18 by ksuomala         ###   ########.fr       */
+/*   Updated: 2022/02/26 12:00:52 by ksuomala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_arena *arena)
 		vm_print_instr(arena, process);
 	g_instr_funcs[process->current_instruction.opcode - 1](arena, process);
 	instr_size = vm_instr_size(&process->current_instruction);
-	if (process->current_instruction.opcode != 9)
+	if (process->current_instruction.opcode != 9  || process->zf == FALSE)
 		vm_increment_process_pc(process, (int)instr_size, arena->verbosity);	
 }
 

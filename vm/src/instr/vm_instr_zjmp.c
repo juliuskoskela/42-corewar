@@ -6,7 +6,7 @@
 /*   By: ksuomala <ksuomala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 20:15:34 by satukoskine       #+#    #+#             */
-/*   Updated: 2022/02/26 11:42:24 by ksuomala         ###   ########.fr       */
+/*   Updated: 2022/02/26 12:03:43 by ksuomala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void	vm_instr_zjmp(t_arena *a, t_process *p)
 	t_int32	offset;
 
 	vm_instr_get_param_value(&offset, a, p, 0);
-	print("pc currently: %d, offset %d\n", p->pc, offset);
 	if (p->zf)
 	{
 		p->pc = (t_size)((int)p->pc + (offset % IDX_MOD)) % MEM_SIZE;
