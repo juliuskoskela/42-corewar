@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 if ! command -v docker &> /dev/null
 then
     echo "docker not found: install to run this script"
