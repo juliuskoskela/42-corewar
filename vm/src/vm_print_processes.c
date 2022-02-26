@@ -12,7 +12,7 @@
 
 #include "vm.h"
 
-void	vm_print_processes(t_arena *a, int id)
+void	vm_print_processes(t_arena *a, int print_all, int id)
 {
 	t_bool		found_live_processes;
 	t_process	*p;
@@ -22,7 +22,7 @@ void	vm_print_processes(t_arena *a, int id)
 	print("printing processes:\n");
 	while (p)
 	{
-		if (id == -1 || p->id == (t_uint32)id)
+		if (print_all || p->id == id)
 		{
 			vm_print_process(p);
 			print("\n");

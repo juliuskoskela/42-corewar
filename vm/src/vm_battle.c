@@ -63,6 +63,6 @@ void	vm_battle(t_arena a)
 		if (a.interactive_mode && interactive_mode_skip == 0)
 			interactive_mode_skip = vm_interactive_loop(&a);
 	}
-	print("Contestant %d, \"%s\", has won\n", a.last_player_alive,
+	print("Contestant %d, \"%s\", has won !\n", a.last_player_alive,
 		a.players[a.last_player_alive - 1].prog_name);
 }

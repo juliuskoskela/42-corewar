@@ -14,10 +14,15 @@
 
 void	vm_interactive_print_processes(t_arena *arena, int arg)
 {
-	if (arg == 0 || arg > (int)arena->player_count)
+	if (arg > (int)arena->player_count)
 		print("Invalid process id %d\n", arg);
 	else
-		vm_print_processes(arena, arg);
+	{
+		if (arg == 0)
+			vm_print_processes(arena, 1, arg);
+		else
+			vm_print_processes(arena, 0, arg);
+	}
 }
 
 void	vm_interactive_print_arena(t_arena *arena, int arg)
@@ -39,7 +44,7 @@ void	vm_interactive_help(t_arena *arena, int arg)
 	if (!arena || !arg)
 		return ;
 	print("Interactive options:\n\
-	p [ID]\t\tprint all processes or processes related to an ID\n\
+	p [ID]\t\tprint all processes (p 0) or processes related to an ID\n\
 	a\t\tprint arena's memmory\n\
 	exit\t\texit program\n\
 	help\t\tprint this message\n\

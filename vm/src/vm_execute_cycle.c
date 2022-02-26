@@ -21,8 +21,8 @@ t_arena *arena)
 		vm_print_instr(arena, process);
 	g_instr_funcs[process->current_instruction.opcode - 1](arena, process);
 	instr_size = vm_instr_size(&process->current_instruction);
-	if (process->current_instruction.opcode != 9  || process->zf == FALSE)
-		vm_increment_process_pc(process, (int)instr_size, arena->verbosity);	
+	if (process->current_instruction.opcode != 9 || process->zf == FALSE)
+		vm_increment_process_pc(process, (int)instr_size, arena->verbosity);
 }
 
 static void	vm_execute_process(t_process *process, t_arena *arena)
