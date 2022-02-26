@@ -40,7 +40,8 @@ t_arena *a, t_process *p, int index)
 		print(" => indirect offset: %d", ind_offset);
 	vm_mem_set_pos(&a->mem, (t_size)((int)p->pc + ind_offset));
 	vm_mem_read((t_byte *)param, &a->mem, REG_SIZE);
-	vm_reverse_bytes(param, param, REG_SIZE);
+	if (ENDIAN_BIG)
+		vm_reverse_bytes(param, param, REG_SIZE);
 }
 
 static void	get_direct_value(t_int32 *param, t_arena *a, t_process *p,
