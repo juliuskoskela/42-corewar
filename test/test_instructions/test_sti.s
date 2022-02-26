@@ -11,7 +11,7 @@
 
 # { T_REG, T_REG | T_DIR | T_IND, T_DIR | T_REG }
 
-liveup: live %-1
+liveup: live %1000
 
 sti r1, r2, r3
 sti r16, r10, r2
