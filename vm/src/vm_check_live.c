@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   vm_check_live.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: satukoskinen <satukoskinen@student.42.f    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/25 20:12:38 by satukoskine       #+#    #+#             */
-/*   Updated: 2022/02/25 20:12:39 by satukoskine      ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "vm.h"
 
 static t_process	*vm_delete_process(t_process **head,
@@ -24,7 +12,7 @@ t_process *current, t_process *prev)
 	else
 	{
 		prev->next = current->next;
-		mdel((void **)current);
+		mdel((void **)&current);
 		current = prev->next;
 	}
 	return (current);
