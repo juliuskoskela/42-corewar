@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_instr_lldi.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: satukoskinen <satukoskinen@student.42.f    +#+  +:+       +#+        */
+/*   By: ksuomala <ksuomala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 20:14:59 by satukoskine       #+#    #+#             */
-/*   Updated: 2022/02/25 20:14:59 by satukoskine      ###   ########.fr       */
+/*   Updated: 2022/02/26 13:27:26 by ksuomala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	vm_instr_lldi(t_arena *a, t_process *p)
 {
 	t_int32	lhs;
 	t_int32	rhs;
-	t_int32	offset;
 	t_int8	dst_reg_addr;
 
 	vm_reg_store((t_byte *)&dst_reg_addr, &p->current_instruction.args[2].data);
@@ -42,12 +41,14 @@ void	vm_instr_lldi(t_arena *a, t_process *p)
 		return ;
 	if (!vm_instr_get_param_value(&rhs, a, p, 1))
 		return ;
-	offset = lhs + rhs;
 	if (a->verbosity & VM_VERBOSE_OPS)
-		print(" => from pc + (%d + %d = %d)\n", lhs, rhs, offset);
-	vm_mem_set_pos(&a->mem, (t_size)((int)p->pc + offset));
+		print(" => from pc + (%d + %d = %d)\n", lhs, rhs, lhs + rhs);
+	vm_mem_set_pos(&a->mem, (t_size)((int)p->pc + lhs + rhs));
 	vm_mem_read((t_byte *)&p->registers[dst_reg_addr - 1], &a->mem, REG_SIZE);
-	// zf !!!
+	if (vm_reg_value(p->registers[dst_reg_addr - 1]) == 0)
+		p->zf = TRUE;
+	else
+		p->zf = FALSE;
 	if (a->verbosity & VM_VERBOSE_OPS)
 		vm_instr_print_register(" => load to R%d ", dst_reg_addr, p);
 }

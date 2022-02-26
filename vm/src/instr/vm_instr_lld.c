@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_instr_lld.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: satukoskinen <satukoskinen@student.42.f    +#+  +:+       +#+        */
+/*   By: ksuomala <ksuomala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 20:14:54 by satukoskine       #+#    #+#             */
-/*   Updated: 2022/02/25 20:14:54 by satukoskine      ###   ########.fr       */
+/*   Updated: 2022/02/26 13:26:53 by ksuomala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,10 @@ void	vm_instr_lld(t_arena *a, t_process *p)
 		load_direct_value(p, dst_reg_addr);
 	else
 		load_indirect_value(a, p, dst_reg_addr);
-	// zf !!!
+	if (vm_reg_value(p->registers[dst_reg_addr - 1]) == 0)
+		p->zf = TRUE;
+	else
+		p->zf = FALSE;
 	if (a->verbosity & VM_VERBOSE_OPS)
 		vm_instr_print_register(" => load to R%d ", dst_reg_addr, p);
 }

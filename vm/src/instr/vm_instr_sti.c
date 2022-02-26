@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_instr_sti.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: satukoskinen <satukoskinen@student.42.f    +#+  +:+       +#+        */
+/*   By: ksuomala <ksuomala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 20:15:21 by satukoskine       #+#    #+#             */
-/*   Updated: 2022/02/25 20:15:21 by satukoskine      ###   ########.fr       */
+/*   Updated: 2022/02/26 13:28:56 by ksuomala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ void	vm_instr_sti(t_arena *a, t_process *p)
 			src_reg_addr, lhs, rhs, offset);
 	vm_mem_set_pos(&a->mem, (t_size)((int)p->pc + (offset % IDX_MOD)));
 	vm_mem_write(&a->mem, (t_byte *)&p->registers[src_reg_addr - 1], REG_SIZE);
-	// zf !!!
 	if (a->verbosity & VM_VERBOSE_OPS)
 		vm_instr_print_register(" => where R%d ", src_reg_addr, p);
 }
