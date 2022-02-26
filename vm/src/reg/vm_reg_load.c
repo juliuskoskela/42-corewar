@@ -19,7 +19,7 @@ void	vm_reg_load(t_reg *dst, t_byte *src)
 	if (!dst || !src)
 		return ;
 	i = 0;
-	if (ENDIAN_LITTLE)
+	if (ENDIAN_BIG)
 	{
 		while (i < dst->len)
 		{

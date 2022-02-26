@@ -31,6 +31,7 @@
 # define VM_PRINT_ARENA_WIDTH	64
 # define ROW_SIZE 				64
 
+# define ENDIAN_BIG				1
 
 # define VM_NEGATIVE_IDS		1
 
@@ -86,7 +87,7 @@ typedef struct s_acb
 
 typedef struct s_process
 {
-	t_uint32			id;
+	t_int32				id;
 	t_size				pc;
 	t_bool				zf;
 	t_size				last_live;
@@ -156,7 +157,7 @@ void			*vm_reverse_bytes(void *dst, void *src, t_size size);
 t_arg			*vm_arg_read(t_arg *dst, t_mem *src);
 t_arg			*vm_arg_new(t_arg *dst, t_uint8 type, t_bool promoted);
 void			vm_print_arena(t_arena arena, t_process *process_list);
-void			vm_print_processes(t_arena *a, int id);
+void			vm_print_processes(t_arena *a, int print_all, int id);
 int				vm_interactive_loop(t_arena *arena);
 void			vm_test_fork(t_process *p_lst);
 

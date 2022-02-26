@@ -20,7 +20,7 @@ void	vm_reg_store(t_byte *dst, t_reg *src)
 	if (!dst || !src)
 		return ;
 	i = 0;
-	if (ENDIAN_LITTLE)
+	if (ENDIAN_BIG)
 	{
 		while (i < src->len)
 		{

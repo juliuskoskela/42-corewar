@@ -35,6 +35,6 @@ void	vm_reg_load(t_reg *dst, t_byte *src);
 void	vm_reg_print(t_reg *src);
 
 // Returns the value of a register
-t_int32 vm_reg_value(t_reg src);
+t_int32	vm_reg_value(t_reg src);
 
 #endif
