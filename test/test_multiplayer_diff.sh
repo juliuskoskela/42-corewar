@@ -15,7 +15,7 @@ result_dir="../test_results"
 vm_verbosity="31"
 
 ## Number of cycles to run before exiting and dumping memory
-cycles_to_run=1535
+cycles_to_run=3000
 
 ## Path to the player .cor file is taken as the first command line argument
 
