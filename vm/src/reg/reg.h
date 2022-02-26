@@ -6,7 +6,7 @@
 /*   By: ksuomala <ksuomala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 20:13:03 by satukoskine       #+#    #+#             */
-/*   Updated: 2022/02/26 11:04:32 by ksuomala         ###   ########.fr       */
+/*   Updated: 2022/02/26 11:18:12 by ksuomala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ void	vm_reg_load(t_reg *dst, t_byte *src);
 // Print a register.
 void	vm_reg_print(t_reg *src);
 
+
+// Returns the value of a register
 t_int32 vm_reg_value(t_reg src);
 
 #endif
