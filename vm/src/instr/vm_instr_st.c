@@ -64,5 +64,5 @@ void	vm_instr_st(t_arena *a, t_process *p)
 		store_to_memory(a, p, src_reg_addr);
 	// zf !!!
 	if (a->verbosity & VM_VERBOSE_OPS)
-		vm_instr_print_register(" => where R%d", src_reg_addr, p);
+		vm_instr_print_register(" => where R%d ", src_reg_addr, p);
 }

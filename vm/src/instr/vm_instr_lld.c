@@ -55,5 +55,5 @@ void	vm_instr_lld(t_arena *a, t_process *p)
 		load_indirect_value(a, p, dst_reg_addr);
 	// zf !!!
 	if (a->verbosity & VM_VERBOSE_OPS)
-		vm_instr_print_register(" => load to R%d", dst_reg_addr, p);
+		vm_instr_print_register(" => load to R%d ", dst_reg_addr, p);
 }

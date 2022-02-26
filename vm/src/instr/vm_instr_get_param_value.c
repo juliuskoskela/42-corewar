@@ -37,16 +37,19 @@ t_arena *a, t_process *p, int index)
 	vm_reg_store((t_byte *)&ind_offset,
 		&p->current_instruction.args[index].data);
 	if (a->verbosity & VM_VERBOSE_OPS)
-		print(" => indirect offset: %d\n", ind_offset);
+		print(" => indirect offset: %d", ind_offset);
 	vm_mem_set_pos(&a->mem, (t_size)((int)p->pc + ind_offset));
 	vm_mem_read((t_byte *)param, &a->mem, REG_SIZE);
 	vm_reverse_bytes(param, param, REG_SIZE);
 }
 
-static void	get_direct_value(t_int32 *param, t_process *p, int index)
+static void	get_direct_value(t_int32 *param, t_arena *a, t_process *p,
+int index)
 {
 	t_int16	dir_value;
 
+	if (a->verbosity & VM_VERBOSE_OPS)
+		print(" => direct");
 	if (p->current_instruction.args[index].data.len == 2)
 	{
 		vm_reg_store((t_byte *)&dir_value,
@@ -66,7 +69,7 @@ t_arena *a, t_process *p, int index)
 
 	vm_reg_store((t_byte *)&reg_addr, &p->current_instruction.args[index].data);
 	if (a->verbosity & VM_VERBOSE_OPS)
-		print(" => register: %d\n", reg_addr);
+		print(" => register: %d", reg_addr);
 	if (reg_addr <= 0 || reg_addr > 16)
 	{
 		vm_process_debug("Invalid register number", a->verbosity);
@@ -81,14 +84,14 @@ t_arena *a, t_process *p, int index)
 {
 	*param = 0;
 	if (a->verbosity & VM_VERBOSE_OPS)
-		print(" => parameter %d\n", index);
+		print(" => parameter %d", index);
 	if (p->current_instruction.args[index].type == REG_CODE)
 	{
 		if (!get_register_value(param, a, p, index))
 			return (0);
 	}
 	else if (p->current_instruction.args[index].type == DIR_CODE)
-		get_direct_value(param, p, index);
+		get_direct_value(param, a, p, index);
 	else
 		get_indirect_value(param, a, p, index);
 	if (a->verbosity & VM_VERBOSE_OPS)

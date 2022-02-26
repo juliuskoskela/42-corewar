@@ -47,5 +47,5 @@ void	vm_instr_ldi(t_arena *a, t_process *p)
 	vm_mem_read((t_byte *)&p->registers[dst_reg_addr - 1], &a->mem, REG_SIZE);
 	// zf !!!
 	if (a->verbosity & VM_VERBOSE_OPS)
-		vm_instr_print_register(" => load to R%d", dst_reg_addr, p);
+		vm_instr_print_register(" => load to R%d ", dst_reg_addr, p);
 }
