@@ -18,10 +18,11 @@ ld %0, r5
 
 zjmp %1
 
+ld %1, r4
 ld %5, r5
 
 jump_loop: 
-sub r5, %1, r5
+sub r5, r4, r5
 zjmp %:jump_loop
 
 zjmp %:jump_above
