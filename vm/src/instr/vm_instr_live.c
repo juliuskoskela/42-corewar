@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_instr_live.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: satukoskinen <satukoskinen@student.42.f    +#+  +:+       +#+        */
+/*   By: ksuomala <ksuomala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 20:14:50 by satukoskine       #+#    #+#             */
-/*   Updated: 2022/02/25 20:14:51 by satukoskine      ###   ########.fr       */
+/*   Updated: 2022/02/26 18:01:33 by ksuomala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	vm_instr_live(t_arena *a, t_process *p)
 
 	vm_instr_get_param_value(&id, a, p, 0);
 	p->last_live = a->current_cycle;
+	a->lives_since_check += 1;
 	if (VM_NEGATIVE_IDS)
 		id = -id;
 	if (id > 0 && id <= a->player_count)
