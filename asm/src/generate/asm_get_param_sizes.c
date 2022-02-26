@@ -49,7 +49,8 @@ t_astnode *parameter_list)
 		|| s_cmp(instruction.mnemonic, "and") == 0
 		|| s_cmp(instruction.mnemonic, "or") == 0
 		|| s_cmp(instruction.mnemonic, "xor") == 0
-		|| s_cmp(instruction.mnemonic, "ld") == 0)
+		|| s_cmp(instruction.mnemonic, "ld") == 0
+		|| s_cmp(instruction.mnemonic, "lld") == 0)
 	{
 		if (parameter_list->left_child->type == DIRECT)
 			param_sizes[0] = REG_SIZE;
