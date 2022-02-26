@@ -45,8 +45,7 @@ t_astnode *parameter_list)
 	asm_get_instruction(&instruction, instruction_node->value);
 	if (s_cmp(instruction.mnemonic, "live") == 0)
 		param_sizes[0] = 4;
-	else if (s_cmp(instruction.mnemonic, "lldi") == 0
-		|| s_cmp(instruction.mnemonic, "and") == 0
+	else if (s_cmp(instruction.mnemonic, "and") == 0
 		|| s_cmp(instruction.mnemonic, "or") == 0
 		|| s_cmp(instruction.mnemonic, "xor") == 0
 		|| s_cmp(instruction.mnemonic, "ld") == 0

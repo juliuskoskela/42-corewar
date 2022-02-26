@@ -77,7 +77,7 @@ int	vm_read_instr_arguments(t_process *process, t_arena *arena)
 	{
 		if (s_cmp(instr, "live") == 0)
 			is_promoted = TRUE;
-		else if (acb.arg[i] == DIR_CODE && (!(s_ncmp(instr, "lld", 3))
+		else if (acb.arg[i] == DIR_CODE && (!(s_cmp(instr, "lld"))
 				|| !s_cmp(instr, "and") || !s_cmp(instr, "or")
 				|| !s_cmp(instr, "xor") || !s_cmp(instr, "ld")))
 			is_promoted = TRUE;
