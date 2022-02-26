@@ -95,6 +95,7 @@ SRC_REG =		$(addprefix reg/,\
 				vm_reg_print.c \
 				vm_reg_load.c \
 				vm_reg_set_size.c \
+				vm_reg_value.c \
 )
 
 ALL_SRC = $(SRC_BASE) $(SRC_INSTR) $(SRC_MEM) $(SRC_REG)
