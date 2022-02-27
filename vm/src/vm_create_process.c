@@ -6,7 +6,7 @@
 /*   By: ksuomala <ksuomala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 20:12:31 by satukoskine       #+#    #+#             */
-/*   Updated: 2022/02/27 13:27:56 by ksuomala         ###   ########.fr       */
+/*   Updated: 2022/02/27 14:07:33 by ksuomala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ t_int32 player_id)
 		i++;
 	}
 	vm_reg_load(&new_process->registers[0], (t_byte *)&new_process->id);
-	new_process->id = new_process->id % 1;
+	if (new_process->id < 0)
+		new_process->id *= -1;
 	new_process->pc = (t_size)(player_id - 1) * arena.offset;
 	new_process->cycles_before_execution = -1;
 	new_process->next = process_lst;
