@@ -47,6 +47,8 @@ void	vm_battle(t_arena a)
 	interactive_mode_skip = 0;
 	while (a.processes)
 	{
+		if (a.pause_nbr_cycles && (a.current_cycle % a.pause_nbr_cycles) == 0)
+			vm_pause_and_print_memory(a);
 		vm_execute_cycle(a.processes, &a);
 		if (++a.cycles_since_check >= a.cycle_to_die)
 			vm_check_live(&a.processes, &a);
@@ -56,8 +58,6 @@ void	vm_battle(t_arena a)
 			vm_free_processes(&a.processes);
 			return ;
 		}
-		if (a.pause_nbr_cycles && (a.current_cycle + 1) % a.pause_nbr_cycles == 0)
-			vm_pause_and_print_memory(a);
 		if (interactive_mode_skip)
 			interactive_mode_skip--;
 		if (a.interactive_mode && interactive_mode_skip == 0)

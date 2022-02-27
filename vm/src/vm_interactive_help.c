@@ -50,4 +50,3 @@ void	vm_interactive_help(t_arena *arena, int *arg)
 	help\t\tprint this message\n\
 	n [NBR]\t\tjump to the next cycle or NBR cycles forward\n");
 }
-
