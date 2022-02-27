@@ -19,7 +19,7 @@ void	vm_print_processes(t_arena *a, int print_all, int id)
 
 	found_live_processes = 0;
 	p = a->processes;
-	print("printing processes:\n");
+	print("Printing processes:\n");
 	while (p)
 	{
 		if (print_all || p->id == id)
@@ -31,5 +31,5 @@ void	vm_print_processes(t_arena *a, int print_all, int id)
 		p = p->next;
 	}
 	if (!found_live_processes)
-		print("no live processes\n");
+		print("No live processes\n");
 }

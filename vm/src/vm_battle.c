@@ -56,7 +56,7 @@ void	vm_battle(t_arena a)
 			vm_free_processes(&a.processes);
 			return ;
 		}
-		if (a.pause_nbr_cycles && a.current_cycle + 1 % a.pause_nbr_cycles)
+		if (a.pause_nbr_cycles && (a.current_cycle + 1) % a.pause_nbr_cycles == 0)
 			vm_pause_and_print_memory(a);
 		if (interactive_mode_skip)
 			interactive_mode_skip--;

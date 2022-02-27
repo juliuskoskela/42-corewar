@@ -13,7 +13,7 @@
 #include "vm.h"
 
 static t_interactive_option	vm_parse_user_input(
-	const t_interactive_option *options, char *line, int *arg)
+	const t_interactive_option *options, char *line, int **arg)
 {
 	size_t	i;
 	size_t	opt_len;
@@ -25,7 +25,9 @@ static t_interactive_option	vm_parse_user_input(
 		if (s_ncmp(options[i].opt, line, opt_len) == 0)
 		{
 			if (line[opt_len] != '\0')
-				*arg = (int)s_toi(&line[opt_len]);
+				**arg = (int)s_toi(&line[opt_len]);
+			else
+				*arg = NULL;
 			break ;
 		}
 		i++;
@@ -37,20 +39,24 @@ static int	interactive_loop(t_arena *arena,
 const t_interactive_option *options)
 {
 	int						arg;
+	int						*arg_ptr;
 	char					*line;
 	t_interactive_option	option;
 
+	arg = 0;
+	if (arena->current_cycle == 2)
+		print(">>> run 'help' to see options\n");
 	while (1)
 	{
-		arg = -1;
+		arg_ptr = &arg;
 		print(">>> ");
 		line = NULL;
 		if (s_readline(0, &line) <= 0)
 			return (0);
-		option = vm_parse_user_input(options, line, &arg);
+		option = vm_parse_user_input(options, line, &arg_ptr);
 		free(line);
 		if (option.ptr != NULL)
-			option.ptr(arena, arg);
+			option.ptr(arena, arg_ptr);
 		else
 			break ;
 	}

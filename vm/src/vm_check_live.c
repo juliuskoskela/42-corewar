@@ -77,15 +77,26 @@ static void	check_live_processes(t_process **head, t_arena *arena)
 
 void	vm_check_live(t_process **head, t_arena *arena)
 {
+	if ((arena->verbosity & VM_VERBOSE_CTD) != 0)
+		print("Live checks (CYCLE_TO_DIE %d)\n", (int)arena->cycle_to_die);
 	check_live_processes(head, arena);
 	arena->checks_performed += 1;
-	if (arena->lives_since_check >= NBR_LIVE || \
-		arena->checks_performed >= MAX_CHECKS)
+	if (arena->lives_since_check >= NBR_LIVE
+		|| arena->checks_performed >= MAX_CHECKS)
 	{
 		if (arena->cycle_to_die <= CYCLE_DELTA)
 			arena->cycle_to_die = 0;
 		else
 			arena->cycle_to_die -= CYCLE_DELTA;
+		if ((arena->verbosity & VM_VERBOSE_CTD) != 0)
+		{
+			print("Lives since check %d (NBR_LIVE %d)",
+				(int)arena->lives_since_check, NBR_LIVE);
+			print(" and checks performed %d (MAX_CHECKS %d)\n",
+				(int)arena->checks_performed, MAX_CHECKS);
+			print("=> CYCLE_TO_DIE %d decreased by %D => %d\n",
+				CYCLE_TO_DIE, CYCLE_DELTA, (int)arena->cycle_to_die);
+		}
 		arena->checks_performed = 0;
 	}
 	arena->lives_since_check = 0;

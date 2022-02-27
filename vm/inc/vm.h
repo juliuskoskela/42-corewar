@@ -27,6 +27,7 @@
 # define VM_VERBOSE_OPS			4
 # define VM_VERBOSE_DEATHS		8
 # define VM_VERBOSE_PC			16
+# define VM_VERBOSE_CTD			32
 
 # define VM_PRINT_ARENA_WIDTH	64
 # define ROW_SIZE 				64
@@ -118,7 +119,7 @@ typedef struct s_arena
 	t_bool		interactive_mode;
 }	t_arena;
 
-typedef void	(*t_interactive_exec)(t_arena *, int arg);
+typedef void	(*t_interactive_exec)(t_arena *, int *arg);
 
 typedef struct s_interactive_option
 {
@@ -194,10 +195,10 @@ void			vm_print_process(t_process *p);
 void			vm_process_debug(char *msg, int verbosity);
 void			vm_increment_process_pc(t_process *p,
 					t_int32 delta, t_int32 verbosity);
-void			vm_interactive_print_processes(t_arena *arena, int arg);
-void			vm_interactive_print_arena(t_arena *arena, int arg);
-void			vm_interactive_exit(t_arena *arena, int arg);
-void			vm_interactive_help(t_arena *arena, int arg);
+void			vm_interactive_print_processes(t_arena *arena, int *arg);
+void			vm_interactive_print_arena(t_arena *arena, int *arg);
+void			vm_interactive_exit(t_arena *arena, int *arg);
+void			vm_interactive_help(t_arena *arena, int *arg);
 
 static const
 	t_exec g_instr_funcs[] = {

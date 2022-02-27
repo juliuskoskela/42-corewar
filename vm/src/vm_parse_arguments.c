@@ -58,7 +58,7 @@ static void	parse_numeric_option(int key, char *arg, t_argparser_state *state)
 		argparser_usage(state);
 	else if (key == 'd' && nbr > 0)
 		args->dump_nbr_cycles = nbr;
-	else if (key == 'v' && (nbr >= 0 && nbr <= 31))
+	else if (key == 'v' && nbr >= 0)
 		args->verbosity = nbr;
 	else if (key == 'n' && nbr > 0 && !player_nbr_is_assigned(args, nbr))
 		args->next_player_nbr = nbr;
@@ -105,7 +105,7 @@ t_input_args	vm_parse_arguments(int argc, char **argv)
 	{"dump", 'd', "nbr_cycles", 0, "dump memory to standard output and exit\n\
 		after nbr_cycles (> 0)"},
 	{"show", 's', "nbr_cycles", 0, "dump memory every N cycles and pause until\n\
-		a key is pressed"},
+		ENTER is pressed"},
 	{"verbosity", 'v', "level", 0, "verbosity level (set between 0 and 31)"},
 	{"coloured", 'c', 0, 0, "use colours in printing to standard output"},
 	{"nbr", 'n', "nbr", 0, "set the number (> 0) of the next player"},
