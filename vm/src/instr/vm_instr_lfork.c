@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_instr_lfork.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: satukoskinen <satukoskinen@student.42.f    +#+  +:+       +#+        */
+/*   By: ksuomala <ksuomala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 20:14:46 by satukoskine       #+#    #+#             */
-/*   Updated: 2022/02/25 20:14:46 by satukoskine      ###   ########.fr       */
+/*   Updated: 2022/02/27 13:08:27 by ksuomala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	vm_instr_lfork(t_arena *a, t_process *p)
 	mcpy(new, p, sizeof(t_process));
 	new->pc = (t_size)(((int)p->pc + offset) % MEM_SIZE);
 	new->next = a->processes;
+	new->id = a->processes->id + 1;
 	new->cycles_before_execution = -1;
 	mzero(&new->current_instruction, sizeof(t_instr));
 	a->processes = new;
