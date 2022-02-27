@@ -31,9 +31,6 @@ fclean:
 	rm -rf bin
 
 test: all
-	cd test && bash test_single_player_diff.sh subject_reference/champs/Gagnant.s 5000
-	cd test && bash test_multiplayer_diff.sh subject_reference/champs/examples/bee_gees.s subject_reference/champs/examples/zork.s 10000
-
 	@echo "\\n\033[1;34mtest 1:\033[0m"
 	@echo "\033[1;90mrun 50 cycles and dump:\033[0m"
 	@cd test && bash test_multiplayer_diff.sh test_instructions/test_module_1.s 15
@@ -46,11 +43,20 @@ test: all
 	@echo "\033[1;90mrun more cycles:\033[0m"
 	@cd test && bash test_multiplayer_diff.sh test_instructions/test_module_2.s
 
+	@echo "\\n\033[1;90mtest champion distribution\033[0m \\n"
+	@cd test && bash test_multiplayer_diff.sh test_instructions/test_live.s test_instructions/test_live.s 1
+
+	@echo "\\n\033[1;34mtest 5 error handling:\033[0m"
+	@echo "\033[1;90m  \033[0m"
 	@echo "\\n\033[1;90mRunning with no champion params. Usage should be outputted\033[0m \\n"
 	@-./bin/corewar
 	@echo "\\n\033[1;90mRunning with too many champions. Usage should be outputted\033[0m \\n"
 	@-./bin/corewar champ.cor champ_2.cor champ_3.cor champ_4.cor champ_5.cor
-	@echo "\\n\033[1;90mtest champion distribution\033[0m \\n"
-	@cd test && bash test_multiplayer_diff.sh test_instructions/test_live.s test_instructions/test_live.s 1
+
+	@echo "\\n\033[1;34mtest with subject players:\033[0m"
+	@echo "\033[1;90mrun 50 cycles and dump:\033[0m"
+
+	cd test && bash test_single_player_diff.sh subject_reference/champs/Gagnant.s 5000
+	cd test && bash test_multiplayer_diff.sh subject_reference/champs/examples/bee_gees.s subject_reference/champs/examples/zork.s 10000
 
 re: fclean all
