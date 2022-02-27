@@ -71,9 +71,22 @@ do
 	fi
 done
 
+
+## Run players on VM; assumes -d and -v flags have been implemented on user_corewar
+
 echo "Running VM for $cycles_to_run cycles" >> $log_file
 
-# Run player on VM; assumes -d and -v flags have been implemented on user_corewar
+# Form a string with all the user player .cor files
+user_player_cor_files=""
+for var in "$@"
+do
+	if [[ $var =~ ^[0-9]+$ ]]; then
+		continue
+	fi
+	player_s=$var
+	player_cor=$(echo $player_s | sed "s/\.s/\.cor/" | rev | cut -d '/' -f 1 | rev)
+	user_player_cor_files="$user_player_cor_files $outdir_player_user/$player_cor"
+done
 
 run_vm() {
 	local corewar=$1
@@ -89,19 +102,8 @@ run_vm() {
 	fi
 }
 
-# Form a string with all the user player .cor files
-user_player_cor_files=""
-for var in "$@"
-do
-	if [[ $var =~ ^[0-9]+$ ]]; then
-		continue
-	fi
-	player_s=$var
-	player_cor=$(echo $player_s | sed "s/\.s/\.cor/" | rev | cut -d '/' -f 1 | rev)
-	user_player_cor_files="$user_player_cor_files $outdir_player_user/$player_cor"
-done
-
 user_corewar_output_file="$outdir/user/user_corewar_output"
+
 run_vm $user_corewar "$user_player_cor_files" $user_corewar_output_file $vm_verbosity
 
 echo "Test output written to $outdir" | tee -a $log_file
